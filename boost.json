@@ -1,0 +1,21 @@
+{
+    "agents": [
+        "claude_code",
+        "junie",
+        "antigravity"
+    ],
+    "cloud": true,
+    "guidelines": true,
+    "mcp": true,
+    "nightwatch": false,
+    "packages": [
+        "filament/filament"
+    ],
+    "sail": false,
+    "skills": [
+        "infer-conventions",
+        "laravel-best-practices",
+        "tailwindcss-development",
+        "deploying-laravel-cloud"
+    ]
+}
