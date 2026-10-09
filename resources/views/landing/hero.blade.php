@@ -26,6 +26,6 @@
             {{ __('landing.register') }}
         </a>
     </div>
-    <img src="{{ Vite::asset('resources/images/GatherConf-Logo.jpeg') }}" alt="{{ __('landing.logo_alt') }}"
+    <img src="{{ Vite::asset('resources/images/GatherConf-Logo.png') }}" alt="{{ __('landing.logo_alt') }}"
          class="mx-auto w-full max-w-md mix-blend-multiply">
 </section>
