@@ -2,7 +2,7 @@
 
 return [
     'title' => 'GatherConf 2026',
-    'description' => 'Breaking down domain silos and bringing diverse tech communities together. 2026-11-21 at NTU, 200 attendees, dual-track sessions and an open space.',
+    'description' => 'Breaking down domain silos and bringing diverse tech communities together. 2026-11-21 at NTU, 120 attendees, dual-track sessions and an open space.',
     'html_lang' => 'en',
     'switch_label' => '繁體中文',
     'name' => 'GatherConf',
@@ -22,7 +22,7 @@ return [
     'mission_quote' => null,
     'overview_title' => 'Conference Overview',
     'stats' => [
-        ['200', 'attendees'],
+        ['120', 'attendees'],
         ['2', 'parallel tracks'],
         ['8', 'sessions'],
         ['1', 'open space'],
@@ -36,8 +36,8 @@ return [
     'sponsor_title' => 'Sponsorship',
     'sponsor_intro' => 'Join us and make cross-domain exchange happen.',
     'tiers' => [
-        ['name' => 'Gold Tier', 'english' => 'Gold', 'amount' => '40,000', 'slots' => '2 companies', 'benefits' => ['Logo in promotional materials', 'Logo on the event site', 'Standard booth', 'Inclusion in souvenir bags', '5-min lightning talk promotion']],
-        ['name' => 'Silver Tier', 'english' => 'Silver', 'amount' => '20,000', 'slots' => '3 companies', 'benefits' => ['Logo in promotional materials', 'Logo on the event site', 'Standard booth']],
-        ['name' => 'Bronze Tier', 'english' => 'Bronze', 'amount' => '10,000', 'slots' => 'Unlimited', 'benefits' => ['Logo in promotional materials', 'Logo on the event site']],
+        ['name' => 'Gold Tier', 'english' => 'Gold', 'amount' => '40,000', 'benefits' => ['Logo in promotional materials', 'Logo on the event site', 'Standard booth', 'Inclusion in souvenir bags', '5-min lightning talk promotion']],
+        ['name' => 'Silver Tier', 'english' => 'Silver', 'amount' => '20,000', 'benefits' => ['Logo in promotional materials', 'Logo on the event site', 'Standard booth']],
+        ['name' => 'Bronze Tier', 'english' => 'Bronze', 'amount' => '10,000', 'benefits' => ['Logo in promotional materials', 'Logo on the event site']],
     ],
 ];

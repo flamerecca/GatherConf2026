@@ -18,7 +18,6 @@
                     <p class="text-sm font-semibold tracking-widest uppercase {{ $loop->first ? 'text-gold' : 'text-copper' }}">{{ $tier['english'] }}</p>
                     <h3 class="mt-1 text-2xl font-bold">{{ $tier['name'] }}</h3>
                     <p class="mt-4 text-4xl font-bold">NT$ {{ $tier['amount'] }}</p>
-                    <p class="mt-1 text-sm opacity-70">{{ $tier['slots'] }}</p>
                     <ul class="mt-6 space-y-2">
                         @foreach ($tier['benefits'] as $benefit)
                             <li class="flex gap-2">

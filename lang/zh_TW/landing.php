@@ -2,7 +2,7 @@
 
 return [
     'title' => '共聚年會 GatherConf 2026',
-    'description' => '打破領域之間的隔閡，將多元的技術社群匯聚在一起。2026-11-21 台大綜合教學館，200 人、雙軌八場議程與 open space。',
+    'description' => '打破領域之間的隔閡，將多元的技術社群匯聚在一起。2026-11-21 台大綜合教學館，120 人、雙軌八場議程與 open space。',
     'html_lang' => 'zh-Hant-TW',
     'switch_label' => 'English',
     'name' => '共聚年會',
@@ -22,7 +22,7 @@ return [
     'mission_quote' => 'To break down domain silos and bring diverse tech groups together under one roof. Through shared knowledge, creative collisions, and mutual learning, we empower community organizers, developers, and tech innovators to spark new ideas, build meaningful connections, and grow together as one united community.',
     'overview_title' => '年會概述',
     'stats' => [
-        ['200', '人年會'],
+        ['120', '人年會'],
         ['2', '軌並行'],
         ['8', '場講題'],
         ['1', '個 open space'],
@@ -36,8 +36,8 @@ return [
     'sponsor_title' => '贊助方案',
     'sponsor_intro' => '與我們一起，讓跨領域的交流發生。',
     'tiers' => [
-        ['name' => '金獎級', 'english' => 'Gold', 'amount' => '40,000', 'slots' => '限額 2 家', 'benefits' => ['宣傳文案內 Logo 曝光', '官網 Logo 曝光', '標準攤位', '紀念品包入袋', '閃電講 5 分鐘宣傳']],
-        ['name' => '銀獎級', 'english' => 'Silver', 'amount' => '20,000', 'slots' => '限額 3 家', 'benefits' => ['宣傳文案內 Logo 曝光', '官網 Logo 曝光', '標準攤位']],
-        ['name' => '銅獎級', 'english' => 'Bronze', 'amount' => '10,000', 'slots' => '名額不限', 'benefits' => ['宣傳文案內 Logo 曝光', '官網 Logo 曝光']],
+        ['name' => '金獎級', 'english' => 'Gold', 'amount' => '40,000', 'benefits' => ['宣傳文案內 Logo 曝光', '官網 Logo 曝光', '標準攤位', '紀念品包入袋', '閃電講 5 分鐘宣傳']],
+        ['name' => '銀獎級', 'english' => 'Silver', 'amount' => '20,000', 'benefits' => ['宣傳文案內 Logo 曝光', '官網 Logo 曝光', '標準攤位']],
+        ['name' => '銅獎級', 'english' => 'Bronze', 'amount' => '10,000', 'benefits' => ['宣傳文案內 Logo 曝光', '官網 Logo 曝光']],
     ],
 ];
