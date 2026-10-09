@@ -25,7 +25,8 @@ class ExampleTest extends TestCase
             ->assertSee('https://luma.com/wfjisb47', false)
             ->assertSee('金獎級')
             ->assertSee('銀獎級')
-            ->assertSee('銅獎級');
+            ->assertSee('銅獎級')
+            ->assertSee('NT$ 40,000');
     }
 
     public function test_english_landing_page_shows_event_details(): void
@@ -37,6 +38,10 @@ class ExampleTest extends TestCase
             ->assertSee('Gold Tier')
             ->assertSee('Silver Tier')
             ->assertSee('Bronze Tier')
+            ->assertSee('€1,000')
+            ->assertSee('€500')
+            ->assertSee('€250')
+            ->assertDontSee('NT$')
             ->assertSee('https://luma.com/wfjisb47', false)
             ->assertDontSee('金獎級');
     }

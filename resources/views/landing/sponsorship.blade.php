@@ -17,7 +17,7 @@
                 ])>
                     <p class="text-sm font-semibold tracking-widest uppercase {{ $loop->first ? 'text-gold' : 'text-copper' }}">{{ $tier['english'] }}</p>
                     <h3 class="mt-2 text-2xl font-bold">{{ $tier['name'] }}</h3>
-                    <p class="mt-4 text-4xl font-bold">NT$ {{ $tier['amount'] }}</p>
+                    <p class="mt-4 text-4xl font-bold">{{ __('landing.price', ['amount' => $tier['amount']]) }}</p>
                     <ul class="mt-6 space-y-2">
                         @foreach ($tier['benefits'] as $benefit)
                             <li class="flex gap-2">

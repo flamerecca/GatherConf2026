@@ -45,11 +45,12 @@ return [
         ['Core Philosophy', 'Cross-domain IT exchange and synergistic multiplication across communities.'],
         ['Agenda Model', 'Dual-track, eight sessions, plus an open space unconference, aimed at the collision of perspectives and deep exchange across domains.'],
     ],
+    'price' => '€:amount',
     'sponsor_title' => 'Sponsorship',
     'sponsor_intro' => 'Join us and make cross-domain exchange happen.',
     'tiers' => [
-        ['name' => 'Gold Tier', 'english' => 'Gold', 'amount' => '40,000', 'benefits' => ['Logo in promotional materials', 'Logo on the event site', 'Standard booth', 'Inclusion in souvenir bags', '5-min lightning talk promotion']],
-        ['name' => 'Silver Tier', 'english' => 'Silver', 'amount' => '20,000', 'benefits' => ['Logo in promotional materials', 'Logo on the event site', 'Standard booth']],
-        ['name' => 'Bronze Tier', 'english' => 'Bronze', 'amount' => '10,000', 'benefits' => ['Logo in promotional materials', 'Logo on the event site']],
+        ['name' => 'Gold Tier', 'english' => 'Gold', 'amount' => '1,000', 'benefits' => ['Logo in promotional materials', 'Logo on the event site', 'Standard booth', 'Inclusion in souvenir bags', '5-min lightning talk promotion']],
+        ['name' => 'Silver Tier', 'english' => 'Silver', 'amount' => '500', 'benefits' => ['Logo in promotional materials', 'Logo on the event site', 'Standard booth']],
+        ['name' => 'Bronze Tier', 'english' => 'Bronze', 'amount' => '250', 'benefits' => ['Logo in promotional materials', 'Logo on the event site']],
     ],
 ];

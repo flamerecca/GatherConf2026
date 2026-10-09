@@ -45,6 +45,7 @@ return [
         ['核心哲學', '跨領域 IT 交流與跨社群綜效相乘。'],
         ['議程模式', '雙軌八場議程，加上 open space unconf，促進不同領域的觀點碰撞與深度交流。'],
     ],
+    'price' => 'NT$ :amount',
     'sponsor_title' => '贊助方案',
     'sponsor_intro' => '與我們一起，讓跨領域的交流發生。',
     'tiers' => [
