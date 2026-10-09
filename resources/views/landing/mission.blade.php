@@ -7,7 +7,7 @@
             <p class="mt-6 text-lg leading-relaxed">{{ __('landing.mission_lead') }}</p>
             <p class="mt-4 leading-relaxed text-parchment/80">{{ __('landing.mission_body') }}</p>
             @if (__('landing.mission_quote') !== 'landing.mission_quote' && filled(__('landing.mission_quote')))
-                <p class="mt-8 border-l-4 border-copper pl-4 text-sm leading-relaxed text-parchment/70 italic" lang="en">
+                <p class="mt-8 border-l-4 border-gold pl-4 text-sm leading-relaxed text-parchment/70 italic" lang="en">
                     {{ __('landing.mission_quote') }}
                 </p>
             @endif

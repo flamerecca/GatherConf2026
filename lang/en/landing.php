@@ -6,6 +6,7 @@ return [
     'html_lang' => 'en',
     'switch_label' => '繁體中文',
     'name' => 'GatherConf',
+    'logo_alt' => 'GatherConf logo, a community gathering in a forest',
     'mascot_alt' => 'GatherConf mascot Bunny',
     'npc_alt' => 'Merchant NPC in his workshop',
     'hero_tagline' => 'Breaking down domain silos and bringing open-source, commercial and enterprise tech communities together under one roof.',

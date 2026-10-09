@@ -9,9 +9,13 @@
 }
 
 @theme {
-    --color-parchment: #f6efe0;
-    --color-parchment-dark: #ebe0c8;
-    --color-ink: #2f2118;
-    --color-moss: #3f5b3a;
-    --color-copper: #b4642c;
+    --color-parchment: #f4efe1;
+    --color-parchment-dark: #e8e1c9;
+    --color-ink: #1d3320;
+    --color-moss: #2b6a35;
+    --color-copper: #9a6f1e;
+}
+
+@theme {
+    --color-gold: #d4ad4f;
 }
