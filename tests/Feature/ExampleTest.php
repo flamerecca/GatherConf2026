@@ -43,4 +43,27 @@ class ExampleTest extends TestCase
         $this->get('/')->assertSee(route('landing.en'), false);
         $this->get('/en')->assertSee(route('landing'), false);
     }
+
+    public function test_code_of_conduct_pages_are_available_in_both_languages(): void
+    {
+        $this->get('/code-of-conduct')
+            ->assertOk()
+            ->assertSee('行為準則')
+            ->assertSee('禁止的行為')
+            ->assertSee('mailto:contact@mg.gatherconf.net', false)
+            ->assertSee(route('conduct.en'), false);
+
+        $this->get('/en/code-of-conduct')
+            ->assertOk()
+            ->assertSee('Prohibited Behavior')
+            ->assertSee('mailto:contact@mg.gatherconf.net', false)
+            ->assertSee(route('conduct'), false)
+            ->assertDontSee('禁止的行為');
+    }
+
+    public function test_landing_footer_links_to_the_code_of_conduct(): void
+    {
+        $this->get('/')->assertSee(route('conduct'), false);
+        $this->get('/en')->assertSee(route('conduct.en'), false);
+    }
 }

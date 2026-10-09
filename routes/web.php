@@ -13,3 +13,15 @@ Route::get('/en', function () {
 
     return view('landing');
 })->name('landing.en');
+
+Route::get('/code-of-conduct', function () {
+    app()->setLocale('zh_TW');
+
+    return view('code-of-conduct');
+})->name('conduct');
+
+Route::get('/en/code-of-conduct', function () {
+    app()->setLocale('en');
+
+    return view('code-of-conduct');
+})->name('conduct.en');

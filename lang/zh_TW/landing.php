@@ -7,6 +7,7 @@ return [
     'switch_label' => 'English',
     'name' => '共聚年會',
     'logo_alt' => 'GatherConf 標誌，森林中的社群聚會',
+    'conduct_link' => '行為準則',
     'mascot_alt' => 'GatherConf 吉祥物 Bunny',
     'npc_alt' => '工坊裡的商人 NPC',
     'hero_tagline' => '打破領域之間的隔閡，將開源、商業技術與企業方案社群，匯聚在同一個屋簷下。',
