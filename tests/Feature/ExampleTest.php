@@ -66,7 +66,10 @@ class ExampleTest extends TestCase
 
     public function test_landing_footer_links_to_the_code_of_conduct(): void
     {
-        $this->get('/')->assertSee(route('conduct'), false)->assertSee('data-theme-toggle', false);
+        $this->get('/')
+            ->assertSee(route('conduct'), false)
+            ->assertSee('data-theme-toggle', false)
+            ->assertSeeInOrder(['<nav', route('conduct'), '</nav>', '<footer'], false);
         $this->get('/code-of-conduct')->assertSee('data-theme-toggle', false);
         $this->get('/en')->assertSee(route('conduct.en'), false);
     }
