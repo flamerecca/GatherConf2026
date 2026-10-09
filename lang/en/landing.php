@@ -1,0 +1,41 @@
+<?php
+
+return [
+    'title' => 'GatherConf 2026',
+    'description' => 'Breaking down domain silos and bringing diverse tech communities together. 2026-11-21 at NTU, 200 attendees, dual-track sessions and an open space.',
+    'html_lang' => 'en',
+    'switch_label' => '繁體中文',
+    'name' => 'GatherConf',
+    'mascot_alt' => 'GatherConf mascot Bunny',
+    'npc_alt' => 'Merchant NPC in his workshop',
+    'hero_tagline' => 'Breaking down domain silos and bringing open-source, commercial and enterprise tech communities together under one roof.',
+    'time_label' => 'When',
+    'place_label' => 'Where',
+    'place' => 'NTU General Classroom Building, Rooms 201-203',
+    'register' => 'Register now',
+    'register_footer' => 'Register',
+    'mission_title' => 'Mission',
+    'mission_lead' => 'Our mission is to create an open, inclusive, and dynamic platform for cross-functional IT exchange.',
+    'mission_body' => 'Through shared knowledge, creative collisions, and mutual learning, we empower community organizers, developers, and tech innovators to spark new ideas, build meaningful connections, and grow together as one united community.',
+    'mission_quote' => null,
+    'overview_title' => 'Conference Overview',
+    'stats' => [
+        ['200', 'attendees'],
+        ['2', 'parallel tracks'],
+        ['8', 'sessions'],
+        ['1', 'open space'],
+    ],
+    'facts' => [
+        ['Main Scope', 'IT and the tech industry, covering open-source technologies, commercial technologies, enterprise solutions, SaaS, and cloud architecture.'],
+        ['Target Audience', 'Community organizers, developers, product builders and tech innovators across different technology domains.'],
+        ['Core Philosophy', 'Cross-domain IT exchange and synergistic multiplication across communities.'],
+        ['Agenda Model', 'Dual-track, eight sessions, plus an open space unconference, aimed at the collision of perspectives and deep exchange across domains.'],
+    ],
+    'sponsor_title' => 'Sponsorship',
+    'sponsor_intro' => 'Join us and make cross-domain exchange happen.',
+    'tiers' => [
+        ['name' => 'Gold Tier', 'english' => 'Gold', 'amount' => '40,000', 'slots' => '2 companies', 'benefits' => ['Logo in promotional materials', 'Logo on the event site', 'Standard booth', 'Inclusion in souvenir bags', '5-min lightning talk promotion']],
+        ['name' => 'Silver Tier', 'english' => 'Silver', 'amount' => '20,000', 'slots' => '3 companies', 'benefits' => ['Logo in promotional materials', 'Logo on the event site', 'Standard booth']],
+        ['name' => 'Bronze Tier', 'english' => 'Bronze', 'amount' => '10,000', 'slots' => 'Unlimited, 4-6 suggested', 'benefits' => ['Logo in promotional materials', 'Logo on the event site']],
+    ],
+];

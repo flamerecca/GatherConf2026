@@ -3,5 +3,13 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    app()->setLocale('zh_TW');
+
+    return view('landing');
+})->name('landing');
+
+Route::get('/en', function () {
+    app()->setLocale('en');
+
+    return view('landing');
+})->name('landing.en');

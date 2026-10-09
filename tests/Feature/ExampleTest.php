@@ -2,18 +2,45 @@
 
 namespace Tests\Feature;
 
-// use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class ExampleTest extends TestCase
 {
-    /**
-     * A basic test example.
-     */
-    public function test_the_application_returns_a_successful_response(): void
+    protected function setUp(): void
     {
-        $response = $this->get('/');
+        parent::setUp();
 
-        $response->assertStatus(200);
+        $this->withoutVite();
+    }
+
+    public function test_chinese_landing_page_shows_event_details(): void
+    {
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('共聚年會')
+            ->assertSee('2026-11-21 09:00-17:00')
+            ->assertSee('台大綜合教學館 綜201-203')
+            ->assertSee('https://luma.com/wfjisb47', false)
+            ->assertSee('金獎級')
+            ->assertSee('銀獎級')
+            ->assertSee('銅獎級');
+    }
+
+    public function test_english_landing_page_shows_event_details(): void
+    {
+        $this->get('/en')
+            ->assertOk()
+            ->assertSee('Our mission is to create an open, inclusive, and dynamic platform')
+            ->assertSee('Gold Tier')
+            ->assertSee('Silver Tier')
+            ->assertSee('Bronze Tier')
+            ->assertSee('https://luma.com/wfjisb47', false)
+            ->assertDontSee('金獎級');
+    }
+
+    public function test_language_switch_links_to_the_other_locale(): void
+    {
+        $this->get('/')->assertSee(route('landing.en'), false);
+        $this->get('/en')->assertSee(route('landing'), false);
     }
 }

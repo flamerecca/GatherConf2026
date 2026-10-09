@@ -1,0 +1,41 @@
+<?php
+
+return [
+    'title' => '共聚年會 GatherConf 2026',
+    'description' => '打破領域之間的隔閡，將多元的技術社群匯聚在一起。2026-11-21 台大綜合教學館，200 人、雙軌八場議程與 open space。',
+    'html_lang' => 'zh-Hant-TW',
+    'switch_label' => 'English',
+    'name' => '共聚年會',
+    'mascot_alt' => 'GatherConf 吉祥物 Bunny',
+    'npc_alt' => '工坊裡的商人 NPC',
+    'hero_tagline' => '打破領域之間的隔閡，將開源、商業技術與企業方案社群，匯聚在同一個屋簷下。',
+    'time_label' => '時間',
+    'place_label' => '地點',
+    'place' => '台大綜合教學館 綜201-203',
+    'register' => '立即報名',
+    'register_footer' => '前往報名',
+    'mission_title' => '年會宗旨',
+    'mission_lead' => '我們的使命是打造一個開放、包容且充滿活力的跨領域 IT 交流空間。',
+    'mission_body' => '透過知識共享、創意碰撞與相互學習，我們提供社群組織者、開發者以及技術創新者，激發新思維、建立有意義的連結，並作為一個團結的社群共同成長。',
+    'mission_quote' => 'To break down domain silos and bring diverse tech groups together under one roof. Through shared knowledge, creative collisions, and mutual learning, we empower community organizers, developers, and tech innovators to spark new ideas, build meaningful connections, and grow together as one united community.',
+    'overview_title' => '年會概述',
+    'stats' => [
+        ['200', '人年會'],
+        ['2', '軌並行'],
+        ['8', '場講題'],
+        ['1', '個 open space'],
+    ],
+    'facts' => [
+        ['主要範疇', '廣義 IT 與科技產業，涵蓋開源技術、商業技術、企業級方案、SaaS 與雲端架構等。'],
+        ['目標受眾', '跨科技領域的社群主辦人、開發者、產品建構者與科技創新者。'],
+        ['核心哲學', '跨領域 IT 交流與跨社群綜效相乘。'],
+        ['議程模式', '雙軌八場議程，加上 open space unconf，促進不同領域的觀點碰撞與深度交流。'],
+    ],
+    'sponsor_title' => '贊助方案',
+    'sponsor_intro' => '與我們一起，讓跨領域的交流發生。',
+    'tiers' => [
+        ['name' => '金獎級', 'english' => 'Gold', 'amount' => '40,000', 'slots' => '限額 2 家', 'benefits' => ['宣傳文案內 Logo 曝光', '官網 Logo 曝光', '標準攤位', '紀念品包入袋', '閃電講 5 分鐘宣傳']],
+        ['name' => '銀獎級', 'english' => 'Silver', 'amount' => '20,000', 'slots' => '限額 3 家', 'benefits' => ['宣傳文案內 Logo 曝光', '官網 Logo 曝光', '標準攤位']],
+        ['name' => '銅獎級', 'english' => 'Bronze', 'amount' => '10,000', 'slots' => '名額不限，建議 4-6 家', 'benefits' => ['宣傳文案內 Logo 曝光', '官網 Logo 曝光']],
+    ],
+];
