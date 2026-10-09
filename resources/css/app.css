@@ -8,14 +8,57 @@
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
 
-@theme {
-    --color-parchment: #f4efe1;
-    --color-parchment-dark: #e8e1c9;
-    --color-ink: #1d3320;
-    --color-moss: #2b6a35;
-    --color-copper: #9a6f1e;
+:root {
+    color-scheme: light;
+    --c-parchment: #f4efe1;
+    --c-parchment-dark: #e8e1c9;
+    --c-ink: #1d3320;
+    --c-moss: #2b6a35;
+    --c-copper: #7d5812;
+    --c-gold: #d4ad4f;
+    --c-deep: #1d3320;
+    --c-on-deep: #f4efe1;
+    --c-on-accent: #f4efe1;
 }
 
-@theme {
-    --color-gold: #d4ad4f;
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) {
+        color-scheme: dark;
+        --c-parchment: #121c15;
+        --c-parchment-dark: #1c2a20;
+        --c-ink: #ece6d3;
+        --c-moss: #7fc08a;
+        --c-copper: #d4ad4f;
+        --c-gold: #d4ad4f;
+            --c-deep: #213a28;
+        --c-on-deep: #f4efe1;
+        --c-on-accent: #10190f;
+    }
+}
+
+:root[data-theme='dark'] {
+    color-scheme: dark;
+    --c-parchment: #121c15;
+    --c-parchment-dark: #1c2a20;
+    --c-ink: #ece6d3;
+    --c-moss: #7fc08a;
+    --c-copper: #d4ad4f;
+    --c-gold: #d4ad4f;
+    --c-deep: #213a28;
+    --c-on-deep: #f4efe1;
+    --c-on-accent: #10190f;
+}
+
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+@theme inline {
+    --color-parchment: var(--c-parchment);
+    --color-parchment-dark: var(--c-parchment-dark);
+    --color-ink: var(--c-ink);
+    --color-moss: var(--c-moss);
+    --color-copper: var(--c-copper);
+    --color-gold: var(--c-gold);
+    --color-deep: var(--c-deep);
+    --color-on-deep: var(--c-on-deep);
+    --color-on-accent: var(--c-on-accent);
 }

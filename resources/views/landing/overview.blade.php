@@ -4,11 +4,11 @@
         @foreach (__('landing.stats') as [$number, $label])
             <div class="rounded-2xl bg-parchment-dark p-6 text-center">
                 <p class="text-4xl font-bold text-copper">{{ $number }}</p>
-                <p class="mt-1 text-sm font-medium">{{ $label }}</p>
+                <p class="mt-2 text-sm font-medium">{{ $label }}</p>
             </div>
         @endforeach
     </div>
-    <dl class="mt-10 grid gap-6 md:grid-cols-2">
+    <dl class="mt-12 grid gap-6 md:grid-cols-2">
         @foreach (__('landing.facts') as [$term, $description])
             <div class="rounded-2xl border border-ink/15 p-6">
                 <dt class="font-semibold text-moss">{{ $term }}</dt>

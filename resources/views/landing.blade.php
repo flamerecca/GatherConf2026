@@ -6,6 +6,7 @@
 @section('content')
         @include('landing.hero')
         @include('landing.mission')
+        @include('landing.why')
         @include('landing.overview')
         @include('landing.sponsorship')
         @include('landing.footer')

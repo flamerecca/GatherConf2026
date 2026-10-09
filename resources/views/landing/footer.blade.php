@@ -1,8 +1,8 @@
-<footer class="bg-ink py-10 text-center text-parchment/80">
+<footer class="bg-deep py-12 text-center text-on-deep/80">
     <img src="{{ Vite::asset('resources/images/GatherConf-Logo.png') }}" alt="{{ __('landing.logo_alt') }}"
          class="mx-auto mb-4 size-24 rounded-full">
-    <p class="font-semibold text-parchment">{{ __('landing.name') }} GatherConf 2026</p>
-    <p class="mt-1 text-sm">2026-11-21 · {{ __('landing.place') }}</p>
+    <p class="font-semibold text-on-deep">{{ __('landing.name') }} GatherConf 2026</p>
+    <p class="mt-2 text-sm">2026-11-21 · {{ __('landing.place') }}</p>
     <div class="mt-4 flex justify-center gap-6">
         <a href="https://luma.com/wfjisb47" target="_blank" rel="noopener" class="text-gold underline">{{ __('landing.register_footer') }}</a>
         <a href="{{ app()->getLocale() === 'en' ? route('conduct.en') : route('conduct') }}" class="text-gold underline">{{ __('landing.conduct_link') }}</a>

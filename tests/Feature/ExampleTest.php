@@ -19,6 +19,8 @@ class ExampleTest extends TestCase
             ->assertOk()
             ->assertSee('共聚年會')
             ->assertSee('2026-11-21 09:00-17:00')
+            ->assertSee('為什麼要舉辦共聚年會')
+            ->assertSee('name="color-scheme" content="light dark"', false)
             ->assertSee('台大綜合教學館 綜201-203')
             ->assertSee('https://luma.com/wfjisb47', false)
             ->assertSee('金獎級')
@@ -31,6 +33,7 @@ class ExampleTest extends TestCase
         $this->get('/en')
             ->assertOk()
             ->assertSee('Our mission is to create an open, inclusive, and dynamic platform')
+            ->assertSee('Why GatherConf')
             ->assertSee('Gold Tier')
             ->assertSee('Silver Tier')
             ->assertSee('Bronze Tier')
@@ -63,7 +66,8 @@ class ExampleTest extends TestCase
 
     public function test_landing_footer_links_to_the_code_of_conduct(): void
     {
-        $this->get('/')->assertSee(route('conduct'), false);
+        $this->get('/')->assertSee(route('conduct'), false)->assertSee('data-theme-toggle', false);
+        $this->get('/code-of-conduct')->assertSee('data-theme-toggle', false);
         $this->get('/en')->assertSee(route('conduct.en'), false);
     }
 }
