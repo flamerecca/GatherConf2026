@@ -22,7 +22,7 @@ BBTI（Bunny Builder Type Indicator）是專為現代數位產品打造者設計
 
 ```mermaid
 flowchart TD
-    I["導引頁 (/)：介紹 BBTI 是什麼"] --> Z["點擊開始測驗 → /quiz"]
+    I["導引頁 (/bbti)：介紹 BBTI 是什麼"] --> Z["點擊開始測驗 → /quiz"]
     Z --> L{"已用 Google 登入？"}
     L -- 否 --> O["導向 Google OAuth 登入"]
     O --> A["逐題作答（含進度條，可上一題/下一題）"]
@@ -35,7 +35,7 @@ flowchart TD
     D --> G["提供「重新測驗」與「複製分享連結」"]
 ```
 
-**已確認**：須先用 Google 登入才能作答，測驗結果會記錄在該使用者名下（`quiz_attempts.user_id` 對應登入者）。結果仍以 UUID7 網址存取即可分享，分享對象不需要登入就能看到別人的結果頁。**另已確認**：`/quiz` 之前加一個導引頁（首頁 `/`），介紹 BBTI 簡介（見第 1.1 節）並提供「開始測驗」按鈕，畫面規格見 `docs/screen-design-spec.md`。
+**已確認**：須先用 Google 登入才能作答，測驗結果會記錄在該使用者名下（`quiz_attempts.user_id` 對應登入者）。結果仍以 UUID7 網址存取即可分享，分享對象不需要登入就能看到別人的結果頁。**另已確認**：`/quiz` 之前加一個導引頁（路徑 `/bbti`，`/` 已保留給 GatherConf 官網），介紹 BBTI 簡介（見第 1.1 節）並提供「開始測驗」按鈕，畫面規格見 `docs/screen-design-spec.md`。
 
 ---
 
@@ -117,7 +117,7 @@ flowchart TD
 
 ## 5. Livewire 元件設計
 
-### 5.0 導引頁（首頁 `/`，靜態 Blade view，非 Livewire 元件）
+### 5.0 導引頁（`/bbti`，靜態 Blade view，非 Livewire 元件）
 
 不需要狀態或互動邏輯，純粹是 BBTI 簡介（沿用第 1.1 節文案）+「開始測驗」按鈕（連到 `/quiz`），用一般 Blade view 搭 `Route::view()` 即可，不必為此建立 Livewire 元件。畫面配置見 `docs/screen-design-spec.md`。
 
@@ -151,7 +151,7 @@ flowchart TD
 
 ```php
 // routes/web.php
-Route::view('/', 'welcome')->name('home');
+Route::view('/bbti', 'bbti.intro')->name('bbti.intro');
 Route::get('/quiz', Quiz::class)->middleware('auth')->name('quiz.start');
 Route::get('/results/{attempt:uuid}', QuizResult::class)
     ->middleware('throttle:results')
