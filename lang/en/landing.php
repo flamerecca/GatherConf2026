@@ -37,6 +37,6 @@ return [
     'tiers' => [
         ['name' => 'Gold Tier', 'english' => 'Gold', 'amount' => '40,000', 'slots' => '2 companies', 'benefits' => ['Logo in promotional materials', 'Logo on the event site', 'Standard booth', 'Inclusion in souvenir bags', '5-min lightning talk promotion']],
         ['name' => 'Silver Tier', 'english' => 'Silver', 'amount' => '20,000', 'slots' => '3 companies', 'benefits' => ['Logo in promotional materials', 'Logo on the event site', 'Standard booth']],
-        ['name' => 'Bronze Tier', 'english' => 'Bronze', 'amount' => '10,000', 'slots' => 'Unlimited, 4-6 suggested', 'benefits' => ['Logo in promotional materials', 'Logo on the event site']],
+        ['name' => 'Bronze Tier', 'english' => 'Bronze', 'amount' => '10,000', 'slots' => 'Unlimited', 'benefits' => ['Logo in promotional materials', 'Logo on the event site']],
     ],
 ];

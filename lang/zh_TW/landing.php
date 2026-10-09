@@ -37,6 +37,6 @@ return [
     'tiers' => [
         ['name' => '金獎級', 'english' => 'Gold', 'amount' => '40,000', 'slots' => '限額 2 家', 'benefits' => ['宣傳文案內 Logo 曝光', '官網 Logo 曝光', '標準攤位', '紀念品包入袋', '閃電講 5 分鐘宣傳']],
         ['name' => '銀獎級', 'english' => 'Silver', 'amount' => '20,000', 'slots' => '限額 3 家', 'benefits' => ['宣傳文案內 Logo 曝光', '官網 Logo 曝光', '標準攤位']],
-        ['name' => '銅獎級', 'english' => 'Bronze', 'amount' => '10,000', 'slots' => '名額不限，建議 4-6 家', 'benefits' => ['宣傳文案內 Logo 曝光', '官網 Logo 曝光']],
+        ['name' => '銅獎級', 'english' => 'Bronze', 'amount' => '10,000', 'slots' => '名額不限', 'benefits' => ['宣傳文案內 Logo 曝光', '官網 Logo 曝光']],
     ],
 ];
