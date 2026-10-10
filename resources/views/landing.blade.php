@@ -1,7 +1,12 @@
 @extends('layouts.app')
 
+@section('route', 'landing')
 @section('title', __('landing.title'))
 @section('description', __('landing.description'))
+
+@push('structured-data')
+    @include('landing.structured-data')
+@endpush
 
 @section('content')
         @include('landing.hero')

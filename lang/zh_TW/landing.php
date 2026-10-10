@@ -16,6 +16,8 @@ return [
     'time_label' => '時間',
     'place_label' => '地點',
     'place' => '台大綜合教學館 綜201-203',
+    'address_street' => '羅斯福路四段1號',
+    'address_locality' => '臺北市大安區',
     'register' => '立即報名',
     'register_footer' => '前往報名',
     'mission_title' => '年會宗旨',

@@ -147,4 +147,63 @@ class ExampleTest extends TestCase
 
         $this->get('/')->assertDontSee('感謝贊助商');
     }
+
+    public function test_every_page_declares_canonical_alternates_and_social_metadata(): void
+    {
+        foreach (['landing' => 'landing', 'conduct' => 'conduct', 'communities' => 'communities'] as $name => $base) {
+            $this->get(route($base))
+                ->assertOk()
+                ->assertSee('<link rel="canonical" href="'.route($base).'">', false)
+                ->assertSee('hreflang="zh-Hant-TW" href="'.route($base).'"', false)
+                ->assertSee('hreflang="en" href="'.route($base.'.en').'"', false)
+                ->assertSee('hreflang="x-default" href="'.route($base).'"', false)
+                ->assertSee('property="og:image" content="'.asset('og-image.jpg').'"', false)
+                ->assertSee('property="og:locale" content="zh_TW"', false)
+                ->assertSee('name="twitter:card" content="summary_large_image"', false);
+
+            $this->get(route($base.'.en'))
+                ->assertOk()
+                ->assertSee('<link rel="canonical" href="'.route($base.'.en').'">', false)
+                ->assertSee('property="og:locale" content="en_US"', false);
+        }
+    }
+
+    public function test_landing_page_embeds_event_structured_data(): void
+    {
+        $response = $this->get('/')->assertOk()->assertSee('application/ld+json', false);
+
+        preg_match('/<script type="application\/ld\+json">(.*?)<\/script>/s', $response->getContent(), $matches);
+        $graph = json_decode($matches[1], true)['@graph'];
+        $event = collect($graph)->firstWhere('@type', 'Event');
+
+        $this->assertSame('2026-11-21T09:00:00+08:00', $event['startDate']);
+        $this->assertSame('2026-11-21T17:00:00+08:00', $event['endDate']);
+        $this->assertSame('台大綜合教學館 綜201-203', $event['location']['name']);
+        $this->assertSame('https://luma.com/wfjisb47', $event['offers']['url']);
+
+        $this->get('/communities')->assertDontSee('application/ld+json', false);
+    }
+
+    public function test_robots_and_sitemap_are_served(): void
+    {
+        $this->get('/robots.txt')
+            ->assertOk()
+            ->assertSee('Disallow: /admin')
+            ->assertSee('Sitemap: '.route('sitemap'));
+
+        $sitemap = $this->get('/sitemap.xml')->assertOk();
+
+        foreach (['landing', 'conduct', 'communities'] as $base) {
+            $sitemap->assertSee('<loc>'.route($base).'</loc>', false)
+                ->assertSee('<loc>'.route($base.'.en').'</loc>', false);
+        }
+    }
+
+    public function test_favicon_and_share_assets_exist(): void
+    {
+        foreach (['favicon.ico', 'favicon-16x16.png', 'favicon-32x32.png', 'apple-touch-icon.png', 'icon-192.png', 'icon-512.png', 'og-image.jpg', 'site.webmanifest'] as $file) {
+            $this->assertFileExists(public_path($file));
+            $this->assertGreaterThan(0, filesize(public_path($file)));
+        }
+    }
 }

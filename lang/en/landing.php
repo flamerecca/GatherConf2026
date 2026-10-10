@@ -16,6 +16,8 @@ return [
     'time_label' => 'When',
     'place_label' => 'Where',
     'place' => 'NTU General Classroom Building, Rooms 201-203',
+    'address_street' => 'No. 1, Section 4, Roosevelt Road',
+    'address_locality' => 'Taipei',
     'register' => 'Register now',
     'register_footer' => 'Register',
     'mission_title' => 'Mission',

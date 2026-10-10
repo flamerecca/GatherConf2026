@@ -1,5 +1,6 @@
 @extends('layouts.app')
 
+@section('route', 'conduct')
 @section('title', __('conduct.title'))
 @section('description', __('conduct.description'))
 
