@@ -37,7 +37,7 @@ GatherConf 想給人的感覺是「開放、包容、充滿活力的森林聚會
 
 - 畫面不放文字，這樣中英文頁面才能共用同一張圖。需要說明的文字放在圖下方的 HTML 標題。
 - 色調需落在第 3 節色票的綠、米白、金、棕範圍內。
-- 合作社群與贊助商的 Logo 由對方提供，不重新上色、不變形。多數 Logo 是白底，一律放在白色圓角底板 `rounded-2xl bg-white object-contain p-4` 上，light 與 dark 模式才都看得清楚。
+- 合作社群與贊助商的 Logo 由對方提供，不重新上色、不變形。一律裁成圓形並加外框線，規則見 7.8，這樣 light 與 dark 模式才都看得清楚。
 - 新圖片寬度至少 1600 px，檔名使用小寫加連字號，並以內容命名，例如 `community-gathering-watercolor.png`。
 
 ---
@@ -272,26 +272,45 @@ Token 定義在 `resources/css/app.css`。實際色值存放在 `:root` 的 `--c
 - 對照型插畫，如打破隔閡：`w-full rounded-2xl shadow-xl`，保留原始比例不裁切。下方的 `figcaption` 用兩欄 `grid-cols-2` 對應圖的左右兩半，右半邊標題使用 `text-moss`。
 - 若需要以 SVG 繪製示意圖，色彩一律使用 token 類別，如 `fill-moss`、`stroke-ink/30`，不寫死色碼，這樣才會跟著 dark 模式切換。
 
-### 7.8 社群卡片
+### 7.8 圓形 Logo
+
+合作社群與贊助商的 Logo 一律裁成圓形，由 `<x-circle-logo>` 元件統一處理。對方提供的 Logo 背景色不一，如果放在方形白色底板上，淺灰或米色的背景會和白色底板形成色差，圓形配合填滿可以消除這個問題。
+
+```html
+<x-circle-logo :src="..." :alt="..." fit="cover|contain" size="size-40" />
+```
+
+- 外觀：`rounded-full ring-1 ring-ink/15`，淡淡的外框線讓圓形的邊緣在 light 與 dark 模式下都清楚。
+- 屬性 `size`：圓的直徑，預設 `size-40`。贊助商依層級傳入 `size-48`、`size-40`、`size-32`。
+- 屬性 `fit`：資料中的 `logo_fit`，決定圖片在圓裡的處理方式。
+
+| `fit` | 處理方式 | 適用的 Logo |
+| :---- | :---- | :---- |
+| `cover` | 圖片鋪滿整個圓，`object-cover`。 | 本身就是圓形構圖，或背景是單色的 Logo。背景色會一路填到圓邊，不會有色差。 |
+| `contain` | 圖片縮小置中，白色底，`bg-white object-contain p-[15%]`。 | 方形 Logo，且邊角有文字或圖案。內縮 15%，讓內容留在圓內，不被裁掉。 |
+
+選擇方式：先預設用 `contain`，因為最保險。如果發現 Logo 縮小後與白底有明顯色差，而且 Logo 是圓形構圖，再改為 `cover`。新增資料後，需要在 light 與 dark 兩種模式下檢查圓形邊緣。
+
+### 7.9 社群卡片
 
 `<x-community-card :community="$community" />`，首頁合作社群區塊與合作社群頁共用。
 
 - 整張卡片是連結，在新分頁開啟，`rounded-2xl border border-ink/15 bg-parchment-dark p-6`，滑過時邊框變為 `moss`。
-- 內容由上而下：白色 Logo 底板 `size-40`、社群名稱 `text-lg font-semibold`、「前往社群網站」`text-sm text-moss`。
-- 資料來自 `config/communities.php`。
+- 內容由上而下：7.8 的圓形 Logo `size-40`、依語言顯示的社群名稱 `text-lg font-semibold`、「前往社群網站」`text-sm text-moss`。
+- 資料來自 `config/communities.php`，名稱需同時提供 `zh_TW` 與 `en`，沒有中文名稱時，兩種語言填同一個名稱，並指定 `logo_fit`。
 
-### 7.9 贊助商卡片
+### 7.10 贊助商卡片
 
-首頁贊助商區塊，位於贊助方案之後，層級視覺與 7.4 相同，依金、銀、銅獎級分組，只顯示有贊助商的層級。
+首頁贊助商區塊，位於贊助方案之後，層級視覺與 7.4 相同，Logo 規則見 7.8，依金、銀、銅獎級分組，只顯示有贊助商的層級。
 
 - 分組標題：`text-sm font-semibold tracking-widest text-copper uppercase`，前面有一顆同層級顏色的 `size-3` 圓點。
 - 卡片外框 `border-4`，顏色依層級使用 `border-tier-gold`、`border-tier-silver` 或 `border-tier-bronze`，讓讀者一眼看出等級。
-- Logo 底板大小依層級遞減，金獎級 `size-48`，銀獎級 `size-40`，銅獎級 `size-32`。
+- Logo 使用 7.8 的圓形元件，大小依層級遞減，金獎級 `size-48`，銀獎級 `size-40`，銅獎級 `size-32`。
 - 內容由上而下：Logo、依語言顯示的公司名稱、「前往官網」。
 - 沒有任何贊助商時，整個區塊不輸出。
-- 資料來自 `config/sponsors.php`，名稱需同時提供 `zh_TW` 與 `en`。
+- 資料來自 `config/sponsors.php`，名稱需同時提供 `zh_TW` 與 `en`，並指定 `logo_fit`。
 
-### 7.10 頁尾
+### 7.11 頁尾
 
 深色底 `bg-deep`，置中，依序是圓形 Logo、活動名稱、日期與地點、連結列。連結列包含「立即報名」、「行為準則」與「合作社群」，一律使用 `text-gold underline`，空間不足時自動換行。
 
@@ -348,6 +367,7 @@ Token 定義在 `resources/css/app.css`。實際色值存放在 `:root` 的 `--c
 | 6 | 贊助方案價格 | 中文頁 NT$ 20,000、10,000 與 5,000，英文頁 €500、250 與 125。席次限制不在官網顯示。 |
 | 7 | 贊助層級辨識 | 以邊框顏色區分金、銀、銅獎級，並保留文字標題。贊助方案卡片與贊助商卡片共用同一組 `tier-*` 色票，視覺統一。 |
 | 8 | 合作社群與贊助商 | 以 `config/` 管理清單，首頁顯示摘要，合作社群另有獨立頁面。 |
+| 9 | 圓形 Logo | 合作社群與贊助商的 Logo 一律裁成圓形，由 `x-circle-logo` 處理，並以 `logo_fit` 指定填滿方式，避免色差。 |
 
 ### 待辦
 
@@ -384,8 +404,8 @@ Token 定義在 `resources/css/app.css`。實際色值存放在 `:root` 的 `--c
 | :---- | :---- |
 | **修改文案** | 編輯 `lang/zh_TW/` 與 `lang/en/` 內對應的檔案。首頁在 `landing.php`，行為準則在 `conduct.php`，合作社群在 `communities.php`，贊助商區塊在 `sponsors.php`。 |
 | **修改贊助方案價格** | 編輯兩個 `landing.php` 的 `tiers` 內的 `amount`。同時調整測試中的斷言。 |
-| **新增合作社群** | 把 Logo 放進 `resources/images/community-logo/`，在 `config/communities.php` 加一筆 `name`、`logo`、`url`。首頁與合作社群頁會自動更新。 |
-| **新增贊助商** | 把 Logo 放進 `resources/images/sponsor-logo/`，在 `config/sponsors.php` 加一筆，`name` 需提供 `zh_TW` 與 `en`，`tier` 為 `gold`、`silver` 或 `bronze`。 |
+| **新增合作社群** | 把 Logo 放進 `resources/images/community-logo/`，在 `config/communities.php` 加一筆 `name`，需有 `zh_TW` 與 `en`，以及 `logo`、`logo_fit` 與 `url`。首頁與合作社群頁會自動更新。 |
+| **新增贊助商** | 把 Logo 放進 `resources/images/sponsor-logo/`，在 `config/sponsors.php` 加一筆，`name` 需提供 `zh_TW` 與 `en`，`tier` 為 `gold`、`silver` 或 `bronze`，`logo_fit` 為 `cover` 或 `contain`，選擇方式見 7.8。 |
 | **更換圖片** | 直接覆蓋 `resources/images/` 內的同名檔案，若副檔名改變，需同步更新 view 的引用。 |
 | **修改檢舉信箱** | 行為準則頁的信箱定義在 `resources/views/code-of-conduct.blade.php` 的 `$contactEmail`，只需改一處。 |
 | **修改報名連結** | 報名連結目前寫在 `landing/hero.blade.php` 與 `landing/footer.blade.php` 兩處。 |
