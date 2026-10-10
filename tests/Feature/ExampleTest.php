@@ -78,4 +78,40 @@ class ExampleTest extends TestCase
         $this->get('/code-of-conduct')->assertSee('data-theme-toggle', false);
         $this->get('/en')->assertSee(route('conduct.en'), false);
     }
+
+    public function test_communities_pages_list_partner_logos_in_both_languages(): void
+    {
+        $this->get('/communities')
+            ->assertOk()
+            ->assertSee('合作社群')
+            ->assertSee('Taiwan Kotlin User Group')
+            ->assertSee('https://taiwan-kotlin-user-group.github.io/', false)
+            ->assertSee(route('communities.en'), false);
+
+        $this->get('/en/communities')
+            ->assertOk()
+            ->assertSee('Community Partners')
+            ->assertSee('Taiwan Kotlin User Group')
+            ->assertSee(route('communities'), false)
+            ->assertDontSee('合作社群');
+    }
+
+    public function test_landing_footer_links_to_the_communities_page(): void
+    {
+        $this->get('/')->assertSee(route('communities'), false);
+        $this->get('/en')->assertSee(route('communities.en'), false);
+    }
+
+    public function test_landing_page_shows_the_community_partners_section(): void
+    {
+        $this->get('/')
+            ->assertSee('合作社群')
+            ->assertSee('Taiwan Kotlin User Group')
+            ->assertSeeInOrder(['年會概述', '合作社群', '贊助方案']);
+
+        $this->get('/en')
+            ->assertSee('Community Partners')
+            ->assertSee('Taiwan Kotlin User Group')
+            ->assertSeeInOrder(['Conference Overview', 'Community Partners', 'Sponsorship']);
+    }
 }

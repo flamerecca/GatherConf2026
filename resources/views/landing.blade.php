@@ -8,6 +8,7 @@
         @include('landing.mission')
         @include('landing.why')
         @include('landing.overview')
+        @include('landing.communities')
         @include('landing.sponsorship')
         @include('landing.footer')
 @endsection

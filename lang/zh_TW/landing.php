@@ -9,6 +9,7 @@ return [
     'name' => '共聚年會',
     'logo_alt' => 'GatherConf 標誌，森林中的社群聚會',
     'conduct_link' => '行為準則',
+    'communities_link' => '合作社群',
     'mascot_alt' => 'GatherConf 吉祥物 Bunny',
     'gathering_alt' => '水彩插畫，許多人在森林裡共同參加年會，有人聽講、有人圍著長桌討論',
     'hero_tagline' => '打破領域之間的隔閡，將開源、商業技術與企業方案社群，匯聚在同一個屋簷下。',

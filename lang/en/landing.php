@@ -9,6 +9,7 @@ return [
     'name' => 'GatherConf',
     'logo_alt' => 'GatherConf logo, a community gathering in a forest',
     'conduct_link' => 'Code of Conduct',
+    'communities_link' => 'Community Partners',
     'mascot_alt' => 'GatherConf mascot Bunny',
     'gathering_alt' => 'Watercolor illustration of many people at a conference in a forest, some listening to a talk and some discussing around a table',
     'hero_tagline' => 'Breaking down domain silos and bringing open-source, commercial and enterprise tech communities together under one roof.',
