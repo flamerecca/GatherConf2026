@@ -114,4 +114,22 @@ class ExampleTest extends TestCase
             ->assertSee('Taiwan Kotlin User Group')
             ->assertSeeInOrder(['Conference Overview', 'Community Partners', 'Sponsorship']);
     }
+
+    public function test_landing_page_lists_current_sponsors_after_the_sponsorship_tiers(): void
+    {
+        $this->get('/')
+            ->assertSeeInOrder(['贊助方案', '感謝贊助商', '金獎級', '兔給德資訊有限公司'])
+            ->assertSee('https://www.rabbit-gather.com/', false);
+
+        $this->get('/en')
+            ->assertSeeInOrder(['Sponsorship', 'Our Sponsors', 'Gold Tier', '兔給德資訊有限公司'])
+            ->assertSee('https://www.rabbit-gather.com/', false);
+    }
+
+    public function test_sponsor_list_is_hidden_when_there_are_no_sponsors(): void
+    {
+        config(['sponsors' => []]);
+
+        $this->get('/')->assertDontSee('感謝贊助商');
+    }
 }

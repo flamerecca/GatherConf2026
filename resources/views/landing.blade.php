@@ -10,5 +10,6 @@
         @include('landing.overview')
         @include('landing.communities')
         @include('landing.sponsorship')
+        @include('landing.sponsors')
         @include('landing.footer')
 @endsection
