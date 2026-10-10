@@ -21,8 +21,8 @@
                             <li>
                                 <a href="{{ $sponsor['url'] }}" target="_blank" rel="noopener"
                                    class="group flex h-full w-full flex-col items-center gap-4 rounded-2xl border-4 {{ $tierBorders[$tier] }} bg-parchment-dark p-6 text-center transition hover:shadow-xl sm:w-auto">
-                                    <img src="{{ Vite::asset('resources/images/sponsor-logo/'.$sponsor['logo']) }}" alt="{{ $sponsorName }}"
-                                         class="{{ $logoSizes[$tier] }} rounded-2xl bg-white object-contain p-4">
+                                    <x-circle-logo :src="Vite::asset('resources/images/sponsor-logo/'.$sponsor['logo'])" :alt="$sponsorName"
+                                                   :fit="$sponsor['logo_fit']" :size="$logoSizes[$tier]" />
                                     <span class="text-lg font-semibold">{{ $sponsorName }}</span>
                                     <span class="text-sm font-medium text-moss group-hover:underline">{{ __('sponsors.visit') }}</span>
                                 </a>

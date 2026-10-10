@@ -86,12 +86,17 @@ class ExampleTest extends TestCase
             ->assertSee('合作社群')
             ->assertSee('Taiwan Kotlin User Group')
             ->assertSee('https://taiwan-kotlin-user-group.github.io/', false)
+            ->assertSee('網路遊民探險中')
+            ->assertDontSee('Digital Rogue')
+            ->assertSee('https://digitalrogue.world/', false)
             ->assertSee(route('communities.en'), false);
 
         $this->get('/en/communities')
             ->assertOk()
             ->assertSee('Community Partners')
             ->assertSee('Taiwan Kotlin User Group')
+            ->assertSee('Digital Rogue')
+            ->assertDontSee('網路遊民探險中')
             ->assertSee(route('communities'), false)
             ->assertDontSee('合作社群');
     }
@@ -127,6 +132,7 @@ class ExampleTest extends TestCase
     {
         $this->get('/')
             ->assertSeeInOrder(['贊助方案', '感謝贊助商', '金獎級', '兔給得資訊有限公司'])
+            ->assertSee('size-48 rounded-full', false)
             ->assertSee('https://www.rabbit-gather.com/', false);
 
         $this->get('/en')
