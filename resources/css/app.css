@@ -19,6 +19,9 @@
     --c-deep: #1d3320;
     --c-on-deep: #f4efe1;
     --c-on-accent: #f4efe1;
+    --c-tier-gold: #9c7000;
+    --c-tier-silver: #6f7a85;
+    --c-tier-bronze: #9a5524;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -33,6 +36,9 @@
             --c-deep: #213a28;
         --c-on-deep: #f4efe1;
         --c-on-accent: #10190f;
+        --c-tier-gold: #e6c35c;
+        --c-tier-silver: #c3cbd3;
+        --c-tier-bronze: #d9843a;
     }
 }
 
@@ -47,6 +53,9 @@
     --c-deep: #213a28;
     --c-on-deep: #f4efe1;
     --c-on-accent: #10190f;
+    --c-tier-gold: #e6c35c;
+    --c-tier-silver: #c3cbd3;
+    --c-tier-bronze: #d9843a;
 }
 
 @custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
@@ -61,4 +70,7 @@
     --color-deep: var(--c-deep);
     --color-on-deep: var(--c-on-deep);
     --color-on-accent: var(--c-on-accent);
+    --color-tier-gold: var(--c-tier-gold);
+    --color-tier-silver: var(--c-tier-silver);
+    --color-tier-bronze: var(--c-tier-bronze);
 }

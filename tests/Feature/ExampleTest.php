@@ -118,11 +118,12 @@ class ExampleTest extends TestCase
     public function test_landing_page_lists_current_sponsors_after_the_sponsorship_tiers(): void
     {
         $this->get('/')
-            ->assertSeeInOrder(['贊助方案', '感謝贊助商', '金獎級', '兔給德資訊有限公司'])
+            ->assertSeeInOrder(['贊助方案', '感謝贊助商', '金獎級', '兔給得資訊有限公司'])
             ->assertSee('https://www.rabbit-gather.com/', false);
 
         $this->get('/en')
-            ->assertSeeInOrder(['Sponsorship', 'Our Sponsors', 'Gold Tier', '兔給德資訊有限公司'])
+            ->assertSeeInOrder(['Sponsorship', 'Our Sponsors', 'Gold Tier', 'Rabbit Gather Co., Ltd.'])
+            ->assertDontSee('兔給得資訊有限公司')
             ->assertSee('https://www.rabbit-gather.com/', false);
     }
 
