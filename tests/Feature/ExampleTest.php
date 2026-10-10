@@ -115,6 +115,14 @@ class ExampleTest extends TestCase
             ->assertSeeInOrder(['Conference Overview', 'Community Partners', 'Sponsorship']);
     }
 
+    public function test_sponsorship_tiers_and_sponsors_share_the_same_tier_border_colors(): void
+    {
+        $this->get('/')
+            ->assertSee('border-4 border-tier-gold', false)
+            ->assertSee('border-4 border-tier-silver', false)
+            ->assertSee('border-4 border-tier-bronze', false);
+    }
+
     public function test_landing_page_lists_current_sponsors_after_the_sponsorship_tiers(): void
     {
         $this->get('/')
