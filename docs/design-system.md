@@ -386,7 +386,7 @@ Token 定義在 `resources/css/app.css`。實際色值存放在 `:root` 的 `--c
 ## 12. 新增頁面時的檢查清單
 
 1. 版面繼承 `layouts/app.blade.php`，並設定 `title` 與 `description`。
-2. 所有文字放進 `lang/zh_TW/` 與 `lang/en/`，並建立對應的中英文路由。
+2. 所有文字放進 `lang/zh_TW/` 與 `lang/en/`，並建立對應的中英文路由，路由名稱為 `名稱` 與 `名稱.en`。頁面需宣告 `@section('route', '名稱')`，並把新頁面加進 `/sitemap.xml` 的清單。
 3. 只使用第 3 節的 token，不新增色碼，也不寫死色碼。需要深色區塊時用 `bg-deep text-on-deep`，不要用 `bg-ink text-parchment`。
 4. 區塊上下留白 `py-16`，內容寬度 `max-w-6xl` 或 `max-w-3xl`。
 5. 每頁一個 H1，並且只有一個主要按鈕。
@@ -408,6 +408,36 @@ Token 定義在 `resources/css/app.css`。實際色值存放在 `:root` 的 `--c
 | **新增贊助商** | 把 Logo 放進 `resources/images/sponsor-logo/`，在 `config/sponsors.php` 加一筆，`name` 需提供 `zh_TW` 與 `en`，`tier` 為 `gold`、`silver` 或 `bronze`，`logo_fit` 為 `cover` 或 `contain`，選擇方式見 7.8。 |
 | **更換圖片** | 直接覆蓋 `resources/images/` 內的同名檔案，若副檔名改變，需同步更新 view 的引用。 |
 | **修改檢舉信箱** | 行為準則頁的信箱定義在 `resources/views/code-of-conduct.blade.php` 的 `$contactEmail`，只需改一處。 |
+| **更新分享預覽圖** | 覆蓋 `public/og-image.jpg`，尺寸固定 1200×630。社群平台會快取，更新後需到各平台的分享除錯工具重新抓取。 |
+| **更新網站圖示** | 重新由 `resources/images/GatherConf-Logo.png` 產生 `public/` 內的 `favicon.ico`、`favicon-16x16.png`、`favicon-32x32.png`、`apple-touch-icon.png`、`icon-192.png`、`icon-512.png`。 |
 | **修改報名連結** | 報名連結目前寫在 `landing/hero.blade.php` 與 `landing/footer.blade.php` 兩處。 |
 
 改完需要重新 build 前端資源，執行 `npm run build`，或在開發時執行 `composer run dev`。提交前執行 `vendor/bin/pint --dirty --format agent` 與 `php artisan test --compact tests/Feature/ExampleTest.php`。
+
+---
+
+## 14. SEO 與分享資訊
+
+所有頁面共用 `layouts/app.blade.php`，由它統一輸出下列資訊。頁面本身只需要提供 `route`、`title` 與 `description` 三個區段。
+
+| 項目 | 規則 |
+| :---- | :---- |
+| **標題與描述** | 每頁各自撰寫，中英文版各一份。標題格式為「頁名 \| 共聚年會 GatherConf 2026」，描述一句話，約 80 字以內。 |
+| **Canonical** | 指向目前語言版本的網址。 |
+| **hreflang** | 每頁輸出 `zh-Hant-TW`、`en` 與 `x-default`，`x-default` 指向中文版。 |
+| **Open Graph** | `og:type`、`og:site_name`、`og:title`、`og:description`、`og:url`、`og:locale` 與 `og:locale:alternate`、`og:image` 及其寬高與替代文字。 |
+| **Twitter Card** | `summary_large_image`，標題、描述與圖片沿用 Open Graph。 |
+| **分享預覽圖** | `public/og-image.jpg`，1200×630，取自年會宗旨的水彩插畫。圖內不放文字，所有語言共用。 |
+| **網站圖示** | `favicon.ico` 內含 16、32、48 px，另有 PNG 版本與 `apple-touch-icon.png`，皆由官方 Logo 產生。Apple 圖示為不透明，放在米白底上。 |
+| **Web App Manifest** | `public/site.webmanifest`，提供名稱、圖示與主題色。顯示模式為 `browser`，不是可安裝的 App。 |
+| **主題色** | `theme-color` 依 light 與 dark 各設定一組，分別為 `#f4efe1` 與 `#121c15`。 |
+| **結構化資料** | 只在首頁輸出 JSON-LD，包含 `Organization` 與 `Event`。`Event` 有時間、地點、主辦單位、語言與報名連結。時間固定為 2026-11-21 的 09:00 至 17:00，時區 +08:00。 |
+| **robots.txt** | 由路由動態產生，禁止 `/admin`，並指向 sitemap。 |
+| **sitemap.xml** | 由路由動態產生，列出所有頁面的中英文網址，並帶有 `hreflang` 互相參照。 |
+
+注意事項：
+
+- 網址以 `APP_URL` 為準。正式環境的 `.env` 必須設定正確的網域，否則 canonical、hreflang、Open Graph 與 sitemap 都會輸出錯誤的位址。
+- 活動時間、地點或報名連結異動時，除了畫面文字，也要同步更新 `landing/structured-data.blade.php`，否則搜尋結果的活動資訊會過時。
+- 活動地址以台大官方地址為準，需要時請再確認。
+- 目前沒有為非正式環境加上 `noindex`。若有公開的測試站，建議另外處理，避免被搜尋引擎收錄。
