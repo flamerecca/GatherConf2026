@@ -408,6 +408,7 @@ Token 定義在 `resources/css/app.css`。實際色值存放在 `:root` 的 `--c
 | **新增贊助商** | 把 Logo 放進 `resources/images/sponsor-logo/`，在 `config/sponsors.php` 加一筆，`name` 需提供 `zh_TW` 與 `en`，`tier` 為 `gold`、`silver` 或 `bronze`，`logo_fit` 為 `cover` 或 `contain`，選擇方式見 7.8。 |
 | **更換圖片** | 直接覆蓋 `resources/images/` 內的同名檔案，若副檔名改變，需同步更新 view 的引用。 |
 | **修改檢舉信箱** | 行為準則頁的信箱定義在 `resources/views/code-of-conduct.blade.php` 的 `$contactEmail`，只需改一處。 |
+| **設定正式環境網域** | 正式環境的 `.env` 設定 `APP_URL=https://gatherconf.net`，細節見第 14 節。 |
 | **更新分享預覽圖** | 覆蓋 `public/og-image.jpg`，尺寸固定 1200×630。社群平台會快取，更新後需到各平台的分享除錯工具重新抓取。 |
 | **更新網站圖示** | 重新由 `resources/images/GatherConf-Logo.png` 產生 `public/` 內的 `favicon.ico`、`favicon-16x16.png`、`favicon-32x32.png`、`apple-touch-icon.png`、`icon-192.png`、`icon-512.png`。 |
 | **修改報名連結** | 報名連結目前寫在 `landing/hero.blade.php` 與 `landing/footer.blade.php` 兩處。 |
@@ -437,7 +438,10 @@ Token 定義在 `resources/css/app.css`。實際色值存放在 `:root` 的 `--c
 
 注意事項：
 
-- 網址以 `APP_URL` 為準。正式環境的 `.env` 必須設定正確的網域，否則 canonical、hreflang、Open Graph 與 sitemap 都會輸出錯誤的位址。
+- 網址以 `APP_URL` 為準。正式環境的網域是 `https://gatherconf.net`，`.env` 必須設定 `APP_URL=https://gatherconf.net`，否則 canonical、hreflang、Open Graph、JSON-LD 與 sitemap 都會輸出錯誤的位址。本機開發維持 `http://localhost:8000`。
+- 設定 `APP_URL` 時使用 `https`、不加結尾斜線、不加 `www`，與 canonical 保持一致。若網域同時有 `www` 版本或 `http` 版本，需要在伺服器層導向 `https://gatherconf.net`，避免搜尋引擎視為重複內容。
+- 正式環境部署後，檢查 `https://gatherconf.net/robots.txt` 與 `https://gatherconf.net/sitemap.xml`，確認內容中的網址都是 `https://gatherconf.net` 開頭。
+- 正式環境的頁面網址對照：`https://gatherconf.net/`、`/en`、`/code-of-conduct`、`/en/code-of-conduct`、`/communities` 與 `/en/communities`。
 - 活動時間、地點或報名連結異動時，除了畫面文字，也要同步更新 `landing/structured-data.blade.php`，否則搜尋結果的活動資訊會過時。
 - 活動地址以台大官方地址為準，需要時請再確認。
 - 目前沒有為非正式環境加上 `noindex`。若有公開的測試站，建議另外處理，避免被搜尋引擎收錄。
