@@ -277,19 +277,39 @@ Token 定義在 `resources/css/app.css`。實際色值存放在 `:root` 的 `--c
 合作社群與贊助商的 Logo 一律裁成圓形，由 `<x-circle-logo>` 元件統一處理。對方提供的 Logo 背景色不一，如果放在方形白色底板上，淺灰或米色的背景會和白色底板形成色差，圓形配合填滿可以消除這個問題。
 
 ```html
-<x-circle-logo :src="..." :alt="..." fit="cover|contain" size="size-40" />
+<x-circle-logo :src="..." :alt="..." fit="cover|contain" :padding="15" size="size-40" />
 ```
 
 - 外觀：`rounded-full ring-1 ring-ink/15`，淡淡的外框線讓圓形的邊緣在 light 與 dark 模式下都清楚。
 - 屬性 `size`：圓的直徑，預設 `size-40`。贊助商依層級傳入 `size-48`、`size-40`、`size-32`。
 - 屬性 `fit`：資料中的 `logo_fit`，決定圖片在圓裡的處理方式。
+- 屬性 `padding`：資料中的 `logo_padding`，只在 `contain` 時有效，是內縮的百分比，預設 15。數字越小，Logo 越大。
 
 | `fit` | 處理方式 | 適用的 Logo |
 | :---- | :---- | :---- |
 | `cover` | 圖片鋪滿整個圓，`object-cover`。 | 本身就是圓形構圖，或背景是單色的 Logo。背景色會一路填到圓邊，不會有色差。 |
-| `contain` | 圖片縮小置中，白色底，`bg-white object-contain p-[15%]`。 | 方形 Logo，且邊角有文字或圖案。內縮 15%，讓內容留在圓內，不被裁掉。 |
+| `contain` | 圖片縮小置中，白色底，內縮 `logo_padding` 百分比。 | 方形或橫向的 Logo。內縮的目的是讓內容留在圓內，不被裁掉。 |
 
-選擇方式：先預設用 `contain`，因為最保險。如果發現 Logo 縮小後與白底有明顯色差，而且 Logo 是圓形構圖，再改為 `cover`。新增資料後，需要在 light 與 dark 兩種模式下檢查圓形邊緣。
+**如何決定內縮百分比**
+
+圓形會裁掉圖片的四個角，所以要先量出 Logo 內容離圖片中心最遠的距離，換算成圖片寬度的比例，稱為內容半徑 r。圓的半徑是 0.5，內容縮小後的半徑是 `r × (1 − 2 × 內縮)`。目標是讓縮小後的半徑約 0.44，留一點邊距，因此：
+
+內縮 = `(1 − 0.44 ÷ r) ÷ 2`，算出來是負數就用 0。
+
+預設 15% 最保險，但多數 Logo 會顯得偏小。放大前一定要先量測，量測方法是把圖片縮成 500 px 見方，用 ImageMagick 找出非白色像素，計算每個像素到中心的最大距離。
+
+目前各 Logo 的量測值與設定：
+
+| Logo | 內容半徑 r | `logo_padding` | 縮小後半徑 |
+| :---- | :---- | :---- | :---- |
+| Taiwan Kotlin User Group | 0.518 | 8 | 0.435 |
+| Taiwan Obsidian User Group | 0.434 | 0 | 0.434 |
+| GDG 桃園 | 0.401 | 0 | 0.401 |
+| 兔給得資訊有限公司，贊助商 | 未量測 | 預設 15 | 未量測 |
+
+TKUG 的內容半徑超過 0.5，也就是原圖的內容本來就會被圓形裁到邊緣，所以不能用 0。
+
+注意：替換 Logo 檔案後，構圖若改變，需要重新量測。
 
 ### 7.9 社群卡片
 
@@ -404,8 +424,8 @@ Token 定義在 `resources/css/app.css`。實際色值存放在 `:root` 的 `--c
 | :---- | :---- |
 | **修改文案** | 編輯 `lang/zh_TW/` 與 `lang/en/` 內對應的檔案。首頁在 `landing.php`，行為準則在 `conduct.php`，合作社群在 `communities.php`，贊助商區塊在 `sponsors.php`。 |
 | **修改贊助方案價格** | 編輯兩個 `landing.php` 的 `tiers` 內的 `amount`。同時調整測試中的斷言。 |
-| **新增合作社群** | 把 Logo 放進 `resources/images/community-logo/`，在 `config/communities.php` 加一筆 `name`，需有 `zh_TW` 與 `en`，以及 `logo`、`logo_fit` 與 `url`。首頁與合作社群頁會自動更新。 |
-| **新增贊助商** | 把 Logo 放進 `resources/images/sponsor-logo/`，在 `config/sponsors.php` 加一筆，`name` 需提供 `zh_TW` 與 `en`，`tier` 為 `gold`、`silver` 或 `bronze`，`logo_fit` 為 `cover` 或 `contain`，選擇方式見 7.8。 |
+| **新增合作社群** | 把 Logo 放進 `resources/images/community-logo/`，在 `config/communities.php` 加一筆 `name`，需有 `zh_TW` 與 `en`，以及 `logo`、`logo_fit`、可選的 `logo_padding` 與 `url`。首頁與合作社群頁會自動更新。 |
+| **新增贊助商** | 把 Logo 放進 `resources/images/sponsor-logo/`，在 `config/sponsors.php` 加一筆，`name` 需提供 `zh_TW` 與 `en`，`tier` 為 `gold`、`silver` 或 `bronze`，`logo_fit` 為 `cover` 或 `contain`，需要時設定 `logo_padding`，選擇方式見 7.8。 |
 | **更換圖片** | 直接覆蓋 `resources/images/` 內的同名檔案，若副檔名改變，需同步更新 view 的引用。 |
 | **修改檢舉信箱** | 行為準則頁的信箱定義在 `resources/views/code-of-conduct.blade.php` 的 `$contactEmail`，只需改一處。 |
 | **設定正式環境網域** | 正式環境的 `.env` 設定 `APP_URL=https://gatherconf.net`，細節見第 14 節。 |
