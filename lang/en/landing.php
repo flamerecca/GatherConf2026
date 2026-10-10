@@ -49,8 +49,8 @@ return [
     'sponsor_title' => 'Sponsorship',
     'sponsor_intro' => 'Join us and make cross-domain exchange happen.',
     'tiers' => [
-        ['name' => 'Gold Tier', 'english' => 'Gold', 'amount' => '1,000', 'benefits' => ['Logo in promotional materials', 'Logo on the event site', 'Standard booth', 'Inclusion in souvenir bags', '5-min lightning talk promotion']],
-        ['name' => 'Silver Tier', 'english' => 'Silver', 'amount' => '500', 'benefits' => ['Logo in promotional materials', 'Logo on the event site', 'Standard booth']],
-        ['name' => 'Bronze Tier', 'english' => 'Bronze', 'amount' => '250', 'benefits' => ['Logo in promotional materials', 'Logo on the event site']],
+        ['name' => 'Gold Tier', 'english' => 'Gold', 'amount' => '500', 'benefits' => ['Logo in promotional materials', 'Logo on the event site', 'Standard booth', 'Inclusion in souvenir bags', '5-min lightning talk promotion']],
+        ['name' => 'Silver Tier', 'english' => 'Silver', 'amount' => '250', 'benefits' => ['Logo in promotional materials', 'Logo on the event site', 'Standard booth']],
+        ['name' => 'Bronze Tier', 'english' => 'Bronze', 'amount' => '125', 'benefits' => ['Logo in promotional materials', 'Logo on the event site']],
     ],
 ];

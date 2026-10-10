@@ -49,8 +49,8 @@ return [
     'sponsor_title' => '贊助方案',
     'sponsor_intro' => '與我們一起，讓跨領域的交流發生。',
     'tiers' => [
-        ['name' => '金獎級', 'english' => 'Gold', 'amount' => '40,000', 'benefits' => ['宣傳文案內 Logo 曝光', '官網 Logo 曝光', '標準攤位', '紀念品包入袋', '閃電講 5 分鐘宣傳']],
-        ['name' => '銀獎級', 'english' => 'Silver', 'amount' => '20,000', 'benefits' => ['宣傳文案內 Logo 曝光', '官網 Logo 曝光', '標準攤位']],
-        ['name' => '銅獎級', 'english' => 'Bronze', 'amount' => '10,000', 'benefits' => ['宣傳文案內 Logo 曝光', '官網 Logo 曝光']],
+        ['name' => '金獎級', 'english' => 'Gold', 'amount' => '20,000', 'benefits' => ['宣傳文案內 Logo 曝光', '官網 Logo 曝光', '標準攤位', '紀念品包入袋', '閃電講 5 分鐘宣傳']],
+        ['name' => '銀獎級', 'english' => 'Silver', 'amount' => '10,000', 'benefits' => ['宣傳文案內 Logo 曝光', '官網 Logo 曝光', '標準攤位']],
+        ['name' => '銅獎級', 'english' => 'Bronze', 'amount' => '5,000', 'benefits' => ['宣傳文案內 Logo 曝光', '官網 Logo 曝光']],
     ],
 ];
