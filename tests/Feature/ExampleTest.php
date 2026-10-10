@@ -90,6 +90,9 @@ class ExampleTest extends TestCase
             ->assertDontSee('Digital Rogue')
             ->assertSee('Taiwan Obsidian User Group')
             ->assertSee('https://www.meetup.com/taiwan-obsidian-user-group/', false)
+            ->assertSee('GDG 桃園')
+            ->assertDontSee('GDG Taoyuan')
+            ->assertSee('https://gdg.community.dev/gdg-taoyuan/', false)
             ->assertSee('https://digitalrogue.world/', false)
             ->assertSee(route('communities.en'), false);
 
@@ -99,6 +102,8 @@ class ExampleTest extends TestCase
             ->assertSee('Taiwan Kotlin User Group')
             ->assertSee('Digital Rogue')
             ->assertDontSee('網路遊民探險中')
+            ->assertSee('GDG Taoyuan')
+            ->assertDontSee('GDG 桃園')
             ->assertSee(route('communities'), false)
             ->assertDontSee('合作社群');
     }
