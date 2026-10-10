@@ -26,4 +26,13 @@ return [
         'logo_fit' => 'cover',
         'url' => 'https://digitalrogue.world/',
     ],
+    [
+        'name' => [
+            'zh_TW' => 'Taiwan Obsidian User Group',
+            'en' => 'Taiwan Obsidian User Group',
+        ],
+        'logo' => 'taiwan-obsidian-user-group.png',
+        'logo_fit' => 'contain',
+        'url' => 'https://www.meetup.com/taiwan-obsidian-user-group/',
+    ],
 ];

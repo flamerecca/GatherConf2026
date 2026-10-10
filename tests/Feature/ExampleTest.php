@@ -88,6 +88,8 @@ class ExampleTest extends TestCase
             ->assertSee('https://taiwan-kotlin-user-group.github.io/', false)
             ->assertSee('網路遊民探險中')
             ->assertDontSee('Digital Rogue')
+            ->assertSee('Taiwan Obsidian User Group')
+            ->assertSee('https://www.meetup.com/taiwan-obsidian-user-group/', false)
             ->assertSee('https://digitalrogue.world/', false)
             ->assertSee(route('communities.en'), false);
 
