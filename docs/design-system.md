@@ -305,6 +305,7 @@ Token 定義在 `resources/css/app.css`。實際色值存放在 `:root` 的 `--c
 | Taiwan Kotlin User Group | 0.518 | 8 | 0.435 |
 | Taiwan Obsidian User Group | 0.434 | 0 | 0.434 |
 | GDG 桃園 | 0.401 | 0 | 0.401 |
+| iPlayground | 0.394 | 0 | 0.394 |
 | 兔給得資訊有限公司，贊助商 | 未量測 | 預設 15 | 未量測 |
 
 TKUG 的內容半徑超過 0.5，也就是原圖的內容本來就會被圓形裁到邊緣，所以不能用 0。

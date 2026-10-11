@@ -57,4 +57,14 @@ return [
         'logo_fit' => 'cover',
         'url' => 'https://www.facebook.com/groups/buffet.dev',
     ],
+    [
+        'name' => [
+            'zh_TW' => 'iPlayground',
+            'en' => 'iPlayground',
+        ],
+        'logo' => 'iPlayground.png',
+        'logo_fit' => 'contain',
+        'logo_padding' => 0,
+        'url' => 'https://iplayground.io/',
+    ],
 ];

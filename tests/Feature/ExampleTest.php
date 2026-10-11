@@ -97,6 +97,8 @@ class ExampleTest extends TestCase
             ->assertSee('開發者 Buffet')
             ->assertDontSee('Developer Buffet')
             ->assertSee('https://www.facebook.com/groups/buffet.dev', false)
+            ->assertSee('iPlayground')
+            ->assertSee('https://iplayground.io/', false)
             ->assertSee(route('communities.en'), false);
 
         $this->get('/en/communities')
