@@ -94,6 +94,9 @@ class ExampleTest extends TestCase
             ->assertDontSee('GDG Taoyuan')
             ->assertSee('https://gdg.community.dev/gdg-taoyuan/', false)
             ->assertSee('https://digitalrogue.world/', false)
+            ->assertSee('開發者 Buffet')
+            ->assertDontSee('Developer Buffet')
+            ->assertSee('https://www.facebook.com/groups/buffet.dev', false)
             ->assertSee(route('communities.en'), false);
 
         $this->get('/en/communities')
@@ -104,6 +107,8 @@ class ExampleTest extends TestCase
             ->assertDontSee('網路遊民探險中')
             ->assertSee('GDG Taoyuan')
             ->assertDontSee('GDG 桃園')
+            ->assertSee('Developer Buffet')
+            ->assertDontSee('開發者 Buffet')
             ->assertSee(route('communities'), false)
             ->assertDontSee('合作社群');
     }

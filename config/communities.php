@@ -48,4 +48,13 @@ return [
         'logo_padding' => 0,
         'url' => 'https://gdg.community.dev/gdg-taoyuan/',
     ],
+    [
+        'name' => [
+            'zh_TW' => '開發者 Buffet',
+            'en' => 'Developer Buffet',
+        ],
+        'logo' => 'buffet-dev.png',
+        'logo_fit' => 'cover',
+        'url' => 'https://www.facebook.com/groups/buffet.dev',
+    ],
 ];
