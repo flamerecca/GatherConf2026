@@ -315,10 +315,10 @@ TKUG 的內容半徑超過 0.5，也就是原圖的內容本來就會被圓形�
 
 ### 7.9 社群卡片
 
-`<x-community-card :community="$community" />`，首頁合作社群區塊與合作社群頁共用。
+`<x-community-card :community="$community" />`，首頁合作社群區塊與合作社群頁共用。傳入 `show-description` 時，在名稱下方顯示一段簡短說明，只有合作社群頁使用。
 
 - 整張卡片是連結，在新分頁開啟，`rounded-2xl border-4 border-moss/60 bg-parchment-dark p-6`，邊框粗細與贊助方案卡片一致，滑過時邊框變為 `moss`。
-- 內容由上而下：7.8 的圓形 Logo `size-40`、依語言顯示的社群名稱 `text-lg font-semibold`、「前往社群網站」`text-sm text-moss`。
+- 內容由上而下：7.8 的圓形 Logo `size-40`、依語言顯示的社群名稱 `text-lg font-semibold`、簡短說明 `text-sm text-ink/70`，僅限合作社群頁、「前往社群網站」`text-sm text-moss`。
 - 資料來自 `config/communities.php`，名稱需同時提供 `zh_TW` 與 `en`，沒有中文名稱時，兩種語言填同一個名稱，並指定 `logo_fit`。
 
 ### 7.10 贊助商卡片

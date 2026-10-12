@@ -94,6 +94,7 @@ class ExampleTest extends TestCase
             ->assertDontSee('GDG Taoyuan')
             ->assertSee('https://gdg.community.dev/gdg-taoyuan/', false)
             ->assertSee('https://digitalrogue.world/', false)
+            ->assertSee('推廣 Kotlin 程式語言的台灣社群')
             ->assertSee('開發者 Buffet')
             ->assertDontSee('Developer Buffet')
             ->assertSee('https://www.facebook.com/groups/buffet.dev', false)
