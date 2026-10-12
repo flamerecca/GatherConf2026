@@ -67,4 +67,14 @@ return [
         'logo_padding' => 0,
         'url' => 'https://iplayground.io/',
     ],
+    [
+        'name' => [
+            'zh_TW' => '人本與科技共融發展協會',
+            'en' => 'Orbio Community',
+        ],
+        'logo' => 'Orbio.png',
+        'logo_fit' => 'contain',
+        'logo_padding' => 0,
+        'url' => 'https://linktr.ee/orbio.community',
+    ],
 ];

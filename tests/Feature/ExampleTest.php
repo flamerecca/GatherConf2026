@@ -99,6 +99,9 @@ class ExampleTest extends TestCase
             ->assertSee('https://www.facebook.com/groups/buffet.dev', false)
             ->assertSee('iPlayground')
             ->assertSee('https://iplayground.io/', false)
+            ->assertSee('人本與科技共融發展協會')
+            ->assertDontSee('Orbio Community')
+            ->assertSee('https://linktr.ee/orbio.community', false)
             ->assertSee(route('communities.en'), false);
 
         $this->get('/en/communities')
@@ -110,6 +113,8 @@ class ExampleTest extends TestCase
             ->assertSee('GDG Taoyuan')
             ->assertDontSee('GDG 桃園')
             ->assertSee('Developer Buffet')
+            ->assertSee('Orbio Community')
+            ->assertDontSee('人本與科技共融發展協會')
             ->assertDontSee('開發者 Buffet')
             ->assertSee(route('communities'), false)
             ->assertDontSee('合作社群');
