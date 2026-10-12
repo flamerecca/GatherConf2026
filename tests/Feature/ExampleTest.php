@@ -103,6 +103,8 @@ class ExampleTest extends TestCase
             ->assertSee('人本與科技共融發展協會')
             ->assertDontSee('Orbio Community')
             ->assertSee('https://linktr.ee/orbio.community', false)
+            ->assertSee('WordPress Taiwan')
+            ->assertSee('https://www.facebook.com/groups/wordpresstw', false)
             ->assertSee(route('communities.en'), false);
 
         $this->get('/en/communities')

@@ -106,4 +106,18 @@ return [
         'logo_padding' => 0,
         'url' => 'https://linktr.ee/orbio.community',
     ],
+    [
+        'name' => [
+            'zh_TW' => 'WordPress Taiwan',
+            'en' => 'WordPress Taiwan',
+        ],
+        'description' => [
+            'zh_TW' => '台灣的 WordPress 使用者與開發者社群，交流網站架設、佈景主題與外掛的使用經驗。',
+            'en' => 'A community of WordPress users and developers in Taiwan, sharing experience on building sites, themes and plugins.',
+        ],
+        'logo' => 'wordpress-taiwan.png',
+        'logo_fit' => 'contain',
+        'logo_padding' => 0,
+        'url' => 'https://www.facebook.com/groups/wordpresstw',
+    ],
 ];
