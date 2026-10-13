@@ -1,6 +1,14 @@
 <?php
 
 return [
+    'verify' => [
+        'title' => 'Verify your email | GatherConf 2026',
+        'heading' => 'Please verify your email',
+        'body' => 'We have sent you a verification email. Click the link in it to finish.',
+        'resend' => 'Resend verification email',
+        'resent' => 'The verification email has been sent again.',
+        'done' => 'Your email has been verified.',
+    ],
     'login' => [
         'title' => 'Log in | GatherConf 2026',
         'description' => 'Log in as a GatherConf member.',

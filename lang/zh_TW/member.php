@@ -1,6 +1,14 @@
 <?php
 
 return [
+    'verify' => [
+        'title' => '驗證 Email | 共聚年會 GatherConf 2026',
+        'heading' => '請驗證你的 Email',
+        'body' => '我們已寄出驗證信，請到信箱點擊連結完成驗證。',
+        'resend' => '重新寄送驗證信',
+        'resent' => '驗證信已重新寄出。',
+        'done' => 'Email 已驗證完成。',
+    ],
     'login' => [
         'title' => '會員登入 | 共聚年會 GatherConf 2026',
         'description' => '登入共聚年會會員。',
