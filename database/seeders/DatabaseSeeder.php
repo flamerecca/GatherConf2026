@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             PersonalityTypeSeeder::class,
             QuizQuestionSeeder::class,
+            MemberSeeder::class,
         ]);
     }
 }
