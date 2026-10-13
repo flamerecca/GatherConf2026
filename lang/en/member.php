@@ -1,6 +1,14 @@
 <?php
 
 return [
+    'register' => [
+        'title' => 'Sign up | GatherConf 2026',
+        'description' => 'Sign up as a GatherConf member.',
+        'heading' => 'Sign up',
+        'submit' => 'Sign up',
+        'have_account' => 'Already have an account?',
+        'login_link' => 'Log in',
+    ],
     'back' => 'Back to home',
     'switch_label' => '中文',
     'fields' => [

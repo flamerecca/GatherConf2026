@@ -1,6 +1,14 @@
 <?php
 
 return [
+    'register' => [
+        'title' => '註冊會員 | 共聚年會 GatherConf 2026',
+        'description' => '註冊成為共聚年會會員。',
+        'heading' => '註冊會員',
+        'submit' => '註冊',
+        'have_account' => '已經有帳號了？',
+        'login_link' => '前往登入',
+    ],
     'back' => '回到首頁',
     'switch_label' => 'English',
     'fields' => [
