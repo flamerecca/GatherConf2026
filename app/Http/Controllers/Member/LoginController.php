@@ -43,7 +43,7 @@ class LoginController extends MemberController
     public function destroy(Request $request): RedirectResponse
     {
         $this->guard()->logout();
-        $request->session()->invalidate();
+        $request->session()->regenerate();
         $request->session()->regenerateToken();
 
         return redirect(route(app()->getLocale() === 'en' ? 'landing.en' : 'landing'));

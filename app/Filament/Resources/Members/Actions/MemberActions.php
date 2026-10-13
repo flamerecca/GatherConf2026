@@ -9,6 +9,7 @@ use Filament\Actions\Action;
 use Filament\Notifications\Notification;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\RateLimiter;
+use Throwable;
 
 class MemberActions
 {
@@ -84,9 +85,21 @@ class MemberActions
 
                 $token = MemberLoginLink::issueFor($record);
 
-                $record->notify(
-                    (new MemberLoginLinkNotification(route('member.login.link.consume', ['token' => $token])))->locale('zh_TW'),
-                );
+                try {
+                    $record->notify(
+                        (new MemberLoginLinkNotification(route('member.login.link.consume', ['token' => $token])))->locale('zh_TW'),
+                    );
+                } catch (Throwable $exception) {
+                    report($exception);
+
+                    Notification::make()
+                        ->title('寄送失敗')
+                        ->body('信件無法寄出，請檢查郵件服務設定後再試。')
+                        ->danger()
+                        ->send();
+
+                    return;
+                }
 
                 Notification::make()->title('已寄送登入連結')->success()->send();
             });

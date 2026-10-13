@@ -29,10 +29,10 @@ class LoginLinkController extends MemberController
         if ($member !== null) {
             $token = MemberLoginLink::issueFor($member);
 
-            $member->notify(
+            $this->sendQuietly(fn () => $member->notify(
                 (new MemberLoginLinkNotification($this->localizedRoute('member.login.link.consume', ['token' => $token])))
                     ->locale(app()->getLocale()),
-            );
+            ));
         }
 
         return back()->with('link_status', __('member.login.link_sent'));

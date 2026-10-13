@@ -23,7 +23,7 @@ class PasswordResetController extends MemberController
     {
         $data = $request->validate(['email' => ['required', 'string', 'email']]);
 
-        Password::broker('members')->sendResetLink(['email' => Str::lower(trim($data['email']))]);
+        $this->sendQuietly(fn () => Password::broker('members')->sendResetLink(['email' => Str::lower(trim($data['email']))]));
 
         return back()->with('status', __('member.forgot.sent'));
     }

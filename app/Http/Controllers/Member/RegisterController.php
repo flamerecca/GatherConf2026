@@ -36,7 +36,7 @@ class RegisterController extends MemberController
             'password' => $data['password'],
         ]);
 
-        event(new Registered($member));
+        $this->sendQuietly(fn () => event(new Registered($member)));
 
         $this->guard()->login($member);
         $request->session()->regenerate();

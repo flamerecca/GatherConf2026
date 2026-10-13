@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Member;
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Support\Facades\Auth;
+use Throwable;
 
 abstract class MemberController extends Controller
 {
@@ -19,5 +20,17 @@ abstract class MemberController extends Controller
     protected function guard(): StatefulGuard
     {
         return Auth::guard('member');
+    }
+
+    /**
+     * Run a mail-sending step without letting a transport failure break the request.
+     */
+    protected function sendQuietly(callable $send): void
+    {
+        try {
+            $send();
+        } catch (Throwable $exception) {
+            report($exception);
+        }
     }
 }

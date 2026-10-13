@@ -15,7 +15,7 @@ class EnsureMemberIsActive
 
         if ($member !== null && ! $member->is_active) {
             Auth::guard('member')->logout();
-            $request->session()->invalidate();
+            $request->session()->regenerate();
             $request->session()->regenerateToken();
 
             return redirect(route($request->is('en/*') ? 'member.login.en' : 'member.login'))
