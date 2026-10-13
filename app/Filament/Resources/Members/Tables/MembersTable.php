@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Members\Tables;
 
+use App\Filament\Resources\Members\Actions\MemberActions;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\IconColumn;
@@ -53,6 +54,9 @@ class MembersTable
             ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
+                MemberActions::deactivate(),
+                MemberActions::activate(),
+                MemberActions::markVerified(),
             ]);
     }
 }
