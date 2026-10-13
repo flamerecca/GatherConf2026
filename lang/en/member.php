@@ -1,6 +1,20 @@
 <?php
 
 return [
+    'forgot' => [
+        'title' => 'Forgot password | GatherConf 2026',
+        'heading' => 'Forgot your password',
+        'intro' => 'Enter your email and we will send you a link to reset your password.',
+        'submit' => 'Send reset link',
+        'sent' => 'If this email is registered, a reset email has been sent. Please check your inbox.',
+    ],
+    'reset' => [
+        'title' => 'Reset password | GatherConf 2026',
+        'heading' => 'Reset your password',
+        'submit' => 'Reset password',
+        'done' => 'Your password has been reset. Please log in again.',
+        'invalid' => 'This reset link is no longer valid. Please request a new one.',
+    ],
     'verify' => [
         'title' => 'Verify your email | GatherConf 2026',
         'heading' => 'Please verify your email',

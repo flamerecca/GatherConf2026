@@ -1,6 +1,20 @@
 <?php
 
 return [
+    'forgot' => [
+        'title' => '忘記密碼 | 共聚年會 GatherConf 2026',
+        'heading' => '忘記密碼',
+        'intro' => '輸入你的 Email，我們會寄一封重設密碼的信給你。',
+        'submit' => '寄送重設連結',
+        'sent' => '如果這個 Email 已註冊，重設密碼的信已經寄出，請到信箱查看。',
+    ],
+    'reset' => [
+        'title' => '重設密碼 | 共聚年會 GatherConf 2026',
+        'heading' => '重設密碼',
+        'submit' => '重設密碼',
+        'done' => '密碼已重設，請重新登入。',
+        'invalid' => '這個重設連結已失效，請重新要求。',
+    ],
     'verify' => [
         'title' => '驗證 Email | 共聚年會 GatherConf 2026',
         'heading' => '請驗證你的 Email',
