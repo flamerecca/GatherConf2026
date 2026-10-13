@@ -33,5 +33,9 @@
                 </article>
             @endforeach
         </div>
+        <a href="{{ app()->getLocale() === 'en' ? route('call-for-sponsor.en') : route('call-for-sponsor') }}"
+           class="mt-12 inline-block font-semibold text-moss underline-offset-4 hover:underline">
+            {{ __('landing.sponsor_cta') }} →
+        </a>
     </div>
 </section>

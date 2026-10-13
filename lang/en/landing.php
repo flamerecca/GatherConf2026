@@ -9,6 +9,7 @@ return [
     'name' => 'GatherConf',
     'logo_alt' => 'GatherConf logo, a community gathering in a forest',
     'conduct_link' => 'Code of Conduct',
+    'sponsor_link' => 'Become a sponsor',
     'member_login_link' => 'Member login',
     'communities_link' => 'Community Partners',
     'mascot_alt' => 'GatherConf mascot Bunny',
@@ -51,6 +52,7 @@ return [
     ],
     'price' => '€:amount',
     'sponsor_title' => 'Sponsorship',
+    'sponsor_cta' => 'Learn how to sponsor',
     'sponsor_intro' => 'Join us and make cross-domain exchange happen.',
     'tiers' => [
         ['name' => 'Gold Tier', 'english' => 'Gold', 'amount' => '500', 'benefits' => ['Logo in promotional materials', 'Logo on the event site', 'Standard booth', 'Inclusion in souvenir bags', '5-min lightning talk promotion']],

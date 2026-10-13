@@ -44,6 +44,18 @@ Route::get('/en/communities', function () {
     return view('communities');
 })->name('communities.en');
 
+Route::get('/call-for-sponsor', function () {
+    app()->setLocale('zh_TW');
+
+    return view('call-for-sponsor');
+})->name('call-for-sponsor');
+
+Route::get('/en/call-for-sponsor', function () {
+    app()->setLocale('en');
+
+    return view('call-for-sponsor');
+})->name('call-for-sponsor.en');
+
 foreach (['' => 'zh_TW', 'en' => 'en'] as $prefix => $locale) {
     $s = $locale === 'en' ? '.en' : '';
 
@@ -84,7 +96,7 @@ Route::get('/robots.txt', function () {
 })->name('robots');
 
 Route::get('/sitemap.xml', function () {
-    $urlset = view('sitemap', ['pages' => ['landing', 'conduct', 'communities']])->render();
+    $urlset = view('sitemap', ['pages' => ['landing', 'conduct', 'communities', 'call-for-sponsor']])->render();
 
     return response('<?xml version="1.0" encoding="UTF-8"?>'."\n".$urlset)
         ->header('Content-Type', 'application/xml');

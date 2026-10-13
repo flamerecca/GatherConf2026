@@ -352,7 +352,7 @@ TKUG 的內容半徑超過 0.5，也就是原圖的內容本來就會被圓形�
 
 | 項目         | 規則                                                                                                                                                                                                                                          |
 |:-------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **路由**     | 中文在前、英文以 `/en` 開頭。首頁 `/` 與 `/en`，行為準則 `/code-of-conduct` 與 `/en/code-of-conduct`，合作社群 `/communities` 與 `/en/communities`。路由名稱為 `landing`、`conduct`、`communities`，英文版加 `.en`。BBTI 導引頁保留 `/bbti`。 |
+| **路由**     | 中文在前、英文以 `/en` 開頭。首頁 `/` 與 `/en`，行為準則 `/code-of-conduct` 與 `/en/code-of-conduct`，合作社群 `/communities` 與 `/en/communities`，成為贊助夥伴 `/call-for-sponsor` 與 `/en/call-for-sponsor`。路由名稱為 `landing`、`conduct`、`communities`、`call-for-sponsor`，英文版加 `.en`。BBTI 導引頁保留 `/bbti`。 |
 | **貨幣**     | 中文頁使用新台幣，格式 `NT$ 20,000`。英文頁使用歐元，格式 `€500`。                                                                                                                                                                            |
 | **專有名詞** | 公司與社群名稱依語言顯示，英文頁使用正式英文全名，如 Rabbit Gather Co., Ltd.。沒有英文名稱時，才沿用原文。                                                                                                                                    |
 | **文案位置** | 所有可見文字放在 `lang/zh_TW/` 與 `lang/en/`，Blade 以 `__('檔名.鍵')` 讀取。不要把文案寫死在 view。                                                                                                                                          |
@@ -425,7 +425,7 @@ TKUG 的內容半徑超過 0.5，也就是原圖的內容本來就會被圓形�
 
 | 要做的事 | 怎麼做 |
 | :---- | :---- |
-| **修改文案** | 編輯 `lang/zh_TW/` 與 `lang/en/` 內對應的檔案。首頁在 `landing.php`，行為準則在 `conduct.php`，合作社群在 `communities.php`，贊助商區塊在 `sponsors.php`。 |
+| **修改文案** | 編輯 `lang/zh_TW/` 與 `lang/en/` 內對應的檔案。首頁在 `landing.php`，行為準則在 `conduct.php`，合作社群在 `communities.php`，贊助商區塊在 `sponsors.php`，成為贊助夥伴頁在 `cfs.php`，其方案金額與權益讀取 `landing.php` 的 `tiers`。 |
 | **修改贊助方案價格** | 編輯兩個 `landing.php` 的 `tiers` 內的 `amount`。同時調整測試中的斷言。 |
 | **新增合作社群** | 把 Logo 放進 `resources/images/community-logo/`，在 `config/communities.php` 加一筆 `name`，需有 `zh_TW` 與 `en`，以及 `logo`、`logo_fit`、可選的 `logo_padding` 與 `url`。首頁與合作社群頁會自動更新。 |
 | **新增贊助商** | 把 Logo 放進 `resources/images/sponsor-logo/`，在 `config/sponsors.php` 加一筆，`name` 需提供 `zh_TW` 與 `en`，`tier` 為 `gold`、`silver` 或 `bronze`，`logo_fit` 為 `cover` 或 `contain`，需要時設定 `logo_padding`，選擇方式見 7.8。 |
@@ -464,7 +464,7 @@ TKUG 的內容半徑超過 0.5，也就是原圖的內容本來就會被圓形�
 - 網址以 `APP_URL` 為準。正式環境的網域是 `https://gatherconf.net`，`.env` 必須設定 `APP_URL=https://gatherconf.net`，否則 canonical、hreflang、Open Graph、JSON-LD 與 sitemap 都會輸出錯誤的位址。本機開發維持 `http://localhost:8000`。
 - 設定 `APP_URL` 時使用 `https`、不加結尾斜線、不加 `www`，與 canonical 保持一致。若網域同時有 `www` 版本或 `http` 版本，需要在伺服器層導向 `https://gatherconf.net`，避免搜尋引擎視為重複內容。
 - 正式環境部署後，檢查 `https://gatherconf.net/robots.txt` 與 `https://gatherconf.net/sitemap.xml`，確認內容中的網址都是 `https://gatherconf.net` 開頭。
-- 正式環境的頁面網址對照：`https://gatherconf.net/`、`/en`、`/code-of-conduct`、`/en/code-of-conduct`、`/communities` 與 `/en/communities`。
+- 正式環境的頁面網址對照：`https://gatherconf.net/`、`/en`、`/code-of-conduct`、`/en/code-of-conduct`、`/communities`、`/en/communities`、`/call-for-sponsor` 與 `/en/call-for-sponsor`。
 - 活動時間、地點或報名連結異動時，除了畫面文字，也要同步更新 `landing/structured-data.blade.php`，否則搜尋結果的活動資訊會過時。
 - 活動地址以台大官方地址為準，需要時請再確認。
 - 目前沒有為非正式環境加上 `noindex`。若有公開的測試站，建議另外處理，避免被搜尋引擎收錄。

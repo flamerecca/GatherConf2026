@@ -9,6 +9,7 @@ return [
     'name' => '共聚年會',
     'logo_alt' => 'GatherConf 標誌，森林中的社群聚會',
     'conduct_link' => '行為準則',
+    'sponsor_link' => '成為贊助夥伴',
     'member_login_link' => '會員登入',
     'communities_link' => '合作社群',
     'mascot_alt' => 'GatherConf 吉祥物 Bunny',
@@ -51,6 +52,7 @@ return [
     ],
     'price' => 'NT$ :amount',
     'sponsor_title' => '贊助方案',
+    'sponsor_cta' => '了解贊助方式',
     'sponsor_intro' => '與我們一起，讓跨領域的交流發生。',
     'tiers' => [
         ['name' => '金獎級', 'english' => 'Gold', 'amount' => '20,000', 'benefits' => ['宣傳文案內 Logo 曝光', '官網 Logo 曝光', '標準攤位', '紀念品包入袋', '閃電講 5 分鐘宣傳']],

@@ -1,0 +1,41 @@
+<?php
+
+return [
+    'title' => 'Become a sponsor | GatherConf 2026',
+    'description' => 'Invite companies and communities to sponsor GatherConf and bring diverse tech communities together under one roof.',
+    'html_lang' => 'en',
+    'back' => 'Back to home',
+    'switch_label' => '中文',
+    'heading' => 'Become a GatherConf sponsor',
+    'lead' => 'GatherConf brings tech communities from different domains together under one roof. Your sponsorship makes this cross-domain exchange happen.',
+    'cta' => 'Email us about sponsoring',
+    'values_title' => 'Why sponsor',
+    'values' => [
+        ['Reach cross-domain tech communities', 'The conference gathers organizers, developers and product builders from open-source, commercial and enterprise communities, people who rarely share a room.'],
+        ['Be seen alongside the communities', 'Sponsors appear in the promotional materials and on the website, with booths, souvenir bag inserts and lightning talks depending on the tier.'],
+        ['A small, focused gathering', '120 attendees, a dual-track program of eight sessions and an open space, so everyone has real time to sit down and talk.'],
+        ['Support connections between communities', 'GatherConf is not a single brand’s stage. Sponsorship gives different communities the chance to meet and grow together.'],
+    ],
+    'event_title' => 'Event details',
+    'event' => [
+        ['Date and time', '2026-11-21 09:00-17:00'],
+        ['Venue', 'NTU General Classroom Building, Rooms 201-203'],
+        ['Size', '120 attendees, dual track with eight sessions and an open space'],
+        ['Audience', 'Community organizers, developers, product builders and tech innovators across domains'],
+    ],
+    'tiers_title' => 'Sponsorship tiers',
+    'tiers_intro' => 'Three tiers, pick the level of exposure that fits you.',
+    'compare_title' => 'Benefits compared',
+    'compare_benefit' => 'Benefit',
+    'included' => 'Included',
+    'not_included' => 'Not included',
+    'apply_title' => 'How to apply',
+    'apply_intro' => 'We currently take sponsorship applications by email.',
+    'steps' => [
+        ['Email us', 'Write to :email with your company or community name and the tier you are interested in.'],
+        ['Confirm', 'We will reply to confirm the tier details and next steps.'],
+        ['Prepare', 'Prepare the logo and materials needed for your exposure.'],
+    ],
+    'apply_cta' => 'Email :email',
+    'mail_subject' => 'GatherConf 2026 sponsorship inquiry',
+];
