@@ -9,7 +9,7 @@ return [
     'heading' => 'Become a GatherConf sponsor',
     'lead' => 'GatherConf brings tech communities from different domains together under one roof. Your sponsorship makes this cross-domain exchange happen.',
     'cta' => 'Email us about sponsoring',
-    'values_title' => 'Why sponsor',
+    'values_title' => 'Sponsorship benefits and value',
     'values' => [
         ['Reach cross-domain tech communities', 'The conference gathers organizers, developers and product builders from open-source, commercial and enterprise communities, people who rarely share a room.'],
         ['Be seen alongside the communities', 'Sponsors appear in the promotional materials and on the website, with booths, souvenir bag inserts and lightning talks depending on the tier.'],
