@@ -7,5 +7,6 @@
         <a href="https://luma.com/wfjisb47" target="_blank" rel="noopener" class="text-gold underline">{{ __('landing.register_footer') }}</a>
         <a href="{{ app()->getLocale() === 'en' ? route('conduct.en') : route('conduct') }}" class="text-gold underline">{{ __('landing.conduct_link') }}</a>
         <a href="{{ app()->getLocale() === 'en' ? route('communities.en') : route('communities') }}" class="text-gold underline">{{ __('landing.communities_link') }}</a>
+        <a href="{{ app()->getLocale() === 'en' ? route('member.login.en') : route('member.login') }}" class="text-gold underline">{{ __('landing.member_login_link') }}</a>
     </div>
 </footer>

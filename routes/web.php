@@ -75,7 +75,11 @@ foreach (['' => 'zh_TW', 'en' => 'en'] as $prefix => $locale) {
 }
 
 Route::get('/robots.txt', function () {
-    return response("User-agent: *\nDisallow: /admin\n\nSitemap: ".route('sitemap')."\n")
+    $disallow = collect(['/admin', '/member', '/login', '/register', '/forgot-password', '/reset-password', '/email/verify', '/en/member', '/en/login', '/en/register', '/en/forgot-password', '/en/reset-password', '/en/email/verify'])
+        ->map(fn (string $path) => 'Disallow: '.$path)
+        ->implode("\n");
+
+    return response("User-agent: *\n".$disallow."\n\nSitemap: ".route('sitemap')."\n")
         ->header('Content-Type', 'text/plain');
 })->name('robots');
 
