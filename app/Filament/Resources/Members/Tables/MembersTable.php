@@ -57,6 +57,7 @@ class MembersTable
                 MemberActions::deactivate(),
                 MemberActions::activate(),
                 MemberActions::markVerified(),
+                MemberActions::sendLoginLink(),
             ]);
     }
 }

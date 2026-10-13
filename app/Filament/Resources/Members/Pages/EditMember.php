@@ -18,6 +18,7 @@ class EditMember extends EditRecord
             MemberActions::deactivate(),
             MemberActions::activate(),
             MemberActions::markVerified(),
+            MemberActions::sendLoginLink(),
         ];
     }
 }

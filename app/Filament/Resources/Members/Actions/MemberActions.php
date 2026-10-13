@@ -3,9 +3,12 @@
 namespace App\Filament\Resources\Members\Actions;
 
 use App\Models\Member;
+use App\Models\MemberLoginLink;
+use App\Notifications\MemberLoginLinkNotification;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Support\Facades\RateLimiter;
 
 class MemberActions
 {
@@ -52,6 +55,40 @@ class MemberActions
                 $record->forceFill(['email_verified_at' => now()])->save();
 
                 Notification::make()->title('已標記為已驗證')->success()->send();
+            });
+    }
+
+    public static function sendLoginLink(): Action
+    {
+        return Action::make('sendLoginLink')
+            ->label('寄送登入連結')
+            ->icon(Heroicon::OutlinedEnvelope)
+            ->requiresConfirmation()
+            ->modalHeading('寄送登入連結')
+            ->modalDescription('將一封一次性登入連結寄到會員自己的 Email，並作廢先前尚未使用的連結。你不會看到連結內容。')
+            ->visible(fn (Member $record): bool => $record->is_active)
+            ->action(function (Member $record): void {
+                $key = MemberLoginLink::throttleKey($record->email);
+
+                if (RateLimiter::tooManyAttempts($key, MemberLoginLink::HOURLY_LIMIT)) {
+                    Notification::make()
+                        ->title('寄送過於頻繁')
+                        ->body('此會員一小時內已要求過多次登入連結，請稍後再試。')
+                        ->warning()
+                        ->send();
+
+                    return;
+                }
+
+                RateLimiter::hit($key, 3600);
+
+                $token = MemberLoginLink::issueFor($record);
+
+                $record->notify(
+                    (new MemberLoginLinkNotification(route('member.login.link.consume', ['token' => $token])))->locale('zh_TW'),
+                );
+
+                Notification::make()->title('已寄送登入連結')->success()->send();
             });
     }
 }

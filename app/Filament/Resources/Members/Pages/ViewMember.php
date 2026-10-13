@@ -18,6 +18,7 @@ class ViewMember extends ViewRecord
             MemberActions::deactivate(),
             MemberActions::activate(),
             MemberActions::markVerified(),
+            MemberActions::sendLoginLink(),
         ];
     }
 }
