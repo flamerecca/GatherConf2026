@@ -130,6 +130,21 @@ return [
     |
     */
 
+    /*
+    |--------------------------------------------------------------------------
+    | Admin Panel Emails
+    |--------------------------------------------------------------------------
+    |
+    | Only users whose email is listed here can enter the Filament admin
+    | panel. Set ADMIN_EMAILS to a comma separated list to override it.
+    |
+    */
+
+    'admin_emails' => array_values(array_filter(array_map(
+        'trim',
+        explode(',', (string) env('ADMIN_EMAILS', 'flamerecca711@gmail.com')),
+    ))),
+
     'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
 
 ];
