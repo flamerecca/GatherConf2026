@@ -1,6 +1,29 @@
 <?php
 
 return [
+    'login' => [
+        'title' => '會員登入 | 共聚年會 GatherConf 2026',
+        'description' => '登入共聚年會會員。',
+        'heading' => '會員登入',
+        'password_heading' => '使用密碼登入',
+        'submit' => '登入',
+        'remember' => '記住我',
+        'forgot' => '忘記密碼？',
+        'register_prompt' => '還沒有帳號？',
+        'register_link' => '註冊會員',
+        'link_heading' => '或是寄送登入連結',
+        'link_intro' => '輸入 Email，我們會寄一封一次性登入連結給你，不需要輸入密碼。',
+        'link_submit' => '寄送登入連結',
+        'link_sent' => '如果這個 Email 已註冊，登入連結已經寄出，請到信箱查看。',
+    ],
+    'center' => [
+        'title' => '會員中心 | 共聚年會 GatherConf 2026',
+        'heading' => '會員中心',
+        'welcome' => '嗨，:name',
+        'organization' => '所屬社群或公司',
+        'not_set' => '未填寫',
+        'logout' => '登出',
+    ],
     'register' => [
         'title' => '註冊會員 | 共聚年會 GatherConf 2026',
         'description' => '註冊成為共聚年會會員。',
