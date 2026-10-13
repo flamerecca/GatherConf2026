@@ -5,6 +5,7 @@ namespace Tests\Feature\Member;
 use App\Models\Member;
 use App\Models\PersonalityType;
 use App\Models\QuizAttempt;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Schema;
@@ -54,5 +55,31 @@ class QuizAttemptMemberTest extends TestCase
         $member->delete();
 
         $this->assertNull($attempt->fresh()->user_id);
+    }
+
+    public function test_migration_refuses_to_run_when_quiz_attempts_still_reference_users(): void
+    {
+        $migration = require glob(database_path('migrations/*_point_quiz_attempts_user_id_to_members.php'))[0];
+        $migration->down();
+
+        $user = User::factory()->create();
+        PersonalityType::query()->create([
+            'code' => 'SNHG',
+            'name' => '測試類型',
+            'summary' => '摘要',
+            'description' => '說明',
+        ]);
+        QuizAttempt::query()->create([
+            'uuid' => (string) Str::uuid(),
+            'user_id' => $user->id,
+            'scores' => [],
+            'type_code' => 'SNHG',
+            'completed_at' => now(),
+        ]);
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('quiz_attempts.user_id');
+
+        $migration->up();
     }
 }
