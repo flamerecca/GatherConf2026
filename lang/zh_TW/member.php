@@ -1,6 +1,20 @@
 <?php
 
 return [
+    'back' => '回到首頁',
+    'switch_label' => 'English',
+    'fields' => [
+        'name' => '姓名',
+        'email' => 'Email',
+        'password' => '密碼',
+        'password_confirmation' => '確認密碼',
+        'organization' => '所屬社群或公司，選填',
+    ],
+    'errors' => [
+        'failed' => 'Email 或密碼不正確。',
+        'inactive' => '此帳號已被停用，如有疑問請聯絡我們。',
+        'link_invalid' => '這個登入連結已失效，請重新要求一個。',
+    ],
     'mail' => [
         'login_link' => [
             'subject' => '你的 GatherConf 登入連結',

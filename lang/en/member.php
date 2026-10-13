@@ -1,6 +1,20 @@
 <?php
 
 return [
+    'back' => 'Back to home',
+    'switch_label' => '中文',
+    'fields' => [
+        'name' => 'Name',
+        'email' => 'Email',
+        'password' => 'Password',
+        'password_confirmation' => 'Confirm password',
+        'organization' => 'Community or company, optional',
+    ],
+    'errors' => [
+        'failed' => 'The email or password is incorrect.',
+        'inactive' => 'This account has been deactivated. Please contact us if you have questions.',
+        'link_invalid' => 'This login link is no longer valid. Please request a new one.',
+    ],
     'mail' => [
         'login_link' => [
             'subject' => 'Your GatherConf login link',

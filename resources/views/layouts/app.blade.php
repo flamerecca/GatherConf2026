@@ -2,8 +2,8 @@
 @php
     $routeBase = trim($__env->yieldContent('route'));
     $isEnglish = app()->getLocale() === 'en';
-    $zhUrl = route($routeBase);
-    $enUrl = route($routeBase.'.en');
+    $zhUrl = trim($__env->yieldContent('zh_url')) ?: route($routeBase);
+    $enUrl = trim($__env->yieldContent('en_url')) ?: route($routeBase.'.en');
     $canonicalUrl = $isEnglish ? $enUrl : $zhUrl;
     $ogImage = asset('og-image.jpg');
 @endphp
@@ -14,6 +14,9 @@
         <meta name="color-scheme" content="light dark">
         <title>@yield('title')</title>
         <meta name="description" content="@yield('description')">
+        @hasSection('robots')
+            <meta name="robots" content="@yield('robots')">
+        @endif
         <meta name="theme-color" content="#f4efe1" media="(prefers-color-scheme: light)">
         <meta name="theme-color" content="#121c15" media="(prefers-color-scheme: dark)">
         <link rel="canonical" href="{{ $canonicalUrl }}">
