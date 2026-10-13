@@ -29,4 +29,9 @@ class QuizAttempt extends Model
     {
         return $this->belongsTo(PersonalityType::class, 'type_code', 'code');
     }
+
+    public function member(): BelongsTo
+    {
+        return $this->belongsTo(Member::class, 'user_id');
+    }
 }
