@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Notifications\ResetMemberPasswordNotification;
+use App\Notifications\VerifyMemberEmailNotification;
 use Database\Factories\MemberFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -30,6 +32,16 @@ class Member extends Authenticatable implements MustVerifyEmail
             'password' => 'hashed',
             'is_active' => 'boolean',
         ];
+    }
+
+    public function sendEmailVerificationNotification(): void
+    {
+        $this->notify(new VerifyMemberEmailNotification);
+    }
+
+    public function sendPasswordResetNotification($token): void
+    {
+        $this->notify(new ResetMemberPasswordNotification($token));
     }
 
     public function loginLinks(): HasMany

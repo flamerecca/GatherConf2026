@@ -1,0 +1,24 @@
+<?php
+
+return [
+    'mail' => [
+        'login_link' => [
+            'subject' => '你的 GatherConf 登入連結',
+            'intro' => '請點擊下方按鈕登入，連結 15 分鐘內有效，只能使用一次。',
+            'action' => '登入 GatherConf',
+            'outro' => '如果不是你要求的，請忽略這封信，不會有任何變更。',
+        ],
+        'verify' => [
+            'subject' => '請驗證你的 Email',
+            'intro' => '請點擊下方按鈕驗證你的 Email，連結 60 分鐘內有效。',
+            'action' => '驗證 Email',
+            'outro' => '如果你沒有註冊 GatherConf，請忽略這封信。',
+        ],
+        'reset' => [
+            'subject' => '重設你的 GatherConf 密碼',
+            'intro' => '請點擊下方按鈕重設密碼，連結 60 分鐘內有效。',
+            'action' => '重設密碼',
+            'outro' => '如果不是你要求的，請忽略這封信，密碼不會被更動。',
+        ],
+    ],
+];
