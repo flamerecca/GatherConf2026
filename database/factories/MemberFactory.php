@@ -39,6 +39,11 @@ class MemberFactory extends Factory
     /**
      * Indicate that the member's email address is not verified.
      */
+    public function passwordless(): static
+    {
+        return $this->state(fn (array $attributes) => ['password' => null]);
+    }
+
     public function unverified(): static
     {
         return $this->state(fn (array $attributes) => ['email_verified_at' => null]);

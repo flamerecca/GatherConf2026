@@ -42,6 +42,11 @@ class Member extends Authenticatable implements MustVerifyEmail
         $this->forceFill(['friend_code' => self::newFriendCode()])->save();
     }
 
+    public function hasPassword(): bool
+    {
+        return $this->password !== null && $this->password !== '';
+    }
+
     public function friendUrl(?string $locale = null): string
     {
         $name = ($locale ?? app()->getLocale()) === 'en' ? 'member.friends.add.en' : 'member.friends.add';

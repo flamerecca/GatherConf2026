@@ -26,7 +26,7 @@ class LoginController extends MemberController
 
         $member = Member::query()->where('email', Str::lower(trim($credentials['email'])))->first();
 
-        if ($member === null || ! Hash::check($credentials['password'], $member->password)) {
+        if ($member === null || ! $member->hasPassword() || ! Hash::check($credentials['password'], $member->password)) {
             throw ValidationException::withMessages(['email' => __('member.errors.failed')]);
         }
 
