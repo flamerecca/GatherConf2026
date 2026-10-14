@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Members\Schemas;
 
+use App\Models\Member;
 use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Schema;
@@ -18,6 +19,10 @@ class MemberInfolist
                 ->placeholder('未填寫'),
             IconEntry::make('is_active')
                 ->label('啟用')
+                ->boolean(),
+            IconEntry::make('has_password')
+                ->label('已設定密碼')
+                ->state(fn (Member $record): bool => $record->hasPassword())
                 ->boolean(),
             TextEntry::make('email_verified_at')
                 ->label('Email 驗證時間')

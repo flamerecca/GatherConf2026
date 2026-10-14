@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Members\Tables;
 
 use App\Filament\Resources\Members\Actions\MemberActions;
+use App\Models\Member;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\IconColumn;
@@ -30,6 +31,10 @@ class MembersTable
                     ->placeholder('未填寫'),
                 IconColumn::make('is_active')
                     ->label('啟用')
+                    ->boolean(),
+                IconColumn::make('has_password')
+                    ->label('已設定密碼')
+                    ->state(fn (Member $record): bool => $record->hasPassword())
                     ->boolean(),
                 IconColumn::make('email_verified_at')
                     ->label('Email 驗證')

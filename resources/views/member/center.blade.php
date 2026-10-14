@@ -19,6 +19,16 @@
                 <dd class="text-ink/80">{{ $member->organization ?? __('member.center.not_set') }}</dd>
             </div>
         </dl>
+        @unless ($hasPassword)
+            <p data-set-password-prompt class="rounded-2xl border border-copper p-4 text-sm">
+                {{ __('member.center.set_password_prompt') }}
+                <a href="{{ route('member.password.edit'.(app()->getLocale() === 'en' ? '.en' : '')) }}"
+                   class="font-semibold text-moss underline underline-offset-4">{{ __('member.center.set_password') }}</a>
+            </p>
+        @else
+            <a href="{{ route('member.password.edit'.(app()->getLocale() === 'en' ? '.en' : '')) }}"
+               class="block text-sm font-medium text-moss underline underline-offset-4">{{ __('member.center.change_password') }}</a>
+        @endunless
         <a href="{{ route('member.friends'.(app()->getLocale() === 'en' ? '.en' : '')) }}"
            data-pending-invitations="{{ $pendingInvitations }}"
            class="inline-flex items-center gap-2 font-semibold text-moss underline underline-offset-4">
