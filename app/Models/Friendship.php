@@ -172,6 +172,15 @@ class Friendship extends Model
 
         $this->refresh();
 
+        foreach ([$member, $other] as $participant) {
+            CarrotLedger::awardQuietly(
+                $participant,
+                'first_friend',
+                CarrotLedger::siteRewards()['first_friend'] ?? 0,
+                CarrotLedger::siteDedupeKey('first_friend', $participant),
+            );
+        }
+
         return true;
     }
 

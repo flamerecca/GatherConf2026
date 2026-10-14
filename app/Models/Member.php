@@ -31,6 +31,30 @@ class Member extends Authenticatable implements MustVerifyEmail
                 $member->friend_code = self::newFriendCode();
             }
         });
+
+        static::updated(function (Member $member): void {
+            $rewards = CarrotLedger::siteRewards();
+
+            if ($member->wasChanged('email_verified_at') && $member->email_verified_at !== null) {
+                CarrotLedger::awardQuietly(
+                    $member,
+                    'verify_email',
+                    $rewards['verify_email'] ?? 0,
+                    CarrotLedger::siteDedupeKey('verify_email', $member),
+                );
+            }
+
+            $hadPassword = ! in_array($member->getOriginal('password'), [null, ''], true);
+
+            if ($member->wasChanged('password') && ! $hadPassword && $member->hasPassword()) {
+                CarrotLedger::awardQuietly(
+                    $member,
+                    'set_password',
+                    $rewards['set_password'] ?? 0,
+                    CarrotLedger::siteDedupeKey('set_password', $member),
+                );
+            }
+        });
     }
 
     public static function newFriendCode(): string

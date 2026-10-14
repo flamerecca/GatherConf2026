@@ -61,11 +61,20 @@ class Message extends Model
             return null;
         }
 
-        return static::query()->create([
+        $message = static::query()->create([
             'sender_id' => $sender->getKey(),
             'recipient_id' => $recipient->getKey(),
             'body' => $body,
         ]);
+
+        CarrotLedger::awardQuietly(
+            $sender,
+            'first_message',
+            CarrotLedger::siteRewards()['first_message'] ?? 0,
+            CarrotLedger::siteDedupeKey('first_message', $sender),
+        );
+
+        return $message;
     }
 
     public static function markRead(Member $reader, Member $other): int
