@@ -38,7 +38,9 @@ class MessageController extends MemberController
     {
         [$me, $friend] = $this->conversationFor($friendship);
 
-        $request->merge(['body' => trim((string) $request->input('body'))]);
+        $body = $request->input('body');
+
+        $request->merge(['body' => is_string($body) ? trim($body) : $body]);
 
         $data = $request->validate([
             'body' => ['required', 'string', 'max:'.Message::MAX_LENGTH],
@@ -55,11 +57,15 @@ class MessageController extends MemberController
 
             $key = 'member-message-notify:'.$friend->getKey().':'.$me->getKey();
 
-            if (RateLimiter::attempt($key, 1, fn () => true, 900)) {
-                $friend->notify(
-                    (new NewMessageNotification($me, route('member.messages.show', $friendship)))->locale('zh_TW'),
-                );
+            if (RateLimiter::tooManyAttempts($key, 1)) {
+                return;
             }
+
+            $friend->notify(
+                (new NewMessageNotification($me, route('member.messages.show', $friendship)))->locale('zh_TW'),
+            );
+
+            RateLimiter::hit($key, 900);
         });
 
         return redirect($this->localizedRoute('member.messages.show', ['friendship' => $friendship]));
