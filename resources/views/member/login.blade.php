@@ -14,6 +14,7 @@
         <h2 class="text-xl font-bold text-moss">{{ __('member.login.password_heading') }}</h2>
         <x-member-field name="email" type="email" :label="__('member.fields.email')" autocomplete="email" required />
         <x-member-field name="password" type="password" :label="__('member.fields.password')" autocomplete="current-password" required />
+        <p class="text-xs text-ink/70">{{ __('member.login.no_password_hint') }}</p>
         <label class="flex items-center gap-2 text-sm">
             <input type="checkbox" name="remember" value="1" class="size-4 accent-moss">
             {{ __('member.login.remember') }}

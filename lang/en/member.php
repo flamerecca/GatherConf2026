@@ -88,6 +88,7 @@ return [
         'title' => 'Log in | GatherConf 2026',
         'description' => 'Log in as a GatherConf member.',
         'heading' => 'Log in',
+        'no_password_hint' => 'Have not set a password yet? Use the login link below instead.',
         'password_heading' => 'Log in with your password',
         'submit' => 'Log in',
         'remember' => 'Remember me',

@@ -43,6 +43,7 @@ class LoginLinkController extends MemberController
 
         $this->guard()->login($member);
         $request->session()->regenerate();
+        $request->session()->put('member_link_login_at', now()->timestamp);
 
         return redirect()->intended($this->localizedRoute('member.center'));
     }

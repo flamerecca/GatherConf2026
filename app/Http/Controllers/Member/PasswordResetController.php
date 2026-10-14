@@ -53,6 +53,11 @@ class PasswordResetController extends MemberController
             ],
             function (Member $member, string $password): void {
                 $member->forceFill(['password' => $password])->setRememberToken(Str::random(60));
+
+                if (! $member->hasVerifiedEmail()) {
+                    $member->markEmailAsVerified();
+                }
+
                 $member->save();
 
                 event(new PasswordReset($member));

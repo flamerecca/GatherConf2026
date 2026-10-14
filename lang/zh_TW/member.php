@@ -88,6 +88,7 @@ return [
         'title' => '會員登入 | 共聚年會 GatherConf 2026',
         'description' => '登入共聚年會會員。',
         'heading' => '會員登入',
+        'no_password_hint' => '還沒有設定密碼？請改用下方的登入連結。',
         'password_heading' => '使用密碼登入',
         'submit' => '登入',
         'remember' => '記住我',
