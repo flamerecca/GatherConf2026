@@ -115,7 +115,7 @@ class Friendship extends Model
             return self::INVITE_SELF;
         }
 
-        if ($from->hasBlocked($to) || $from->isBlockedBy($to)) {
+        if (! $to->is_active || $from->hasBlocked($to) || $from->isBlockedBy($to)) {
             return self::INVITE_BLOCKED;
         }
 
@@ -127,6 +127,12 @@ class Friendship extends Model
         );
 
         if ($friendship->wasRecentlyCreated) {
+            if ($from->hasBlocked($to) || $from->isBlockedBy($to)) {
+                $friendship->delete();
+
+                return self::INVITE_BLOCKED;
+            }
+
             return self::INVITE_INVITED;
         }
 
@@ -146,6 +152,12 @@ class Friendship extends Model
     public function acceptBy(Member $member): bool
     {
         if (! $this->isParticipant($member) || $this->requester_id === $member->getKey()) {
+            return false;
+        }
+
+        $other = $this->otherMember($member);
+
+        if (! $other->is_active || $member->hasBlocked($other) || $member->isBlockedBy($other)) {
             return false;
         }
 

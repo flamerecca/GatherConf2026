@@ -13,12 +13,15 @@ class FriendController extends MemberController
     {
         $me = $this->guard()->user();
 
+        $blockedIds = $me->blockedPairMemberIds();
+
         $friendships = Friendship::query()
             ->involving($me)
             ->with(['low', 'high'])
             ->latest('updated_at')
             ->get()
-            ->filter(fn (Friendship $friendship) => $friendship->otherMember($me)->is_active);
+            ->filter(fn (Friendship $friendship) => $friendship->otherMember($me)->is_active)
+            ->reject(fn (Friendship $friendship) => $blockedIds->contains($friendship->otherMember($me)->getKey()));
 
         $blocked = MemberBlock::query()
             ->where('blocker_id', $me->getKey())

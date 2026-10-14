@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
 #[Fillable(['name', 'email', 'password', 'organization', 'is_active'])]
@@ -77,6 +78,23 @@ class Member extends Authenticatable implements MustVerifyEmail
             ->where('blocker_id', $this->getKey())
             ->where('blocked_id', $other->getKey())
             ->exists();
+    }
+
+    /**
+     * Ids of members this member has blocked or who have blocked this member.
+     *
+     * @return Collection<int, int>
+     */
+    public function blockedPairMemberIds(): Collection
+    {
+        return MemberBlock::query()
+            ->where('blocker_id', $this->getKey())
+            ->orWhere('blocked_id', $this->getKey())
+            ->get(['blocker_id', 'blocked_id'])
+            ->flatMap(fn (MemberBlock $block) => [$block->blocker_id, $block->blocked_id])
+            ->reject(fn (int $id) => $id === $this->getKey())
+            ->unique()
+            ->values();
     }
 
     public function isBlockedBy(Member $other): bool

@@ -17,10 +17,12 @@ return new class extends Migration
             $table->string('friend_code', 32)->nullable()->after('organization');
         });
 
-        DB::table('members')->whereNull('friend_code')->orderBy('id')->each(function (object $member): void {
-            DB::table('members')->where('id', $member->id)->update([
-                'friend_code' => Str::lower(Str::random(32)),
-            ]);
+        DB::table('members')->whereNull('friend_code')->chunkById(500, function ($members): void {
+            foreach ($members as $member) {
+                DB::table('members')->where('id', $member->id)->update([
+                    'friend_code' => Str::lower(Str::random(32)),
+                ]);
+            }
         });
 
         Schema::table('members', function (Blueprint $table) {

@@ -16,6 +16,8 @@ class CenterController extends MemberController
             return redirect($this->localizedRoute('member.verification.notice'));
         }
 
+        $blockedIds = $member->blockedPairMemberIds();
+
         return view('member.center', [
             'member' => $member,
             'pendingInvitations' => Friendship::query()
@@ -25,6 +27,7 @@ class CenterController extends MemberController
                 ->with(['low', 'high'])
                 ->get()
                 ->filter(fn (Friendship $friendship) => $friendship->otherMember($member)->is_active)
+                ->reject(fn (Friendship $friendship) => $blockedIds->contains($friendship->otherMember($member)->getKey()))
                 ->count(),
         ]);
     }
