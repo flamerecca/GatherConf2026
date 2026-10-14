@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\Member\BlockController;
 use App\Http\Controllers\Member\CenterController;
 use App\Http\Controllers\Member\EmailVerificationController;
+use App\Http\Controllers\Member\FriendController;
+use App\Http\Controllers\Member\FriendInvitationController;
 use App\Http\Controllers\Member\LoginController;
 use App\Http\Controllers\Member\LoginLinkController;
 use App\Http\Controllers\Member\PasswordResetController;
@@ -78,6 +81,17 @@ foreach (['' => 'zh_TW', 'en' => 'en'] as $prefix => $locale) {
             Route::get('/member', [CenterController::class, 'show'])->name('member.center'.$s);
             Route::get('/email/verify', [EmailVerificationController::class, 'notice'])->name('member.verification.notice'.$s);
             Route::post('/email/verification-notification', [EmailVerificationController::class, 'send'])->middleware('throttle:6,1')->name('member.verification.send'.$s);
+        });
+
+        Route::middleware(['auth:member', 'member.verified'])->group(function () use ($s): void {
+            Route::get('/friends', [FriendController::class, 'index'])->name('member.friends'.$s);
+            Route::post('/friends/code', [FriendController::class, 'regenerateCode'])->name('member.friends.code.regenerate'.$s);
+            Route::get('/friends/add/{code}', [FriendInvitationController::class, 'show'])->name('member.friends.add'.$s);
+            Route::post('/friends/add/{code}', [FriendInvitationController::class, 'store'])->middleware('throttle:member-invite')->name('member.friends.invite'.$s);
+            Route::post('/friends/{friendship}/accept', [FriendController::class, 'accept'])->name('member.friends.accept'.$s);
+            Route::delete('/friends/{friendship}', [FriendController::class, 'destroy'])->name('member.friends.decline'.$s);
+            Route::post('/friends/{member}/block', [BlockController::class, 'store'])->name('member.friends.block'.$s);
+            Route::delete('/friends/{member}/block', [BlockController::class, 'destroy'])->name('member.friends.unblock'.$s);
         });
 
         Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])

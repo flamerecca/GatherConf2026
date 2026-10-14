@@ -26,6 +26,9 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for('member-login', fn (Request $request) => Limit::perMinute(5)
             ->by(Str::lower((string) $request->input('email')).'|'.$request->ip()));
 
+        RateLimiter::for('member-invite', fn (Request $request) => Limit::perHour(30)
+            ->by('member-invite|'.($request->user('member')?->getKey() ?? $request->ip())));
+
         RateLimiter::for('member-guest', fn (Request $request) => Limit::perMinute(5)
             ->by($request->ip().'|'.preg_replace('/\.en$/', '', (string) $request->route()?->getName())));
     }

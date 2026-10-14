@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\EnsureMemberEmailIsVerified;
 use App\Http\Middleware\EnsureMemberIsActive;
 use App\Http\Middleware\SetLocale;
 use Illuminate\Foundation\Application;
@@ -17,6 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'member.locale' => SetLocale::class,
             'member.active' => EnsureMemberIsActive::class,
+            'member.verified' => EnsureMemberEmailIsVerified::class,
         ]);
 
         $middleware->redirectGuestsTo(
