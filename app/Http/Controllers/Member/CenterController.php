@@ -20,6 +20,7 @@ class CenterController extends MemberController
 
         return view('member.center', [
             'member' => $member,
+            'unreadMessages' => $member->unreadMessageCount(),
             'pendingInvitations' => Friendship::query()
                 ->pending()
                 ->involving($member)

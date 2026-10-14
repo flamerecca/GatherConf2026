@@ -27,6 +27,9 @@
                 <span class="rounded-full bg-moss px-2 py-0.5 text-xs text-on-accent">{{ $pendingInvitations }}</span>
             @endif
         </a>
+        <p data-unread-messages="{{ $unreadMessages }}" class="text-sm text-ink/80">
+            {{ __('member.center.unread_messages') }}：{{ $unreadMessages }}
+        </p>
         <form method="POST" action="{{ route('member.logout'.(app()->getLocale() === 'en' ? '.en' : '')) }}">
             @csrf
             <x-member-submit>{{ __('member.center.logout') }}</x-member-submit>

@@ -63,6 +63,16 @@
                     <p class="text-sm text-ink/70">{{ $other->organization }}</p>
                 @endif
                 <div class="mt-3 flex flex-wrap gap-3">
+                    @if ($messageableIds->contains($other->getKey()))
+                        <a href="{{ route('member.messages.show'.$s, ['friendship' => $friendship]) }}"
+                           data-unread="{{ $unreadByMember[$other->getKey()] ?? 0 }}"
+                           class="inline-flex items-center gap-2 rounded-full bg-moss px-6 py-3 font-semibold text-on-accent shadow transition hover:bg-ink">
+                            {{ __('member.friends.message') }}
+                            @if (($unreadByMember[$other->getKey()] ?? 0) > 0)
+                                <span class="rounded-full bg-parchment px-2 py-0.5 text-xs text-ink">{{ $unreadByMember[$other->getKey()] }}</span>
+                            @endif
+                        </a>
+                    @endif
                     <form method="POST" action="{{ route('member.friends.decline'.$s, ['friendship' => $friendship]) }}">
                         @csrf
                         @method('DELETE')

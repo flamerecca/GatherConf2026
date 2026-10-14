@@ -16,6 +16,7 @@ return [
     'friends' => [
         'title' => 'My friends | GatherConf 2026',
         'heading' => 'My friends',
+        'message' => 'Message',
         'my_code_heading' => 'My add-friend link',
         'my_code_intro' => 'Let a friend scan this QR code, or send them the link, so they can send you a friend request.',
         'qr_alt' => 'Add friend QR code',
@@ -105,6 +106,7 @@ return [
         'organization' => 'Community or company',
         'not_set' => 'Not set',
         'friends' => 'My friends',
+        'unread_messages' => 'Unread messages',
         'logout' => 'Log out',
     ],
     'register' => [

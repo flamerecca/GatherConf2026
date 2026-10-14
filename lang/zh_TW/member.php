@@ -16,6 +16,7 @@ return [
     'friends' => [
         'title' => '我的好友 | 共聚年會 GatherConf 2026',
         'heading' => '我的好友',
+        'message' => '傳訊息',
         'my_code_heading' => '我的加好友連結',
         'my_code_intro' => '讓朋友掃描這個 QR Code，或把連結傳給對方，就能向你送出好友邀請。',
         'qr_alt' => '加好友 QR Code',
@@ -105,6 +106,7 @@ return [
         'organization' => '所屬社群或公司',
         'not_set' => '未填寫',
         'friends' => '我的好友',
+        'unread_messages' => '未讀訊息',
         'logout' => '登出',
     ],
     'register' => [

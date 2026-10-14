@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Member;
 
 use App\Models\Friendship;
 use App\Models\MemberBlock;
+use App\Models\Message;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 
@@ -42,6 +43,13 @@ class FriendController extends MemberController
                 ->filter(fn (Friendship $friendship) => $friendship->requester_id === $me->getKey())
                 ->values(),
             'blocked' => $blocked,
+            'unreadByMember' => Message::query()
+                ->where('recipient_id', $me->getKey())
+                ->whereNull('read_at')
+                ->selectRaw('sender_id, count(*) as total')
+                ->groupBy('sender_id')
+                ->pluck('total', 'sender_id'),
+            'messageableIds' => $me->messageableFriendIds(),
         ]);
     }
 
