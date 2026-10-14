@@ -9,6 +9,7 @@ use App\Models\Friendship;
 use App\Models\Member;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Livewire;
 use Tests\TestCase;
 
@@ -86,6 +87,8 @@ class FriendshipResourceTest extends TestCase
         $this->actingAs(User::factory()->create(['email' => 'someone@example.com']))
             ->get('/admin/friendships')
             ->assertForbidden();
+
+        Auth::forgetGuards();
 
         $this->actingAs(Member::factory()->create(), 'member')
             ->get('/admin/friendships')
