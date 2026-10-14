@@ -19,6 +19,18 @@ class Friendship extends Model
 
     public const STATUS_ACCEPTED = 'accepted';
 
+    public const INVITE_INVITED = 'invited';
+
+    public const INVITE_ACCEPTED = 'accepted';
+
+    public const INVITE_ALREADY_FRIENDS = 'already_friends';
+
+    public const INVITE_ALREADY_INVITED = 'already_invited';
+
+    public const INVITE_BLOCKED = 'blocked';
+
+    public const INVITE_SELF = 'self';
+
     /**
      * Get the attributes that should be cast.
      *
@@ -95,5 +107,68 @@ class Friendship extends Model
     public function otherMember(Member $member): Member
     {
         return $this->member_low_id === $member->getKey() ? $this->high : $this->low;
+    }
+
+    public static function invite(Member $from, Member $to): string
+    {
+        if ($from->is($to)) {
+            return self::INVITE_SELF;
+        }
+
+        if ($from->hasBlocked($to) || $from->isBlockedBy($to)) {
+            return self::INVITE_BLOCKED;
+        }
+
+        [$low, $high] = self::orderedIds($from->getKey(), $to->getKey());
+
+        $friendship = static::query()->createOrFirst(
+            ['member_low_id' => $low, 'member_high_id' => $high],
+            ['requester_id' => $from->getKey(), 'status' => self::STATUS_PENDING],
+        );
+
+        if ($friendship->wasRecentlyCreated) {
+            return self::INVITE_INVITED;
+        }
+
+        if ($friendship->isAccepted()) {
+            return self::INVITE_ALREADY_FRIENDS;
+        }
+
+        if ($friendship->requester_id === $from->getKey()) {
+            return self::INVITE_ALREADY_INVITED;
+        }
+
+        $friendship->acceptBy($from);
+
+        return self::INVITE_ACCEPTED;
+    }
+
+    public function acceptBy(Member $member): bool
+    {
+        if (! $this->isParticipant($member) || $this->requester_id === $member->getKey()) {
+            return false;
+        }
+
+        $accepted = static::query()
+            ->whereKey($this->getKey())
+            ->where('status', self::STATUS_PENDING)
+            ->update(['status' => self::STATUS_ACCEPTED, 'responded_at' => now()]);
+
+        if ($accepted !== 1) {
+            return false;
+        }
+
+        $this->refresh();
+
+        return true;
+    }
+
+    public function removeBy(Member $member): bool
+    {
+        if (! $this->isParticipant($member)) {
+            return false;
+        }
+
+        return (bool) $this->delete();
     }
 }

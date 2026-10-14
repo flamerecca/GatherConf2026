@@ -71,6 +71,39 @@ class Member extends Authenticatable implements MustVerifyEmail
         $this->notify(new ResetMemberPasswordNotification($token));
     }
 
+    public function hasBlocked(Member $other): bool
+    {
+        return MemberBlock::query()
+            ->where('blocker_id', $this->getKey())
+            ->where('blocked_id', $other->getKey())
+            ->exists();
+    }
+
+    public function isBlockedBy(Member $other): bool
+    {
+        return $other->hasBlocked($this);
+    }
+
+    public function isFriendWith(Member $other): bool
+    {
+        return Friendship::between($this, $other)?->isAccepted() ?? false;
+    }
+
+    public function canBlock(Member $target): bool
+    {
+        if ($this->is($target)) {
+            return false;
+        }
+
+        $friendship = Friendship::between($this, $target);
+
+        if ($friendship === null) {
+            return false;
+        }
+
+        return $friendship->isAccepted() || $friendship->requester_id === $target->getKey();
+    }
+
     public function loginLinks(): HasMany
     {
         return $this->hasMany(MemberLoginLink::class);
