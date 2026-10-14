@@ -64,6 +64,13 @@ class CarrotTask extends Model
             ->where(fn (Builder $q) => $q->whereNull('ends_at')->orWhere('ends_at', '>', now()));
     }
 
+    public function completeUrl(?string $locale = null): string
+    {
+        $name = ($locale ?? app()->getLocale()) === 'en' ? 'member.tasks.complete.en' : 'member.tasks.complete';
+
+        return route($name, ['code' => $this->code]);
+    }
+
     public function dedupeKeyFor(Member $member): string
     {
         return 'task:'.$this->getKey().':'.$member->getKey();

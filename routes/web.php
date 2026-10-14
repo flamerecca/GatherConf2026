@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Member\BlockController;
+use App\Http\Controllers\Member\CarrotTaskController;
 use App\Http\Controllers\Member\CenterController;
 use App\Http\Controllers\Member\EmailVerificationController;
 use App\Http\Controllers\Member\FriendController;
@@ -99,6 +100,8 @@ foreach (['' => 'zh_TW', 'en' => 'en'] as $prefix => $locale) {
             Route::put('/member/password', [PasswordController::class, 'update'])->middleware('throttle:member-password')->name('member.password.change'.$s);
             Route::get('/messages/{friendship}', [MessageController::class, 'show'])->name('member.messages.show'.$s);
             Route::post('/messages/{friendship}', [MessageController::class, 'store'])->middleware('throttle:member-message')->name('member.messages.store'.$s);
+            Route::get('/member/tasks', [CarrotTaskController::class, 'index'])->name('member.tasks'.$s);
+            Route::get('/member/tasks/{code}', [CarrotTaskController::class, 'complete'])->middleware('throttle:member-task')->name('member.tasks.complete'.$s);
         });
 
         Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])
