@@ -6,6 +6,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\ValidationException;
 
@@ -38,7 +39,8 @@ class PasswordController extends MemberController
             throw ValidationException::withMessages(['current_password' => __('member.password.current_wrong')]);
         }
 
-        $member->forceFill(['password' => $data['password']])->save();
+        $member->forceFill(['password' => $data['password']])->setRememberToken(Str::random(60));
+        $member->save();
 
         $request->session()->regenerate();
 
@@ -51,9 +53,11 @@ class PasswordController extends MemberController
             return false;
         }
 
-        $loggedInByLinkAt = $request->session()->get('member_link_login_at');
+        $linkLogin = $request->session()->get('member_link_login');
 
-        return ! is_int($loggedInByLinkAt)
-            || now()->timestamp - $loggedInByLinkAt > self::LINK_LOGIN_WINDOW_SECONDS;
+        return ! is_array($linkLogin)
+            || ($linkLogin['member_id'] ?? null) !== $this->guard()->user()->getKey()
+            || ! is_int($linkLogin['at'] ?? null)
+            || now()->timestamp - $linkLogin['at'] > self::LINK_LOGIN_WINDOW_SECONDS;
     }
 }

@@ -29,7 +29,7 @@ class PasswordlessLoginTest extends TestCase
 
         $this->get('/login/link/'.MemberLoginLink::issueFor($member))->assertRedirect('/member');
 
-        $this->assertSame(now()->timestamp, session('member_link_login_at'));
+        $this->assertSame(['member_id' => $member->id, 'at' => now()->timestamp], session('member_link_login'));
     }
 
     public function test_a_password_login_does_not_record_it(): void
@@ -38,7 +38,7 @@ class PasswordlessLoginTest extends TestCase
 
         $this->post('/login', ['email' => 'm@example.com', 'password' => 'password']);
 
-        $this->assertNull(session('member_link_login_at'));
+        $this->assertNull(session('member_link_login'));
     }
 
     public function test_the_login_page_explains_the_link_option_in_both_languages(): void

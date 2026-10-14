@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 #[Fillable(['name', 'email', 'password', 'organization', 'is_active'])]
@@ -45,6 +46,31 @@ class Member extends Authenticatable implements MustVerifyEmail
     public function hasPassword(): bool
     {
         return $this->password !== null && $this->password !== '';
+    }
+
+    /**
+     * Remove every credential that may predate proof of mailbox ownership.
+     */
+    public function discardCredentials(): void
+    {
+        $this->forceFill(['password' => null])->setRememberToken(Str::random(60));
+        $this->save();
+
+        $this->purgeSessions();
+    }
+
+    /**
+     * End every stored session of this member. Only database sessions can be listed.
+     */
+    public function purgeSessions(): void
+    {
+        if (config('session.driver') !== 'database') {
+            return;
+        }
+
+        DB::table(config('session.table', 'sessions'))
+            ->where('user_id', (string) $this->getKey())
+            ->delete();
     }
 
     public function friendUrl(?string $locale = null): string

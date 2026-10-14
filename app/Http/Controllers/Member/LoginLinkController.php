@@ -37,13 +37,14 @@ class LoginLinkController extends MemberController
         }
 
         if (! $member->hasVerifiedEmail()) {
+            $member->discardCredentials();
             $member->markEmailAsVerified();
             event(new Verified($member));
         }
 
         $this->guard()->login($member);
         $request->session()->regenerate();
-        $request->session()->put('member_link_login_at', now()->timestamp);
+        $request->session()->put('member_link_login', ['member_id' => $member->getKey(), 'at' => now()->timestamp]);
 
         return redirect()->intended($this->localizedRoute('member.center'));
     }

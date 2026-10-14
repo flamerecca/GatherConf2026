@@ -36,6 +36,7 @@ class LoginController extends MemberController
 
         $this->guard()->login($member, $request->boolean('remember'));
         $request->session()->regenerate();
+        $request->session()->forget('member_link_login');
 
         return redirect()->intended($this->localizedRoute('member.center'));
     }
@@ -43,6 +44,7 @@ class LoginController extends MemberController
     public function destroy(Request $request): RedirectResponse
     {
         $this->guard()->logout();
+        $request->session()->forget('member_link_login');
         $request->session()->regenerate();
         $request->session()->regenerateToken();
 

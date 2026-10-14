@@ -73,7 +73,7 @@ class PasswordSettingTest extends TestCase
         $member = Member::factory()->create();
 
         $this->actingAs($member, 'member')
-            ->withSession(['member_link_login_at' => now()->subMinutes(10)->timestamp])
+            ->withSession(['member_link_login' => ['member_id' => $member->id, 'at' => now()->subMinutes(10)->timestamp]])
             ->put('/member/password', $this->body())
             ->assertSessionHasNoErrors();
 
@@ -87,7 +87,7 @@ class PasswordSettingTest extends TestCase
         $original = $member->password;
 
         $this->actingAs($member, 'member')
-            ->withSession(['member_link_login_at' => now()->subMinutes(16)->timestamp])
+            ->withSession(['member_link_login' => ['member_id' => $member->id, 'at' => now()->subMinutes(16)->timestamp]])
             ->put('/member/password', $this->body())
             ->assertSessionHasErrors('current_password');
 

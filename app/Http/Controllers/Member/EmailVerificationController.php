@@ -39,6 +39,7 @@ class EmailVerificationController extends MemberController
         abort_unless(hash_equals(sha1($member->getEmailForVerification()), $hash), 403);
 
         if (! $member->hasVerifiedEmail()) {
+            $member->discardCredentials();
             $member->markEmailAsVerified();
             event(new Verified($member));
         }
