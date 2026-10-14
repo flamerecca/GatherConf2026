@@ -122,6 +122,58 @@ class Member extends Authenticatable implements MustVerifyEmail
         return $friendship->isAccepted() || $friendship->requester_id === $target->getKey();
     }
 
+    public function canMessage(Member $other): bool
+    {
+        return ! $this->is($other)
+            && $this->is_active
+            && $other->is_active
+            && $this->isFriendWith($other)
+            && ! $this->hasBlocked($other)
+            && ! $this->isBlockedBy($other);
+    }
+
+    /**
+     * Ids of active, unblocked members who are accepted friends.
+     *
+     * @return Collection<int, int>
+     */
+    public function messageableFriendIds(): Collection
+    {
+        $blocked = $this->blockedPairMemberIds();
+
+        return Friendship::query()
+            ->accepted()
+            ->involving($this)
+            ->with(['low', 'high'])
+            ->get()
+            ->map(fn (Friendship $friendship) => $friendship->otherMember($this))
+            ->filter(fn (Member $other) => $other->is_active && ! $blocked->contains($other->getKey()))
+            ->map(fn (Member $other) => $other->getKey())
+            ->values();
+    }
+
+    public function unreadMessageCount(): int
+    {
+        return Message::query()
+            ->where('recipient_id', $this->getKey())
+            ->whereNull('read_at')
+            ->whereIn('sender_id', $this->messageableFriendIds())
+            ->count();
+    }
+
+    public function unreadMessageCountFrom(Member $other): int
+    {
+        if (! $this->messageableFriendIds()->contains($other->getKey())) {
+            return 0;
+        }
+
+        return Message::query()
+            ->where('recipient_id', $this->getKey())
+            ->where('sender_id', $other->getKey())
+            ->whereNull('read_at')
+            ->count();
+    }
+
     public function loginLinks(): HasMany
     {
         return $this->hasMany(MemberLoginLink::class);
