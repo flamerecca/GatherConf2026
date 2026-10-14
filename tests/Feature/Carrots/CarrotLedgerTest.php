@@ -7,6 +7,7 @@ use App\Models\CarrotTask;
 use App\Models\CarrotTransaction;
 use App\Models\Member;
 use DomainException;
+use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use InvalidArgumentException;
 use Tests\TestCase;
@@ -136,5 +137,25 @@ class CarrotLedgerTest extends TestCase
 
         $this->assertSame(32, strlen($a->code));
         $this->assertNotSame($a->code, $b->code);
+    }
+
+    public function test_a_zero_reward_is_skipped_without_reporting_an_error(): void
+    {
+        $handler = $this->spy(ExceptionHandler::class);
+        $member = Member::factory()->create();
+
+        $this->assertFalse(CarrotLedger::awardQuietly($member, 'x', 0, 'k'));
+
+        $handler->shouldNotHaveReceived('report');
+    }
+
+    public function test_a_balance_beyond_the_column_limit_is_refused(): void
+    {
+        $member = Member::factory()->create();
+        Member::query()->whereKey($member->id)->update(['carrots' => CarrotLedger::MAX_BALANCE]);
+
+        $this->expectException(DomainException::class);
+
+        CarrotLedger::award($member->fresh(), 'x', 1, 'k');
     }
 }

@@ -7,6 +7,7 @@ use App\Models\Member;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\URL;
 use Tests\TestCase;
 
 class FieldTaskTest extends TestCase
@@ -128,5 +129,21 @@ class FieldTaskTest extends TestCase
 
         $this->assertSame(3, $a->fresh()->carrots);
         $this->assertSame(3, $b->fresh()->carrots);
+    }
+
+    public function test_an_unverified_member_returns_to_the_task_after_verifying(): void
+    {
+        $member = Member::factory()->unverified()->create();
+        $task = CarrotTask::factory()->create();
+
+        $this->asMember($member)->get($task->completeUrl('zh_TW'))->assertRedirect();
+        $this->assertSame($task->completeUrl('zh_TW'), session('url.intended'));
+
+        $url = URL::temporarySignedRoute('member.verification.verify', now()->addMinutes(60), [
+            'id' => $member->id,
+            'hash' => sha1($member->email),
+        ]);
+
+        $this->get($url)->assertRedirect($task->completeUrl('zh_TW'));
     }
 }

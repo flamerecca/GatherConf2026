@@ -44,8 +44,10 @@ class EmailVerificationController extends MemberController
             event(new Verified($member));
         }
 
-        $destination = $this->guard()->check() ? 'member.center' : 'member.login';
+        if ($this->guard()->check()) {
+            return redirect()->intended($this->localizedRoute('member.center'))->with('status', __('member.verify.done'));
+        }
 
-        return redirect($this->localizedRoute($destination))->with('status', __('member.verify.done'));
+        return redirect($this->localizedRoute('member.login'))->with('status', __('member.verify.done'));
     }
 }

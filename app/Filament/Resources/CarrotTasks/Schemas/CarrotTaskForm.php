@@ -25,7 +25,8 @@ class CarrotTaskForm
                 ->required()
                 ->numeric()
                 ->integer()
-                ->minValue(1),
+                ->minValue(1)
+                ->maxValue(100000),
             Toggle::make('is_active')
                 ->label('啟用')
                 ->default(true),

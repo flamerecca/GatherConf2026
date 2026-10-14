@@ -142,4 +142,18 @@ class CarrotAdminTest extends TestCase
             ->assertCanSeeTableRecords($own)
             ->assertCanNotSeeTableRecords([$other]);
     }
+
+    public function test_huge_numbers_are_rejected_by_the_forms(): void
+    {
+        Livewire::test(CreateCarrotTask::class)
+            ->fillForm(['name' => 'x', 'reward' => 100001])
+            ->call('create')
+            ->assertHasFormErrors(['reward']);
+
+        $member = Member::factory()->create();
+
+        Livewire::test(ViewMember::class, ['record' => $member->getKey()])
+            ->callAction('adjustCarrots', ['amount' => 100001, 'note' => 'x'])
+            ->assertHasActionErrors(['amount']);
+    }
 }

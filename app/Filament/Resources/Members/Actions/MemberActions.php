@@ -74,6 +74,8 @@ class MemberActions
                     ->required()
                     ->numeric()
                     ->integer()
+                    ->minValue(-100000)
+                    ->maxValue(100000)
                     ->rules(['not_in:0']),
                 TextInput::make('note')
                     ->label('原因')

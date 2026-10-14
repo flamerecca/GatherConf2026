@@ -14,6 +14,10 @@ class EnsureMemberEmailIsVerified
         $member = Auth::guard('member')->user();
 
         if ($member !== null && ! $member->hasVerifiedEmail()) {
+            if ($request->isMethod('GET')) {
+                $request->session()->put('url.intended', $request->fullUrl());
+            }
+
             return redirect(route($request->is('en/*') ? 'member.verification.notice.en' : 'member.verification.notice'));
         }
 

@@ -16,6 +16,11 @@ final class CarrotLedger
     public const REASON_TASK = 'task';
 
     /**
+     * The largest balance the unsigned members.carrots column can hold.
+     */
+    public const MAX_BALANCE = 4294967295;
+
+    /**
      * @return array<string, int>
      */
     public static function siteRewards(): array
@@ -46,9 +51,15 @@ final class CarrotLedger
 
     /**
      * Same as award() but never lets a failure escape, for use inside other behaviours.
+     * A zero reward means the behaviour is switched off, so it is skipped without a report.
+     * Call it after the surrounding transaction has committed, not inside one.
      */
     public static function awardQuietly(Member $member, string $reason, int $amount, string $dedupeKey, ?CarrotTask $task = null): bool
     {
+        if ($amount <= 0) {
+            return false;
+        }
+
         try {
             return self::award($member, $reason, $amount, $dedupeKey, $task);
         } catch (Throwable $exception) {
@@ -95,6 +106,10 @@ final class CarrotLedger
 
             if ($balance < 0) {
                 throw new DomainException('Carrot balance cannot go below zero.');
+            }
+
+            if ($balance > self::MAX_BALANCE) {
+                throw new DomainException('Carrot balance is above the supported limit.');
             }
 
             $transaction = CarrotTransaction::query()->create([
