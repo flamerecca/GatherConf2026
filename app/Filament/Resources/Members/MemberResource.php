@@ -53,8 +53,8 @@ class MemberResource extends Resource
     public static function getRelations(): array
     {
         return [
-            CarrotTransactionsRelationManager::class,
             LoginLinksRelationManager::class,
+            CarrotTransactionsRelationManager::class,
         ];
     }
 

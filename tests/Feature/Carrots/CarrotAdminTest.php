@@ -129,8 +129,17 @@ class CarrotAdminTest extends TestCase
         $member = Member::factory()->create();
         CarrotLedger::adjust($member, 4, '補發');
 
+        $own = CarrotTransaction::query()->where('member_id', $member->id)->get();
+        $other = CarrotTransaction::factory()->create();
+
         Livewire::test(ViewMember::class, ['record' => $member->getKey()])
-            ->assertSee('胡蘿蔔')
-            ->assertSeeLivewire(CarrotTransactionsRelationManager::class);
+            ->assertSee('胡蘿蔔');
+
+        Livewire::test(CarrotTransactionsRelationManager::class, [
+            'ownerRecord' => $member,
+            'pageClass' => ViewMember::class,
+        ])
+            ->assertCanSeeTableRecords($own)
+            ->assertCanNotSeeTableRecords([$other]);
     }
 }
