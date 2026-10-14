@@ -13,8 +13,7 @@
         <x-member-field name="name" :label="__('member.fields.name')" autocomplete="name" required />
         <x-member-field name="email" type="email" :label="__('member.fields.email')" autocomplete="email" required />
         <x-member-field name="organization" :label="__('member.fields.organization')" autocomplete="organization" />
-        <x-member-field name="password" type="password" :label="__('member.fields.password')" autocomplete="new-password" required />
-        <x-member-field name="password_confirmation" type="password" :label="__('member.fields.password_confirmation')" autocomplete="new-password" required />
+        <p class="text-sm text-ink/70">{{ __('member.register.no_password_note') }}</p>
         <x-member-submit>{{ __('member.register.submit') }}</x-member-submit>
     </form>
     <p class="mt-6 text-sm">

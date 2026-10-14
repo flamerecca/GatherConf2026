@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\Member;
 
 use App\Http\Controllers\Controller;
+use App\Models\Member;
+use App\Models\MemberLoginLink;
+use App\Notifications\MemberLoginLinkNotification;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\RateLimiter;
 use Throwable;
 
 abstract class MemberController extends Controller
@@ -32,5 +36,24 @@ abstract class MemberController extends Controller
         } catch (Throwable $exception) {
             report($exception);
         }
+    }
+
+    protected function takeLinkQuota(string $email): void
+    {
+        $key = MemberLoginLink::throttleKey($email);
+
+        abort_if(RateLimiter::tooManyAttempts($key, MemberLoginLink::HOURLY_LIMIT), 429);
+
+        RateLimiter::hit($key, 3600);
+    }
+
+    protected function sendLoginLink(Member $member): void
+    {
+        $token = MemberLoginLink::issueFor($member);
+
+        $this->sendQuietly(fn () => $member->notify(
+            (new MemberLoginLinkNotification($this->localizedRoute('member.login.link.consume', ['token' => $token])))
+                ->locale(app()->getLocale()),
+        ));
     }
 }

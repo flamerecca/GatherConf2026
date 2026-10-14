@@ -110,6 +110,10 @@ return [
         'logout' => 'Log out',
     ],
     'register' => [
+        'no_password_note' => 'No password needed. We will email you a login link, and you can set a password after logging in.',
+        'sent_title' => 'Check your inbox | GatherConf 2026',
+        'sent_heading' => 'Check your inbox',
+        'sent_body' => 'If this email can be registered, a login link has been sent. Click it within 15 minutes.',
         'title' => 'Sign up | GatherConf 2026',
         'description' => 'Sign up as a GatherConf member.',
         'heading' => 'Sign up',

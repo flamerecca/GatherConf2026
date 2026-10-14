@@ -92,15 +92,11 @@ class MemberHardeningTest extends TestCase
     {
         $this->breakMailer();
 
-        $this->post('/register', [
-            'name' => '王小明',
-            'email' => 'new@example.com',
-            'password' => 'a-strong-pass',
-            'password_confirmation' => 'a-strong-pass',
-        ])->assertRedirect('/email/verify');
+        $this->post('/register', ['name' => '王小明', 'email' => 'new@example.com'])
+            ->assertRedirect('/register/sent');
 
         $this->assertDatabaseHas('members', ['email' => 'new@example.com']);
-        $this->assertAuthenticated('member');
+        $this->assertGuest('member');
     }
 
     public function test_link_request_gives_the_same_response_when_mail_fails(): void

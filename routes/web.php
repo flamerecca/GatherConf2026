@@ -67,6 +67,7 @@ foreach (['' => 'zh_TW', 'en' => 'en'] as $prefix => $locale) {
         Route::middleware('guest:member')->group(function () use ($s): void {
             Route::get('/register', [RegisterController::class, 'create'])->name('member.register'.$s);
             Route::post('/register', [RegisterController::class, 'store'])->middleware('throttle:member-guest')->name('member.register.store'.$s);
+            Route::get('/register/sent', [RegisterController::class, 'sent'])->name('member.register.sent'.$s);
             Route::get('/login', [LoginController::class, 'create'])->name('member.login'.$s);
             Route::post('/login', [LoginController::class, 'store'])->middleware('throttle:member-login')->name('member.login.store'.$s);
             Route::post('/login/link', [LoginLinkController::class, 'request'])->middleware('throttle:member-guest')->name('member.login.link.request'.$s);

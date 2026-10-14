@@ -3,13 +3,10 @@
 namespace App\Http\Controllers\Member;
 
 use App\Models\Member;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules\Password;
 
 class RegisterController extends MemberController
 {
@@ -24,23 +21,26 @@ class RegisterController extends MemberController
 
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('members', 'email')],
+            'email' => ['required', 'string', 'email', 'max:255'],
             'organization' => ['nullable', 'string', 'max:255'],
-            'password' => ['required', 'confirmed', Password::min(8)],
         ]);
 
-        $member = Member::query()->create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'organization' => $data['organization'] ?? null,
-            'password' => $data['password'],
-        ]);
+        $this->takeLinkQuota($data['email']);
 
-        $this->sendQuietly(fn () => event(new Registered($member)));
+        $member = Member::query()->createOrFirst(
+            ['email' => $data['email']],
+            ['name' => $data['name'], 'organization' => $data['organization'] ?? null, 'is_active' => true],
+        );
 
-        $this->guard()->login($member);
-        $request->session()->regenerate();
+        if ($member->is_active) {
+            $this->sendLoginLink($member);
+        }
 
-        return redirect($this->localizedRoute('member.verification.notice'));
+        return redirect($this->localizedRoute('member.register.sent'));
+    }
+
+    public function sent(): View
+    {
+        return view('member.register-sent');
     }
 }

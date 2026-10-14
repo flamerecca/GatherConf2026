@@ -4,11 +4,9 @@ namespace App\Http\Controllers\Member;
 
 use App\Models\Member;
 use App\Models\MemberLoginLink;
-use App\Notifications\MemberLoginLinkNotification;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 
 class LoginLinkController extends MemberController
@@ -18,21 +16,12 @@ class LoginLinkController extends MemberController
         $data = $request->validate(['email' => ['required', 'string', 'email']]);
         $email = Str::lower(trim($data['email']));
 
-        $key = MemberLoginLink::throttleKey($email);
-
-        abort_if(RateLimiter::tooManyAttempts($key, MemberLoginLink::HOURLY_LIMIT), 429);
-
-        RateLimiter::hit($key, 3600);
+        $this->takeLinkQuota($email);
 
         $member = Member::query()->where('email', $email)->where('is_active', true)->first();
 
         if ($member !== null) {
-            $token = MemberLoginLink::issueFor($member);
-
-            $this->sendQuietly(fn () => $member->notify(
-                (new MemberLoginLinkNotification($this->localizedRoute('member.login.link.consume', ['token' => $token])))
-                    ->locale(app()->getLocale()),
-            ));
+            $this->sendLoginLink($member);
         }
 
         return back()->with('link_status', __('member.login.link_sent'));

@@ -110,6 +110,10 @@ return [
         'logout' => '登出',
     ],
     'register' => [
+        'no_password_note' => '註冊不需要密碼，我們會寄一封登入連結到你的信箱，登入後可以再設定密碼。',
+        'sent_title' => '請到信箱查看 | 共聚年會 GatherConf 2026',
+        'sent_heading' => '請到信箱查看',
+        'sent_body' => '如果這個 Email 可以註冊，登入連結已經寄出，請到信箱點擊連結，連結 15 分鐘內有效。',
         'title' => '註冊會員 | 共聚年會 GatherConf 2026',
         'description' => '註冊成為共聚年會會員。',
         'heading' => '註冊會員',
