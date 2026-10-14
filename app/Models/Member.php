@@ -91,6 +91,7 @@ class Member extends Authenticatable implements MustVerifyEmail
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'is_active' => 'boolean',
+            'carrots' => 'integer',
         ];
     }
 
@@ -102,6 +103,11 @@ class Member extends Authenticatable implements MustVerifyEmail
     public function sendPasswordResetNotification($token): void
     {
         $this->notify(new ResetMemberPasswordNotification($token));
+    }
+
+    public function carrotTransactions(): HasMany
+    {
+        return $this->hasMany(CarrotTransaction::class);
     }
 
     public function hasBlocked(Member $other): bool
