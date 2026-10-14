@@ -19,6 +19,7 @@ class ViewMember extends ViewRecord
             MemberActions::activate(),
             MemberActions::markVerified(),
             MemberActions::sendLoginLink(),
+            MemberActions::adjustCarrots(),
         ];
     }
 }

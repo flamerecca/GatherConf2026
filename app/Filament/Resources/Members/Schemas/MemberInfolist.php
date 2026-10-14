@@ -24,6 +24,8 @@ class MemberInfolist
                 ->label('已設定密碼')
                 ->state(fn (Member $record): bool => $record->hasPassword())
                 ->boolean(),
+            TextEntry::make('carrots')
+                ->label('胡蘿蔔'),
             TextEntry::make('email_verified_at')
                 ->label('Email 驗證時間')
                 ->dateTime()

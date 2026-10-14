@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Members;
 use App\Filament\Resources\Members\Pages\EditMember;
 use App\Filament\Resources\Members\Pages\ListMembers;
 use App\Filament\Resources\Members\Pages\ViewMember;
+use App\Filament\Resources\Members\RelationManagers\CarrotTransactionsRelationManager;
 use App\Filament\Resources\Members\RelationManagers\LoginLinksRelationManager;
 use App\Filament\Resources\Members\Schemas\MemberForm;
 use App\Filament\Resources\Members\Schemas\MemberInfolist;
@@ -52,6 +53,7 @@ class MemberResource extends Resource
     public static function getRelations(): array
     {
         return [
+            CarrotTransactionsRelationManager::class,
             LoginLinksRelationManager::class,
         ];
     }

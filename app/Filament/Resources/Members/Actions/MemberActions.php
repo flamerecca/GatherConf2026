@@ -2,10 +2,13 @@
 
 namespace App\Filament\Resources\Members\Actions;
 
+use App\Models\CarrotLedger;
 use App\Models\Member;
 use App\Models\MemberLoginLink;
 use App\Notifications\MemberLoginLinkNotification;
+use DomainException;
 use Filament\Actions\Action;
+use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\RateLimiter;
@@ -56,6 +59,37 @@ class MemberActions
                 $record->forceFill(['email_verified_at' => now()])->save();
 
                 Notification::make()->title('已標記為已驗證')->success()->send();
+            });
+    }
+
+    public static function adjustCarrots(): Action
+    {
+        return Action::make('adjustCarrots')
+            ->label('調整胡蘿蔔')
+            ->icon(Heroicon::OutlinedGift)
+            ->modalHeading('調整胡蘿蔔')
+            ->schema([
+                TextInput::make('amount')
+                    ->label('數量，正數增加、負數扣除')
+                    ->required()
+                    ->numeric()
+                    ->integer()
+                    ->rules(['not_in:0']),
+                TextInput::make('note')
+                    ->label('原因')
+                    ->required()
+                    ->maxLength(255),
+            ])
+            ->action(function (array $data, Member $record): void {
+                try {
+                    CarrotLedger::adjust($record, (int) $data['amount'], $data['note'], auth()->id());
+                } catch (DomainException) {
+                    Notification::make()->title('扣除後胡蘿蔔會小於 0，未調整')->danger()->send();
+
+                    return;
+                }
+
+                Notification::make()->title('已調整胡蘿蔔')->success()->send();
             });
     }
 
