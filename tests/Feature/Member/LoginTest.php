@@ -39,6 +39,15 @@ class LoginTest extends TestCase
         $this->assertStringContainsString('rounded-full bg-moss', substr($page, $button, 240));
     }
 
+    public function test_the_prompt_comes_before_the_register_button_in_both_languages(): void
+    {
+        $this->get('/login')->assertOk()
+            ->assertSeeInOrder(['還沒有帳號？', 'href="'.route('member.register').'"'], false);
+
+        $this->get('/en/login')->assertOk()
+            ->assertSeeInOrder(['No account yet?', 'href="'.route('member.register.en').'"'], false);
+    }
+
     public function test_the_english_register_button_points_to_the_english_page(): void
     {
         $this->get('/en/login')->assertOk()

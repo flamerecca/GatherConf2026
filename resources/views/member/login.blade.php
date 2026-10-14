@@ -9,11 +9,11 @@
 @section('member_body')
     @php($s = app()->getLocale() === 'en' ? '.en' : '')
     <div class="mt-8 flex flex-wrap items-center gap-4">
+        <span class="text-sm text-ink/70">{{ __('member.login.register_prompt') }}</span>
         <a href="{{ route('member.register'.$s) }}"
            class="inline-block rounded-full bg-moss px-8 py-3 font-semibold text-on-accent shadow transition hover:bg-ink">
             {{ __('member.login.register_link') }}
         </a>
-        <span class="text-sm text-ink/70">{{ __('member.login.register_prompt') }}</span>
     </div>
     <form method="POST" action="{{ route('member.login.store'.$s) }}"
           class="mt-6 space-y-6 rounded-2xl border-4 border-moss/60 bg-parchment-dark p-6">
