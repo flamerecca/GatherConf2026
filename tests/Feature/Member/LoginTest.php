@@ -23,6 +23,30 @@ class LoginTest extends TestCase
         $this->get('/en/login')->assertOk()->assertSee('Log in')->assertSee('Send login link')->assertDontSee('會員登入');
     }
 
+    public function test_the_register_button_is_at_the_top_before_both_login_forms(): void
+    {
+        $page = $this->get('/login')->assertOk()->getContent();
+
+        $registerUrl = route('member.register');
+        $button = strpos($page, 'href="'.$registerUrl.'"');
+        $passwordForm = strpos($page, '<form method="POST" action="'.route('member.login.store').'"');
+        $linkForm = strpos($page, '<form method="POST" action="'.route('member.login.link.request').'"');
+
+        $this->assertNotFalse($button);
+        $this->assertLessThan($passwordForm, $button);
+        $this->assertLessThan($linkForm, $button);
+        $this->assertSame(1, substr_count($page, 'href="'.$registerUrl.'"'));
+        $this->assertStringContainsString('rounded-full bg-moss', substr($page, $button, 240));
+    }
+
+    public function test_the_english_register_button_points_to_the_english_page(): void
+    {
+        $this->get('/en/login')->assertOk()
+            ->assertSee('href="'.route('member.register.en').'"', false)
+            ->assertSee('Sign up')
+            ->assertDontSee('註冊會員');
+    }
+
     public function test_member_can_log_in_with_password(): void
     {
         $member = Member::factory()->create(['email' => 'm@example.com']);
