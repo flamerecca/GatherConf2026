@@ -2,6 +2,23 @@
 
 return [
     'balance' => '目前有 :count 根胡蘿蔔',
+    'list' => [
+        'title' => '任務與胡蘿蔔 | 共聚年會 GatherConf 2026',
+        'heading' => '任務與胡蘿蔔',
+        'site_heading' => '站上任務',
+        'field_heading' => '年會現場任務',
+        'field_intro' => '到年會現場掃描任務 QR Code，登入後就會自動獲得胡蘿蔔。',
+        'field_empty' => '目前沒有開放的現場任務。',
+        'done' => '已完成',
+        'todo' => '未完成',
+    ],
+    'site' => [
+        'verify_email' => ['name' => '驗證 Email', 'description' => '完成 Email 驗證。'],
+        'set_password' => ['name' => '設定密碼', 'description' => '第一次為帳號設定密碼。'],
+        'complete_quiz' => ['name' => '完成人格測驗', 'description' => '第一次完成人格測驗。'],
+        'first_friend' => ['name' => '交到第一位好友', 'description' => '和另一位會員互相成為好友。'],
+        'first_message' => ['name' => '傳出第一則訊息', 'description' => '傳訊息給你的好友。'],
+    ],
     'result' => [
         'title' => '任務結果 | 共聚年會 GatherConf 2026',
         'heading' => '任務結果',

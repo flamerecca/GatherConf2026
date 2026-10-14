@@ -1,0 +1,117 @@
+<?php
+
+namespace Tests\Feature\Carrots;
+
+use App\Models\CarrotLedger;
+use App\Models\CarrotTask;
+use App\Models\Member;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Auth;
+use Tests\TestCase;
+
+class TaskListTest extends TestCase
+{
+    use RefreshDatabase;
+
+    private function asMember(Member $member): static
+    {
+        Auth::forgetGuards();
+
+        return $this->actingAs($member, 'member');
+    }
+
+    public function test_the_list_shows_every_site_behaviour_with_its_reward(): void
+    {
+        $member = Member::factory()->create();
+
+        $response = $this->asMember($member)->get(route('member.tasks'))->assertOk();
+
+        foreach (config('carrots.site') as $code => $reward) {
+            $response->assertSee(__("carrots.site.$code.name"), false)
+                ->assertSee(__("carrots.site.$code.description"), false)
+                ->assertSee('data-site-task="'.$code.'"', false)
+                ->assertSee('data-reward="'.$reward.'"', false);
+        }
+    }
+
+    public function test_done_and_todo_states_follow_the_ledger(): void
+    {
+        $member = Member::factory()->unverified()->create();
+        $member->markEmailAsVerified();
+
+        $this->asMember($member->fresh())->get(route('member.tasks'))
+            ->assertSee('data-site-task="verify_email" data-state="done"', false)
+            ->assertSee('data-site-task="set_password" data-state="todo"', false);
+    }
+
+    public function test_only_open_field_tasks_are_listed_and_their_code_is_never_shown(): void
+    {
+        $member = Member::factory()->create();
+        $open = CarrotTask::factory()->create(['name' => '攤位打卡', 'description' => '到攤位掃描']);
+        $closed = [
+            CarrotTask::factory()->inactive()->create(['name' => '停用任務']),
+            CarrotTask::factory()->notStarted()->create(['name' => '未開始任務']),
+            CarrotTask::factory()->ended()->create(['name' => '已結束任務']),
+        ];
+
+        $response = $this->asMember($member)->get(route('member.tasks'))
+            ->assertOk()
+            ->assertSee('攤位打卡')
+            ->assertSee('到攤位掃描')
+            ->assertDontSee($open->code)
+            ->assertDontSee('/member/tasks/'.$open->code);
+
+        foreach ($closed as $task) {
+            $response->assertDontSee($task->name)->assertDontSee($task->code);
+        }
+    }
+
+    public function test_a_field_task_shows_done_after_scanning(): void
+    {
+        $member = Member::factory()->create();
+        $task = CarrotTask::factory()->create();
+
+        $this->asMember($member)->get($task->completeUrl('zh_TW'));
+
+        $this->asMember($member)->get(route('member.tasks'))
+            ->assertSee('data-field-task="'.$task->id.'" data-state="done"', false);
+    }
+
+    public function test_the_header_shows_the_total(): void
+    {
+        $member = Member::factory()->create();
+        CarrotLedger::adjust($member, 7, '測試');
+
+        $this->asMember($member->fresh())->get(route('member.tasks'))
+            ->assertSee('data-carrots="7"', false);
+    }
+
+    public function test_guests_and_unverified_members_are_redirected(): void
+    {
+        $this->get(route('member.tasks'))->assertRedirect(route('member.login'));
+
+        $this->asMember(Member::factory()->unverified()->create())
+            ->get(route('member.tasks'))
+            ->assertRedirect(route('member.verification.notice'));
+    }
+
+    public function test_the_english_list_is_in_english_and_noindex(): void
+    {
+        $member = Member::factory()->create();
+
+        $this->asMember($member)->get(route('member.tasks.en'))
+            ->assertOk()
+            ->assertSee(trans('carrots.list.heading', [], 'en'), false)
+            ->assertSee('noindex', false);
+    }
+
+    public function test_the_member_center_links_to_the_list_with_the_total(): void
+    {
+        $member = Member::factory()->create();
+        CarrotLedger::adjust($member, 3, '測試');
+
+        $this->asMember($member->fresh())->get(route('member.center'))
+            ->assertSee('data-carrots="3"', false)
+            ->assertSee(route('member.tasks'), false);
+    }
+}

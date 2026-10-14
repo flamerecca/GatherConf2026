@@ -40,6 +40,11 @@
         <p data-unread-messages="{{ $unreadMessages }}" class="text-sm text-ink/80">
             {{ __('member.center.unread_messages') }}：{{ $unreadMessages }}
         </p>
+        <a href="{{ route('member.tasks'.(app()->getLocale() === 'en' ? '.en' : '')) }}"
+           data-carrots="{{ $member->carrots }}"
+           class="block font-semibold text-moss underline underline-offset-4">
+            🥕 {{ __('carrots.balance', ['count' => $member->carrots]) }} · {{ __('carrots.list.heading') }}
+        </a>
         <form method="POST" action="{{ route('member.logout'.(app()->getLocale() === 'en' ? '.en' : '')) }}">
             @csrf
             <x-member-submit>{{ __('member.center.logout') }}</x-member-submit>
