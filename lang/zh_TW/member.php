@@ -1,6 +1,17 @@
 <?php
 
 return [
+    'password' => [
+        'set_title' => '設定密碼 | 共聚年會 GatherConf 2026',
+        'change_title' => '變更密碼 | 共聚年會 GatherConf 2026',
+        'set_heading' => '設定密碼',
+        'change_heading' => '變更密碼',
+        'set_intro' => '你還沒有設定密碼，設定後就可以用 Email 與密碼登入。',
+        'current' => '目前的密碼',
+        'current_wrong' => '目前的密碼不正確。',
+        'submit' => '儲存密碼',
+        'saved' => '密碼已儲存。',
+    ],
     'messages' => [
         'title' => '與 :name 的訊息 | 共聚年會 GatherConf 2026',
         'heading' => '與 :name 的訊息',

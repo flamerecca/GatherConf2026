@@ -1,6 +1,17 @@
 <?php
 
 return [
+    'password' => [
+        'set_title' => 'Set a password | GatherConf 2026',
+        'change_title' => 'Change password | GatherConf 2026',
+        'set_heading' => 'Set a password',
+        'change_heading' => 'Change password',
+        'set_intro' => 'You have not set a password yet. Once you do, you can log in with your email and password.',
+        'current' => 'Current password',
+        'current_wrong' => 'The current password is incorrect.',
+        'submit' => 'Save password',
+        'saved' => 'Your password has been saved.',
+    ],
     'messages' => [
         'title' => 'Messages with :name | GatherConf 2026',
         'heading' => 'Messages with :name',
