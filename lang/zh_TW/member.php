@@ -1,6 +1,18 @@
 <?php
 
 return [
+    'messages' => [
+        'title' => '與 :name 的訊息 | 共聚年會 GatherConf 2026',
+        'heading' => '與 :name 的訊息',
+        'privacy' => '訊息可能因管理與檢舉處理而由管理者檢視。',
+        'empty' => '還沒有訊息，傳一則打聲招呼吧。',
+        'placeholder' => '輸入訊息，最多 1000 個字',
+        'send' => '傳送',
+        'read' => '已讀',
+        'older' => '載入更早的訊息',
+        'me' => '我',
+        'back' => '回到我的好友',
+    ],
     'friends' => [
         'title' => '我的好友 | 共聚年會 GatherConf 2026',
         'heading' => '我的好友',

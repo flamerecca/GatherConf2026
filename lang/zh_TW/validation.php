@@ -23,5 +23,6 @@ return [
         'email' => 'Email',
         'password' => '密碼',
         'organization' => '所屬社群或公司',
+        'body' => '訊息',
     ],
 ];

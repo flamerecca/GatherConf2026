@@ -1,6 +1,18 @@
 <?php
 
 return [
+    'messages' => [
+        'title' => 'Messages with :name | GatherConf 2026',
+        'heading' => 'Messages with :name',
+        'privacy' => 'Messages may be viewed by administrators for moderation and reports.',
+        'empty' => 'No messages yet. Say hello.',
+        'placeholder' => 'Type a message, up to 1000 characters',
+        'send' => 'Send',
+        'read' => 'Read',
+        'older' => 'Load earlier messages',
+        'me' => 'Me',
+        'back' => 'Back to my friends',
+    ],
     'friends' => [
         'title' => 'My friends | GatherConf 2026',
         'heading' => 'My friends',
