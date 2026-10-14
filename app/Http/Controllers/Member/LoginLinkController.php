@@ -55,6 +55,6 @@ class LoginLinkController extends MemberController
         $this->guard()->login($member);
         $request->session()->regenerate();
 
-        return redirect($this->localizedRoute('member.center'));
+        return redirect()->intended($this->localizedRoute('member.center'));
     }
 }

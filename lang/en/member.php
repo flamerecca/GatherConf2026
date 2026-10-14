@@ -92,6 +92,7 @@ return [
         'welcome' => 'Hi, :name',
         'organization' => 'Community or company',
         'not_set' => 'Not set',
+        'friends' => 'My friends',
         'logout' => 'Log out',
     ],
     'register' => [

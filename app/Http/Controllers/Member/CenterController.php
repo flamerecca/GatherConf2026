@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Member;
 
+use App\Models\Friendship;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 
@@ -15,6 +16,16 @@ class CenterController extends MemberController
             return redirect($this->localizedRoute('member.verification.notice'));
         }
 
-        return view('member.center', ['member' => $member]);
+        return view('member.center', [
+            'member' => $member,
+            'pendingInvitations' => Friendship::query()
+                ->pending()
+                ->involving($member)
+                ->where('requester_id', '!=', $member->getKey())
+                ->with(['low', 'high'])
+                ->get()
+                ->filter(fn (Friendship $friendship) => $friendship->otherMember($member)->is_active)
+                ->count(),
+        ]);
     }
 }

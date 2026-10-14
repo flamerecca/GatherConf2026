@@ -19,6 +19,14 @@
                 <dd class="text-ink/80">{{ $member->organization ?? __('member.center.not_set') }}</dd>
             </div>
         </dl>
+        <a href="{{ route('member.friends'.(app()->getLocale() === 'en' ? '.en' : '')) }}"
+           data-pending-invitations="{{ $pendingInvitations }}"
+           class="inline-flex items-center gap-2 font-semibold text-moss underline underline-offset-4">
+            {{ __('member.center.friends') }}
+            @if ($pendingInvitations > 0)
+                <span class="rounded-full bg-moss px-2 py-0.5 text-xs text-on-accent">{{ $pendingInvitations }}</span>
+            @endif
+        </a>
         <form method="POST" action="{{ route('member.logout'.(app()->getLocale() === 'en' ? '.en' : '')) }}">
             @csrf
             <x-member-submit>{{ __('member.center.logout') }}</x-member-submit>

@@ -92,6 +92,7 @@ return [
         'welcome' => '嗨，:name',
         'organization' => '所屬社群或公司',
         'not_set' => '未填寫',
+        'friends' => '我的好友',
         'logout' => '登出',
     ],
     'register' => [
