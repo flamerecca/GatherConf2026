@@ -23,6 +23,10 @@ return new class extends Migration
         });
 
         Schema::table('quiz_attempts', function (Blueprint $table) {
+            $table->uuid('user_id')->nullable()->change();
+        });
+
+        Schema::table('quiz_attempts', function (Blueprint $table) {
             $table->foreign('user_id')->references('id')->on('members')->nullOnDelete();
         });
     }
@@ -34,6 +38,10 @@ return new class extends Migration
     {
         Schema::table('quiz_attempts', function (Blueprint $table) {
             $table->dropForeign(['user_id']);
+        });
+
+        Schema::table('quiz_attempts', function (Blueprint $table) {
+            $table->unsignedBigInteger('user_id')->nullable()->change();
         });
 
         Schema::table('quiz_attempts', function (Blueprint $table) {

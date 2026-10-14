@@ -8,6 +8,7 @@ use Database\Factories\MemberFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -20,7 +21,7 @@ use Illuminate\Support\Str;
 class Member extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<MemberFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, HasUuids, Notifiable;
 
     protected static function booted(): void
     {
@@ -83,7 +84,7 @@ class Member extends Authenticatable implements MustVerifyEmail
     /**
      * Ids of members this member has blocked or who have blocked this member.
      *
-     * @return Collection<int, int>
+     * @return Collection<int, string>
      */
     public function blockedPairMemberIds(): Collection
     {
@@ -92,7 +93,7 @@ class Member extends Authenticatable implements MustVerifyEmail
             ->orWhere('blocked_id', $this->getKey())
             ->get(['blocker_id', 'blocked_id'])
             ->flatMap(fn (MemberBlock $block) => [$block->blocker_id, $block->blocked_id])
-            ->reject(fn (int $id) => $id === $this->getKey())
+            ->reject(fn (string $id) => $id === $this->getKey())
             ->unique()
             ->values();
     }
@@ -135,7 +136,7 @@ class Member extends Authenticatable implements MustVerifyEmail
     /**
      * Ids of active, unblocked members who are accepted friends.
      *
-     * @return Collection<int, int>
+     * @return Collection<int, string>
      */
     public function messageableFriendIds(): Collection
     {

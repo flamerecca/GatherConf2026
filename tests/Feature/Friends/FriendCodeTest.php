@@ -6,6 +6,7 @@ use App\Models\Member;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class FriendCodeTest extends TestCase
@@ -57,8 +58,8 @@ class FriendCodeTest extends TestCase
         $migration->down();
 
         DB::table('members')->insert([
-            ['name' => 'A', 'email' => 'a@example.com', 'password' => 'x', 'is_active' => true, 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'B', 'email' => 'b@example.com', 'password' => 'x', 'is_active' => true, 'created_at' => now(), 'updated_at' => now()],
+            ['id' => (string) Str::uuid7(), 'name' => 'A', 'email' => 'a@example.com', 'password' => 'x', 'is_active' => true, 'created_at' => now(), 'updated_at' => now()],
+            ['id' => (string) Str::uuid7(), 'name' => 'B', 'email' => 'b@example.com', 'password' => 'x', 'is_active' => true, 'created_at' => now(), 'updated_at' => now()],
         ]);
 
         $migration->up();

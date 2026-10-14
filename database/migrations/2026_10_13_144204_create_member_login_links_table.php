@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('member_login_links', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('member_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('member_id')->constrained('members')->cascadeOnDelete();
             $table->string('token_hash')->unique();
             $table->timestamp('expires_at');
             $table->timestamp('used_at')->nullable();

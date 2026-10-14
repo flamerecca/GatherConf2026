@@ -7,6 +7,7 @@ use App\Models\Member;
 use App\Models\MemberBlock;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class FriendHardeningTest extends TestCase
@@ -28,6 +29,7 @@ class FriendHardeningTest extends TestCase
         $now = now()->toDateTimeString();
         collect(range(1, 1200))->chunk(200)->each(function ($chunk) use ($now): void {
             DB::table('members')->insert($chunk->map(fn (int $i) => [
+                'id' => (string) Str::uuid7(),
                 'name' => "Member {$i}",
                 'email' => "member{$i}@example.com",
                 'password' => 'x',

@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('friendships', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('member_low_id')->constrained('members')->cascadeOnDelete();
-            $table->foreignId('member_high_id')->constrained('members')->cascadeOnDelete();
-            $table->foreignId('requester_id')->constrained('members')->cascadeOnDelete();
+            $table->foreignUuid('member_low_id')->constrained('members')->cascadeOnDelete();
+            $table->foreignUuid('member_high_id')->constrained('members')->cascadeOnDelete();
+            $table->foreignUuid('requester_id')->constrained('members')->cascadeOnDelete();
             $table->string('status')->default('pending');
             $table->timestamp('responded_at')->nullable();
             $table->timestamps();

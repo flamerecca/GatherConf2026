@@ -32,7 +32,7 @@ class EmailVerificationController extends MemberController
         return back()->with('status', __('member.verify.resent'));
     }
 
-    public function verify(Request $request, int $id, string $hash): RedirectResponse
+    public function verify(Request $request, string $id, string $hash): RedirectResponse
     {
         $member = Member::query()->findOrFail($id);
 

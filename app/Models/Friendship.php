@@ -59,11 +59,11 @@ class Friendship extends Model
     }
 
     /**
-     * @return array{0: int, 1: int}
+     * @return array{0: string, 1: string}
      */
-    public static function orderedIds(int $a, int $b): array
+    public static function orderedIds(string $a, string $b): array
     {
-        return $a < $b ? [$a, $b] : [$b, $a];
+        return strcmp($a, $b) < 0 ? [$a, $b] : [$b, $a];
     }
 
     public static function between(Member $a, Member $b): ?self
