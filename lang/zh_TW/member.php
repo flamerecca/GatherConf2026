@@ -118,6 +118,12 @@ return [
         'link_invalid' => '這個登入連結已失效，請重新要求一個。',
     ],
     'mail' => [
+        'message' => [
+            'subject' => '你收到一則新訊息',
+            'intro' => ':name 在 GatherConf 傳了一則新訊息給你。',
+            'action' => '查看訊息',
+            'outro' => '為了保護隱私，信中不會顯示訊息內容。',
+        ],
         'login_link' => [
             'subject' => '你的 GatherConf 登入連結',
             'intro' => '請點擊下方按鈕登入，連結 15 分鐘內有效，只能使用一次。',

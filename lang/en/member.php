@@ -118,6 +118,12 @@ return [
         'link_invalid' => 'This login link is no longer valid. Please request a new one.',
     ],
     'mail' => [
+        'message' => [
+            'subject' => 'You have a new message',
+            'intro' => ':name sent you a new message on GatherConf.',
+            'action' => 'View message',
+            'outro' => 'To protect your privacy, the message content is not shown in this email.',
+        ],
         'login_link' => [
             'subject' => 'Your GatherConf login link',
             'intro' => 'Click the button below to log in. The link is valid for 15 minutes and can be used once.',
