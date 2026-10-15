@@ -142,7 +142,7 @@ return [
 
     'admin_emails' => array_values(array_filter(array_map(
         'trim',
-        explode(',', (string) env('ADMIN_EMAILS', 'flamerecca711@gmail.com')),
+        explode(',', (string) env('ADMIN_EMAILS', 'flamerecca711@gmail.com,contact@mg.gatherconf.net')),
     ))),
 
     'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),

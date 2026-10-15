@@ -20,6 +20,13 @@ class AdminPanelAccessTest extends TestCase
         $this->actingAs($admin)->get('/admin')->assertOk();
     }
 
+    public function test_the_contact_mailbox_can_access_the_panel(): void
+    {
+        $admin = User::factory()->create(['email' => 'contact@mg.gatherconf.net']);
+
+        $this->assertTrue($admin->canAccessPanel(Filament::getPanel('admin')));
+    }
+
     public function test_email_comparison_ignores_case(): void
     {
         $admin = User::factory()->create(['email' => 'FlameRecca711@Gmail.com']);
