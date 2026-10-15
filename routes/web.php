@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Member\BlockController;
 use App\Http\Controllers\Member\CarrotTaskController;
+use App\Http\Controllers\Member\BottleController;
 use App\Http\Controllers\Member\CenterController;
 use App\Http\Controllers\Member\EmailVerificationController;
 use App\Http\Controllers\Member\FriendController;
@@ -102,6 +103,13 @@ foreach (['' => 'zh_TW', 'en' => 'en'] as $prefix => $locale) {
             Route::post('/messages/{friendship}', [MessageController::class, 'store'])->middleware('throttle:member-message')->name('member.messages.store'.$s);
             Route::get('/member/tasks', [CarrotTaskController::class, 'index'])->name('member.tasks'.$s);
             Route::get('/member/tasks/{code}', [CarrotTaskController::class, 'complete'])->middleware('throttle:member-task')->name('member.tasks.complete'.$s);
+            Route::get('/member/bottles', [BottleController::class, 'index'])->name('member.bottles'.$s);
+            Route::get('/member/bottles/new', [BottleController::class, 'create'])->name('member.bottles.create'.$s);
+            Route::post('/member/bottles', [BottleController::class, 'store'])->middleware('throttle:member-bottle')->name('member.bottles.store'.$s);
+            Route::post('/member/bottles/pick', [BottleController::class, 'pick'])->middleware('throttle:member-bottle')->name('member.bottles.pick'.$s);
+            Route::get('/member/bottles/{bottle}', [BottleController::class, 'show'])->name('member.bottles.show'.$s);
+            Route::post('/member/bottles/{bottle}/reply', [BottleController::class, 'reply'])->middleware('throttle:member-bottle')->name('member.bottles.reply'.$s);
+            Route::post('/member/bottles/{bottle}/report', [BottleController::class, 'report'])->middleware('throttle:member-bottle')->name('member.bottles.report'.$s);
         });
 
         Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])

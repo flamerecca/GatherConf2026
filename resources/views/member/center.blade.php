@@ -45,6 +45,11 @@
            class="block font-semibold text-moss underline underline-offset-4">
             🥕 {{ __('carrots.balance', ['count' => $member->carrots]) }} · {{ __('carrots.list.heading') }}
         </a>
+        <a href="{{ route('member.bottles'.(app()->getLocale() === 'en' ? '.en' : '')) }}"
+           data-bottle-holding="{{ \App\Models\DriftBottle::heldCount($member) }}"
+           class="block font-semibold text-moss underline underline-offset-4">
+            {{ __('bottles.index.heading') }}
+        </a>
         <form method="POST" action="{{ route('member.logout'.(app()->getLocale() === 'en' ? '.en' : '')) }}">
             @csrf
             <x-member-submit>{{ __('member.center.logout') }}</x-member-submit>
