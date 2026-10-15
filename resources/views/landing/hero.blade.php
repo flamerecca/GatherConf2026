@@ -4,6 +4,18 @@
            class="text-sm font-medium underline-offset-4 hover:underline">
             {{ __('landing.conduct_link') }}
         </a>
+        @php($isEn = app()->getLocale() === 'en')
+        @auth('member')
+            <a href="{{ $isEn ? route('member.center.en') : route('member.center') }}"
+               class="rounded-full bg-moss px-4 py-2 text-sm font-medium text-on-accent transition hover:bg-ink">
+                {{ __('landing.member_center_link') }}
+            </a>
+        @else
+            <a href="{{ $isEn ? route('member.login.en') : route('member.login') }}"
+               class="rounded-full bg-moss px-4 py-2 text-sm font-medium text-on-accent transition hover:bg-ink">
+                {{ __('landing.member_login_link') }}
+            </a>
+        @endauth
         <x-theme-toggle />
         <a href="{{ app()->getLocale() === 'en' ? route('landing') : route('landing.en') }}"
            class="rounded-full border border-ink/30 px-4 py-2 text-sm font-medium transition hover:bg-ink hover:text-parchment">
