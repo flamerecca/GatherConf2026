@@ -9,3 +9,4 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 Schedule::command('member-login-links:prune')->daily();
+Schedule::command('drift-bottles:release')->hourly();
