@@ -274,4 +274,63 @@ class DriftBottleModelTest extends TestCase
 
         $this->assertNull(DriftBottle::query()->find($bottle->id));
     }
+
+    public function test_a_stale_release_does_not_strip_an_opened_bottle(): void
+    {
+        $recipient = Member::factory()->create();
+        $bottle = DriftBottle::factory()->create([
+            'recipient_id' => $recipient->id,
+            'assigned_at' => now()->subHours(25),
+        ]);
+        $stale = DriftBottle::query()->findOrFail($bottle->id);
+
+        DriftBottle::query()->whereKey($bottle->id)->update(['opened_at' => now()]);
+        $stale->release();
+
+        $fresh = $bottle->fresh();
+        $this->assertSame($recipient->id, $fresh->recipient_id);
+        $this->assertSame('opened', $fresh->status());
+    }
+
+    public function test_open_does_not_apply_after_the_bottle_was_released(): void
+    {
+        $recipient = Member::factory()->create();
+        $bottle = DriftBottle::factory()->create(['recipient_id' => $recipient->id, 'assigned_at' => now()]);
+        $stale = DriftBottle::query()->findOrFail($bottle->id);
+
+        DriftBottle::query()->whereKey($bottle->id)->update(['recipient_id' => null, 'assigned_at' => null]);
+        $stale->open($recipient);
+
+        $this->assertNull($bottle->fresh()->opened_at);
+    }
+
+    public function test_dismissing_one_report_keeps_the_bottle_hidden_while_others_stand(): void
+    {
+        $bottle = DriftBottle::factory()->create(['removed_at' => now()]);
+        $confirmed = DriftBottleReport::factory()->create(['bottle_id' => $bottle->id]);
+        $dismissed = DriftBottleReport::factory()->create(['bottle_id' => $bottle->id]);
+
+        $confirmed->review(DriftBottleReport::OUTCOME_VIOLATION, 1);
+        $dismissed->review(DriftBottleReport::OUTCOME_DISMISSED, 1);
+
+        $this->assertNotNull($bottle->fresh()->removed_at);
+    }
+
+    public function test_dismissing_the_only_report_restores_the_bottle(): void
+    {
+        $bottle = DriftBottle::factory()->create(['removed_at' => now()]);
+        $report = DriftBottleReport::factory()->create(['bottle_id' => $bottle->id]);
+
+        $report->review(DriftBottleReport::OUTCOME_DISMISSED, 1);
+
+        $this->assertNull($bottle->fresh()->removed_at);
+    }
+
+    public function test_pick_works_when_released_recipient_ids_is_null(): void
+    {
+        $bottle = DriftBottle::factory()->create();
+        DriftBottle::query()->whereKey($bottle->id)->update(['released_recipient_ids' => null]);
+
+        $this->assertNotNull(DriftBottle::pick(Member::factory()->create()));
+    }
 }

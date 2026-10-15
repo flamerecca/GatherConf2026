@@ -24,8 +24,9 @@ class ReleaseDriftBottles extends Command
             ->whereNull('removed_at')
             ->where('assigned_at', '<', now()->subHours(DriftBottle::RELEASE_AFTER_HOURS))
             ->each(function (DriftBottle $bottle) use (&$released): void {
-                $bottle->release();
-                $released++;
+                if ($bottle->release()) {
+                    $released++;
+                }
             });
 
         $this->info("Released {$released} drift bottles.");

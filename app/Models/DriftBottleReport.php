@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\DB;
 
 #[Fillable(['bottle_id', 'reporter_id', 'target', 'reason'])]
 class DriftBottleReport extends Model
@@ -44,14 +45,39 @@ class DriftBottleReport extends Model
         return $this->reviewed_at === null;
     }
 
-    public function review(string $outcome, ?int $by): void
+    /**
+     * Record the outcome. A dismissal only restores the content when no other report still stands.
+     */
+    public function review(string $outcome, ?int $by): bool
     {
-        $this->forceFill(['outcome' => $outcome, 'reviewed_by' => $by, 'reviewed_at' => now()])->save();
+        return DB::transaction(function () use ($outcome, $by): bool {
+            $current = static::query()->whereKey($this->getKey())->lockForUpdate()->first();
 
-        if ($outcome === self::OUTCOME_DISMISSED) {
-            $this->target === DriftBottle::TARGET_BOTTLE
-                ? $this->bottle->restoreBottle()
-                : $this->bottle->restoreReply();
-        }
+            if ($current === null || $current->reviewed_at !== null) {
+                return false;
+            }
+
+            $this->forceFill(['outcome' => $outcome, 'reviewed_by' => $by, 'reviewed_at' => now()])->save();
+
+            if ($outcome === self::OUTCOME_DISMISSED && ! $this->otherReportsStand()) {
+                $this->target === DriftBottle::TARGET_BOTTLE
+                    ? $this->bottle->restoreBottle()
+                    : $this->bottle->restoreReply();
+            }
+
+            return true;
+        });
+    }
+
+    private function otherReportsStand(): bool
+    {
+        return static::query()
+            ->where('bottle_id', $this->bottle_id)
+            ->where('target', $this->target)
+            ->whereKeyNot($this->getKey())
+            ->where(fn ($query) => $query
+                ->whereNull('reviewed_at')
+                ->orWhere('outcome', self::OUTCOME_VIOLATION))
+            ->exists();
     }
 }

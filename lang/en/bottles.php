@@ -54,6 +54,7 @@ return [
         'holding' => 'You have too many unopened bottles. Open them before picking another.',
         'pick_limit' => 'You have picked too many bottles today. Come back tomorrow.',
         'cannot_reply' => 'This bottle cannot be replied to.',
+        'cannot_report' => 'This cannot be reported, it may already have been reported.',
     ],
     'flash' => [
         'thrown' => 'Your bottle is on its way.',

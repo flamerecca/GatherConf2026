@@ -54,6 +54,7 @@ return [
         'holding' => '你有太多還沒開啟的瓶子，先看完再撿。',
         'pick_limit' => '今天撿了太多次，明天再來吧。',
         'cannot_reply' => '這個瓶子無法回覆。',
+        'cannot_report' => '無法檢舉，可能已經檢舉過了。',
     ],
     'flash' => [
         'thrown' => '瓶子已經丟出去了。',

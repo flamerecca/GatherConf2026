@@ -98,18 +98,21 @@ class DriftBottleAdminTest extends TestCase
 
     public function test_a_report_can_be_confirmed_or_dismissed(): void
     {
-        $bottle = DriftBottle::factory()->create(['removed_at' => now()]);
-        $confirmed = DriftBottleReport::factory()->create(['bottle_id' => $bottle->id]);
-        $dismissed = DriftBottleReport::factory()->create(['bottle_id' => $bottle->id]);
+        $confirmedBottle = DriftBottle::factory()->create(['removed_at' => now()]);
+        $dismissedBottle = DriftBottle::factory()->create(['removed_at' => now()]);
+        $confirmed = DriftBottleReport::factory()->create(['bottle_id' => $confirmedBottle->id]);
+        $dismissed = DriftBottleReport::factory()->create(['bottle_id' => $dismissedBottle->id]);
 
-        Livewire::test(ReportsRelationManager::class, ['ownerRecord' => $bottle, 'pageClass' => ViewDriftBottle::class])
-            ->callAction(TestAction::make('confirmViolation')->table($confirmed))
+        Livewire::test(ReportsRelationManager::class, ['ownerRecord' => $confirmedBottle, 'pageClass' => ViewDriftBottle::class])
+            ->callAction(TestAction::make('confirmViolation')->table($confirmed));
+        Livewire::test(ReportsRelationManager::class, ['ownerRecord' => $dismissedBottle, 'pageClass' => ViewDriftBottle::class])
             ->callAction(TestAction::make('dismiss')->table($dismissed));
 
         $this->assertSame('violation', $confirmed->fresh()->outcome);
         $this->assertNotNull($confirmed->fresh()->reviewed_at);
+        $this->assertNotNull($confirmedBottle->fresh()->removed_at);
         $this->assertSame('dismissed', $dismissed->fresh()->outcome);
-        $this->assertNull($bottle->fresh()->removed_at);
+        $this->assertNull($dismissedBottle->fresh()->removed_at);
     }
 
     public function test_the_resource_is_read_only(): void

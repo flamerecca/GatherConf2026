@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Member;
 
 use App\Models\DriftBottle;
+use App\Models\Member;
 use App\Notifications\DriftBottleReceivedNotification;
 use App\Notifications\DriftBottleRepliedNotification;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
 
@@ -43,11 +45,13 @@ class BottleController extends MemberController
             'agree_conduct' => ['accepted'],
         ]);
 
-        if (DriftBottle::throwsToday($me) >= DriftBottle::DAILY_THROW_LIMIT) {
-            throw ValidationException::withMessages(['body' => __('bottles.errors.daily_limit')]);
-        }
+        $bottle = $this->serialized($me, function () use ($me, $data): DriftBottle {
+            if (DriftBottle::throwsToday($me) >= DriftBottle::DAILY_THROW_LIMIT) {
+                throw ValidationException::withMessages(['body' => __('bottles.errors.daily_limit')]);
+            }
 
-        $bottle = DriftBottle::throwFrom($me, $data['body']);
+            return DriftBottle::throwFrom($me, $data['body']);
+        });
 
         if ($bottle->recipient !== null) {
             $this->notifyReceived($bottle);
@@ -60,21 +64,31 @@ class BottleController extends MemberController
     {
         $me = $this->guard()->user();
 
-        if (DriftBottle::heldCount($me) >= DriftBottle::HOLD_LIMIT) {
-            throw ValidationException::withMessages(['pick' => __('bottles.errors.holding')]);
-        }
+        $bottle = $this->serialized($me, function () use ($me): ?DriftBottle {
+            if (DriftBottle::heldCount($me) >= DriftBottle::HOLD_LIMIT) {
+                throw ValidationException::withMessages(['pick' => __('bottles.errors.holding')]);
+            }
 
-        if (RateLimiter::tooManyAttempts(DriftBottle::pickKey($me), DriftBottle::DAILY_PICK_LIMIT)) {
-            throw ValidationException::withMessages(['pick' => __('bottles.errors.pick_limit')]);
-        }
+            $key = DriftBottle::pickKey($me);
 
-        $bottle = DriftBottle::pick($me);
+            if (RateLimiter::tooManyAttempts($key, DriftBottle::DAILY_PICK_LIMIT)) {
+                throw ValidationException::withMessages(['pick' => __('bottles.errors.pick_limit')]);
+            }
+
+            RateLimiter::hit($key, 86400);
+
+            $bottle = DriftBottle::pick($me);
+
+            if ($bottle === null) {
+                RateLimiter::decrement($key);
+            }
+
+            return $bottle;
+        });
 
         if ($bottle === null) {
             return redirect($this->localizedRoute('member.bottles'))->with('status', __('bottles.flash.empty_sea'));
         }
-
-        RateLimiter::hit(DriftBottle::pickKey($me), 86400);
 
         return redirect($this->localizedRoute('member.bottles.show', ['bottle' => $bottle]));
     }
@@ -135,9 +149,24 @@ class BottleController extends MemberController
             'reason' => ['nullable', 'string', 'max:200'],
         ]);
 
-        $bottle->reportBy($me, $data['target'], $data['reason'] ?? null);
+        if (! $bottle->reportBy($me, $data['target'], $data['reason'] ?? null)) {
+            throw ValidationException::withMessages(['target' => __('bottles.errors.cannot_report')]);
+        }
 
         return redirect($this->localizedRoute('member.bottles'))->with('status', __('bottles.flash.reported'));
+    }
+
+    /**
+     * Run the check and the write for one member one at a time so the limits cannot be raced.
+     *
+     * @template T
+     *
+     * @param  Closure(): T  $callback
+     * @return T
+     */
+    private function serialized(Member $member, Closure $callback): mixed
+    {
+        return Cache::lock('bottle-member:'.$member->getKey(), 10)->block(5, $callback);
     }
 
     private function noContactInfo(): Closure

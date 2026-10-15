@@ -229,4 +229,34 @@ class BottleFlowTest extends TestCase
             ->assertOk()
             ->assertSee(route('member.bottles'), false);
     }
+
+    public function test_an_invalid_or_duplicate_report_is_not_reported_as_sent(): void
+    {
+        $sender = Member::factory()->create();
+        $me = Member::factory()->create();
+        $bottle = DriftBottle::factory()->create(['sender_id' => $sender->id, 'recipient_id' => $me->id, 'opened_at' => now()]);
+
+        $this->asMember($sender)->post(route('member.bottles.report', $bottle), ['target' => 'bottle'])
+            ->assertSessionHasErrors('target');
+        $this->assertNull($bottle->fresh()->removed_at);
+
+        $this->asMember($me)->post(route('member.bottles.report', $bottle), ['target' => 'bottle'])
+            ->assertSessionHas('status');
+        $this->asMember($me)->post(route('member.bottles.report', $bottle), ['target' => 'bottle'])
+            ->assertSessionHasErrors('target');
+    }
+
+    public function test_the_pick_quota_is_reserved_and_returned_when_the_sea_is_empty(): void
+    {
+        $me = Member::factory()->create();
+
+        $this->asMember($me)->post(route('member.bottles.pick'));
+
+        $this->assertSame(DriftBottle::DAILY_PICK_LIMIT, DriftBottle::picksLeft($me));
+
+        DriftBottle::factory()->create();
+        $this->asMember($me)->post(route('member.bottles.pick'));
+
+        $this->assertSame(DriftBottle::DAILY_PICK_LIMIT - 1, DriftBottle::picksLeft($me));
+    }
 }

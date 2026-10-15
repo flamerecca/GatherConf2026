@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\RateLimiter;
 
 #[Fillable(['sender_id', 'recipient_id', 'body'])]
@@ -178,7 +179,9 @@ class DriftBottle extends Model
                 ->where('sender_id', '!=', $member->getKey())
                 ->whereNotIn('sender_id', $excluded)
                 ->whereHas('sender', fn (Builder $query) => $query->where('is_active', true))
-                ->whereJsonDoesntContain('released_recipient_ids', $member->getKey())
+                ->where(fn (Builder $query) => $query
+                    ->whereNull('released_recipient_ids')
+                    ->orWhereJsonDoesntContain('released_recipient_ids', $member->getKey()))
                 ->inRandomOrder()
                 ->first();
 
@@ -248,19 +251,39 @@ class DriftBottle extends Model
             ->update(['recipient_id' => $recipient->getKey(), 'assigned_at' => now()]) === 1;
     }
 
-    public function release(): void
+    /**
+     * Return an unopened bottle to the sea. A stale model never overrides a concurrent open or removal.
+     */
+    public function release(): bool
     {
-        $released = $this->released_recipient_ids ?? [];
+        return DB::transaction(function (): bool {
+            $current = static::query()->whereKey($this->getKey())->lockForUpdate()->first();
 
-        if ($this->recipient_id !== null) {
-            $released[] = $this->recipient_id;
-        }
+            if ($current === null
+                || $current->recipient_id === null
+                || $current->opened_at !== null
+                || $current->removed_at !== null) {
+                return false;
+            }
 
-        $this->forceFill([
-            'recipient_id' => null,
-            'assigned_at' => null,
-            'released_recipient_ids' => array_values(array_unique($released)),
-        ])->save();
+            $released = $current->released_recipient_ids ?? [];
+            $released[] = $current->recipient_id;
+
+            $updated = static::query()
+                ->whereKey($current->getKey())
+                ->where('recipient_id', $current->recipient_id)
+                ->whereNull('opened_at')
+                ->whereNull('removed_at')
+                ->update([
+                    'recipient_id' => null,
+                    'assigned_at' => null,
+                    'released_recipient_ids' => json_encode(array_values(array_unique($released))),
+                ]);
+
+            $this->refresh();
+
+            return $updated === 1;
+        });
     }
 
     public function open(Member $by): void
@@ -269,7 +292,12 @@ class DriftBottle extends Model
             return;
         }
 
-        static::query()->whereKey($this->getKey())->whereNull('opened_at')->update(['opened_at' => now()]);
+        static::query()
+            ->whereKey($this->getKey())
+            ->where('recipient_id', $by->getKey())
+            ->whereNull('opened_at')
+            ->whereNull('removed_at')
+            ->update(['opened_at' => now()]);
     }
 
     public function replyFrom(Member $by, string $body): bool
@@ -299,19 +327,21 @@ class DriftBottle extends Model
             return false;
         }
 
-        $report = DriftBottleReport::query()->firstOrCreate(
-            ['bottle_id' => $this->getKey(), 'reporter_id' => $by->getKey(), 'target' => $target],
-            ['reason' => $reason !== null ? mb_substr($reason, 0, 200) : null],
-        );
+        return DB::transaction(function () use ($by, $target, $reason): bool {
+            $report = DriftBottleReport::query()->firstOrCreate(
+                ['bottle_id' => $this->getKey(), 'reporter_id' => $by->getKey(), 'target' => $target],
+                ['reason' => $reason !== null ? mb_substr($reason, 0, 200) : null],
+            );
 
-        if (! $report->wasRecentlyCreated) {
-            return false;
-        }
+            if (! $report->wasRecentlyCreated) {
+                return false;
+            }
 
-        $column = $target === self::TARGET_BOTTLE ? 'removed_at' : 'reply_removed_at';
-        $this->forceFill([$column => now()])->save();
+            $column = $target === self::TARGET_BOTTLE ? 'removed_at' : 'reply_removed_at';
+            $this->forceFill([$column => now()])->save();
 
-        return true;
+            return true;
+        });
     }
 
     public function removeBottle(): void
