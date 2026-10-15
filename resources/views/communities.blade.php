@@ -13,7 +13,7 @@
         <ul class="mt-12 grid gap-6 sm:grid-cols-2 md:grid-cols-3">
             @foreach (config('communities') as $community)
                 <li>
-                    <x-community-card :community="$community" show-description />
+                    <x-community-card :community="$community" show-description show-contact />
                 </li>
             @endforeach
         </ul>
