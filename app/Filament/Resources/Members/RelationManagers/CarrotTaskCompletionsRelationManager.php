@@ -20,7 +20,7 @@ class CarrotTaskCompletionsRelationManager extends RelationManager
 {
     protected static string $relationship = 'carrotTransactions';
 
-    protected static ?string $title = '任務完成狀態';
+    protected static ?string $title = '場域任務完成狀態';
 
     public function table(Table $table): Table
     {

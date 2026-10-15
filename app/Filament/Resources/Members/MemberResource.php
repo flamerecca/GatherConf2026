@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Members;
 use App\Filament\Resources\Members\Pages\EditMember;
 use App\Filament\Resources\Members\Pages\ListMembers;
 use App\Filament\Resources\Members\Pages\ViewMember;
+use App\Filament\Resources\Members\RelationManagers\CarrotSiteTaskCompletionsRelationManager;
 use App\Filament\Resources\Members\RelationManagers\CarrotTaskCompletionsRelationManager;
 use App\Filament\Resources\Members\RelationManagers\CarrotTransactionsRelationManager;
 use App\Filament\Resources\Members\RelationManagers\LoginLinksRelationManager;
@@ -55,6 +56,7 @@ class MemberResource extends Resource
     {
         return [
             LoginLinksRelationManager::class,
+            CarrotSiteTaskCompletionsRelationManager::class,
             CarrotTaskCompletionsRelationManager::class,
             CarrotTransactionsRelationManager::class,
         ];

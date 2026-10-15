@@ -94,9 +94,27 @@ final class CarrotLedger
      */
     public static function revokeTask(Member $member, CarrotTask $task, ?int $createdBy = null): ?CarrotTransaction
     {
-        $original = CarrotTransaction::query()
-            ->where('dedupe_key', $task->dedupeKeyFor($member))
-            ->first();
+        return self::revoke($member, $task->dedupeKeyFor($member), $task->getKey(), $createdBy);
+    }
+
+    /**
+     * Same as revokeTask() for a one-off site behaviour, found by its behaviour code.
+     *
+     * @throws DomainException when the resulting balance is outside the supported range.
+     */
+    public static function revokeSiteReward(Member $member, string $behaviour, ?int $createdBy = null): ?CarrotTransaction
+    {
+        return self::revoke($member, self::siteDedupeKey($behaviour, $member), null, $createdBy);
+    }
+
+    public static function isRevoked(Member $member, string $dedupeKey): bool
+    {
+        return CarrotTransaction::query()->where('dedupe_key', 'revoke:'.$dedupeKey)->exists();
+    }
+
+    private static function revoke(Member $member, string $dedupeKey, ?string $taskId, ?int $createdBy): ?CarrotTransaction
+    {
+        $original = CarrotTransaction::query()->where('dedupe_key', $dedupeKey)->first();
 
         if ($original === null) {
             return null;
@@ -106,8 +124,8 @@ final class CarrotLedger
             $member,
             -$original->amount,
             self::REASON_TASK_REVOKED,
-            'revoke:'.$task->dedupeKeyFor($member),
-            $task->getKey(),
+            'revoke:'.$dedupeKey,
+            $taskId,
             null,
             $createdBy,
         );
