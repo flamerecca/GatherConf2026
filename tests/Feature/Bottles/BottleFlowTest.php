@@ -6,10 +6,14 @@ use App\Models\DriftBottle;
 use App\Models\Member;
 use App\Notifications\DriftBottleReceivedNotification;
 use App\Notifications\DriftBottleRepliedNotification;
+use Illuminate\Contracts\Cache\Lock;
+use Illuminate\Contracts\Cache\LockTimeoutException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\RateLimiter;
+use Mockery;
 use Tests\TestCase;
 
 class BottleFlowTest extends TestCase
@@ -258,5 +262,36 @@ class BottleFlowTest extends TestCase
         $this->asMember($me)->post(route('member.bottles.pick'));
 
         $this->assertSame(DriftBottle::DAILY_PICK_LIMIT - 1, DriftBottle::picksLeft($me));
+    }
+
+    private function lockTimesOut(): void
+    {
+        $lock = Mockery::mock(Lock::class);
+        $lock->shouldReceive('block')->andThrow(new LockTimeoutException);
+        Cache::partialMock()->shouldReceive('lock')->andReturn($lock);
+    }
+
+    public function test_a_lock_timeout_while_throwing_is_a_validation_error_not_a_500(): void
+    {
+        $me = Member::factory()->create();
+        $this->lockTimesOut();
+
+        $this->asMember($me)->post(route('member.bottles.store'), ['body' => '哈囉', 'agree_conduct' => '1'])
+            ->assertSessionHasErrors('body');
+
+        $this->assertSame(0, DriftBottle::query()->count());
+    }
+
+    public function test_a_lock_timeout_while_picking_is_a_validation_error_not_a_500(): void
+    {
+        $me = Member::factory()->create();
+        $bottle = DriftBottle::factory()->create();
+        $this->lockTimesOut();
+
+        $this->asMember($me)->post(route('member.bottles.pick'))
+            ->assertSessionHasErrors('pick');
+
+        $this->assertNull($bottle->fresh()->recipient_id);
+        $this->assertSame(DriftBottle::DAILY_PICK_LIMIT, DriftBottle::picksLeft($me));
     }
 }

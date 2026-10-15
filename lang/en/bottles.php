@@ -49,6 +49,7 @@ return [
         'back' => 'Back to drift bottles',
     ],
     'errors' => [
+        'busy' => 'The system is busy, please try again shortly.',
         'contact' => 'No links or email addresses, please.',
         'daily_limit' => 'You have thrown 3 bottles today. Come back tomorrow.',
         'holding' => 'You have too many unopened bottles. Open them before picking another.',

@@ -7,6 +7,7 @@ use App\Models\Member;
 use App\Notifications\DriftBottleReceivedNotification;
 use App\Notifications\DriftBottleRepliedNotification;
 use Closure;
+use Illuminate\Contracts\Cache\LockTimeoutException;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -45,7 +46,7 @@ class BottleController extends MemberController
             'agree_conduct' => ['accepted'],
         ]);
 
-        $bottle = $this->serialized($me, function () use ($me, $data): DriftBottle {
+        $bottle = $this->serialized($me, 'body', function () use ($me, $data): DriftBottle {
             if (DriftBottle::throwsToday($me) >= DriftBottle::DAILY_THROW_LIMIT) {
                 throw ValidationException::withMessages(['body' => __('bottles.errors.daily_limit')]);
             }
@@ -64,7 +65,7 @@ class BottleController extends MemberController
     {
         $me = $this->guard()->user();
 
-        $bottle = $this->serialized($me, function () use ($me): ?DriftBottle {
+        $bottle = $this->serialized($me, 'pick', function () use ($me): ?DriftBottle {
             if (DriftBottle::heldCount($me) >= DriftBottle::HOLD_LIMIT) {
                 throw ValidationException::withMessages(['pick' => __('bottles.errors.holding')]);
             }
@@ -158,15 +159,20 @@ class BottleController extends MemberController
 
     /**
      * Run the check and the write for one member one at a time so the limits cannot be raced.
+     * Waiting too long for the lock is shown as a validation error on the given field.
      *
      * @template T
      *
      * @param  Closure(): T  $callback
      * @return T
      */
-    private function serialized(Member $member, Closure $callback): mixed
+    private function serialized(Member $member, string $errorField, Closure $callback): mixed
     {
-        return Cache::lock('bottle-member:'.$member->getKey(), 10)->block(5, $callback);
+        try {
+            return Cache::lock('bottle-member:'.$member->getKey(), 10)->block(5, $callback);
+        } catch (LockTimeoutException) {
+            throw ValidationException::withMessages([$errorField => __('bottles.errors.busy')]);
+        }
     }
 
     private function noContactInfo(): Closure
