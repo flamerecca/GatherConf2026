@@ -50,6 +50,10 @@
            class="block font-semibold text-moss underline underline-offset-4">
             {{ __('bottles.index.heading') }}
         </a>
+        <a href="{{ route('member.community-messages'.(app()->getLocale() === 'en' ? '.en' : '')) }}"
+           class="block font-semibold text-moss underline underline-offset-4">
+            {{ __('community-messages.list.heading') }}
+        </a>
         <form method="POST" action="{{ route('member.logout'.(app()->getLocale() === 'en' ? '.en' : '')) }}">
             @csrf
             <x-member-submit>{{ __('member.center.logout') }}</x-member-submit>

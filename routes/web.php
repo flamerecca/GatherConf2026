@@ -1,9 +1,10 @@
 <?php
 
 use App\Http\Controllers\Member\BlockController;
-use App\Http\Controllers\Member\CarrotTaskController;
 use App\Http\Controllers\Member\BottleController;
+use App\Http\Controllers\Member\CarrotTaskController;
 use App\Http\Controllers\Member\CenterController;
+use App\Http\Controllers\Member\CommunityMessageController;
 use App\Http\Controllers\Member\EmailVerificationController;
 use App\Http\Controllers\Member\FriendController;
 use App\Http\Controllers\Member\FriendInvitationController;
@@ -110,6 +111,9 @@ foreach (['' => 'zh_TW', 'en' => 'en'] as $prefix => $locale) {
             Route::get('/member/bottles/{bottle}', [BottleController::class, 'show'])->name('member.bottles.show'.$s);
             Route::post('/member/bottles/{bottle}/reply', [BottleController::class, 'reply'])->middleware('throttle:member-bottle')->name('member.bottles.reply'.$s);
             Route::post('/member/bottles/{bottle}/report', [BottleController::class, 'report'])->middleware('throttle:member-bottle')->name('member.bottles.report'.$s);
+            Route::get('/member/communities/{slug}/message', [CommunityMessageController::class, 'create'])->name('member.community-message.create'.$s);
+            Route::post('/member/communities/{slug}/message', [CommunityMessageController::class, 'store'])->middleware('throttle:member-community-message')->name('member.community-message.store'.$s);
+            Route::get('/member/community-messages', [CommunityMessageController::class, 'index'])->name('member.community-messages'.$s);
         });
 
         Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])

@@ -41,6 +41,9 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for('member-bottle', fn (Request $request) => Limit::perMinute(10)
             ->by('member-bottle|'.($request->user('member')?->getKey() ?? $request->ip())));
 
+        RateLimiter::for('member-community-message', fn (Request $request) => Limit::perMinute(5)
+            ->by('member-community-message|'.($request->user('member')?->getKey() ?? $request->ip())));
+
         RateLimiter::for('member-guest', fn (Request $request) => Limit::perMinute(5)
             ->by($request->ip().'|'.preg_replace('/\.en$/', '', (string) $request->route()?->getName())));
     }
