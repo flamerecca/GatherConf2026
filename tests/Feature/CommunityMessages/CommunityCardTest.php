@@ -35,4 +35,21 @@ class CommunityCardTest extends TestCase
             $this->assertSame(1, substr_count($html, 'href="'.$community['url'].'"'), $community['url']);
         }
     }
+
+    public function test_a_landing_card_is_one_link_around_the_whole_card(): void
+    {
+        $this->get('/')
+            ->assertOk()
+            ->assertSeeHtml('<a href="https://gdg.community.dev/gdg-taoyuan/" target="_blank" rel="noopener"');
+        $html = $this->get('/')->getContent();
+
+        $this->assertMatchesRegularExpression('~<a href="https://gdg\.community\.dev/gdg-taoyuan/"[^>]*class="group[^"]*rounded-2xl~', $html);
+    }
+
+    public function test_contact_links_name_their_community_for_screen_readers(): void
+    {
+        $this->get('/communities')
+            ->assertOk()
+            ->assertSee('aria-label="'.__('community-messages.contact').' GDG 桃園"', false);
+    }
 }

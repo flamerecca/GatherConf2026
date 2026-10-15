@@ -24,6 +24,7 @@ return [
         'closed' => 'Closed',
     ],
     'errors' => [
+        'busy' => 'The system is busy, please try again shortly.',
         'daily_limit' => 'You can send at most 5 messages in 24 hours. Please try again later.',
     ],
     'flash' => [

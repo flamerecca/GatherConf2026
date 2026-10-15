@@ -38,9 +38,20 @@ class CommunityMessage extends Model
         return ['handled_at' => 'datetime'];
     }
 
+    /**
+     * @return BelongsTo<Member, $this>
+     */
     public function member(): BelongsTo
     {
         return $this->belongsTo(Member::class);
+    }
+
+    /**
+     * @return BelongsTo<User, $this>
+     */
+    public function handler(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'handled_by');
     }
 
     /**

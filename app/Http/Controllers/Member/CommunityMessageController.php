@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Member;
 use App\Models\CommunityDirectory;
 use App\Models\CommunityMessage;
 use App\Notifications\CommunityMessageReceivedNotification;
+use Illuminate\Contracts\Cache\LockTimeoutException;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -36,7 +37,7 @@ class CommunityMessageController extends MemberController
         foreach (['subject', 'body'] as $field) {
             $value = $request->input($field);
 
-            $request->merge([$field => is_string($value) ? trim($value) : $value]);
+            $request->merge([$field => is_string($value) ? trim(str_replace("\r\n", "\n", $value)) : $value]);
         }
 
         $data = $request->validate([
@@ -47,19 +48,23 @@ class CommunityMessageController extends MemberController
 
         $communityName = CommunityDirectory::name($community, 'zh_TW');
 
-        Cache::lock('community-message:'.$me->getKey(), 10)->block(5, function () use ($me, $data, $slug, $communityName): void {
-            if (CommunityMessage::sentTodayBy($me) >= CommunityMessage::DAILY_LIMIT) {
-                throw ValidationException::withMessages(['body' => __('community-messages.errors.daily_limit')]);
-            }
+        try {
+            Cache::lock('community-message:'.$me->getKey(), 10)->block(5, function () use ($me, $data, $slug, $communityName): void {
+                if (CommunityMessage::sentTodayBy($me) >= CommunityMessage::DAILY_LIMIT) {
+                    throw ValidationException::withMessages(['body' => __('community-messages.errors.daily_limit')]);
+                }
 
-            CommunityMessage::query()->create([
-                'member_id' => $me->getKey(),
-                'community_slug' => $slug,
-                'community_name' => $communityName,
-                'subject' => $data['subject'],
-                'body' => $data['body'],
-            ]);
-        });
+                CommunityMessage::query()->create([
+                    'member_id' => $me->getKey(),
+                    'community_slug' => $slug,
+                    'community_name' => $communityName,
+                    'subject' => $data['subject'],
+                    'body' => $data['body'],
+                ]);
+            });
+        } catch (LockTimeoutException) {
+            throw ValidationException::withMessages(['body' => __('community-messages.errors.busy')]);
+        }
 
         $this->sendQuietly(function () use ($me, $communityName): void {
             $me->notify(

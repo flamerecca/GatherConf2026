@@ -117,4 +117,15 @@ class CommunityMessageAdminTest extends TestCase
 
         $this->assertNull(CommunityMessageResource::getNavigationBadge());
     }
+
+    public function test_the_view_page_shows_who_handled_the_message(): void
+    {
+        $message = CommunityMessage::factory()->create();
+
+        Livewire::test(ViewCommunityMessage::class, ['record' => $message->getKey()])
+            ->callAction('markForwarded');
+
+        Livewire::test(ViewCommunityMessage::class, ['record' => $message->getKey()])
+            ->assertSee(auth()->user()->name);
+    }
 }

@@ -5,10 +5,19 @@ namespace Tests\Feature\CommunityMessages;
 use App\Models\CommunityMessage;
 use App\Models\Member;
 use App\Notifications\CommunityMessageReceivedNotification;
+use Illuminate\Contracts\Cache\Lock;
+use Illuminate\Contracts\Cache\LockTimeoutException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Exceptions;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\RateLimiter;
+use Mockery;
+use RuntimeException;
+use Symfony\Component\Mailer\SentMessage;
+use Symfony\Component\Mailer\Transport\AbstractTransport;
 use Tests\TestCase;
 
 class CommunityMessageFlowTest extends TestCase
@@ -173,15 +182,65 @@ class CommunityMessageFlowTest extends TestCase
         });
     }
 
-    public function test_a_mail_failure_does_not_break_sending(): void
+    public function test_a_mail_failure_is_reported_but_does_not_break_sending(): void
     {
+        Exceptions::fake();
+        Mail::extend('failing', fn () => new class extends AbstractTransport
+        {
+            protected function doSend(SentMessage $message): void
+            {
+                throw new RuntimeException('smtp down');
+            }
+
+            public function __toString(): string
+            {
+                return 'failing';
+            }
+        });
+        config(['mail.default' => 'failing', 'mail.mailers.failing' => ['transport' => 'failing']]);
+        Mail::purge('failing');
         $me = Member::factory()->create();
-        config(['mail.default' => 'broken', 'mail.mailers.broken' => ['transport' => 'smtp', 'host' => '127.0.0.1', 'port' => 1, 'timeout' => 1]]);
 
         $this->asMember($me)->post(route('member.community-message.store', 'gdg-taoyuan'), $this->payload())
             ->assertRedirect(route('member.community-messages'));
 
         $this->assertSame(1, CommunityMessage::query()->count());
+        Exceptions::assertReported(fn (RuntimeException $exception) => $exception->getMessage() === 'smtp down');
+    }
+
+    public function test_a_lock_timeout_is_a_validation_error_not_a_500(): void
+    {
+        $me = Member::factory()->create();
+        $lock = Mockery::mock(Lock::class);
+        $lock->shouldReceive('block')->andThrow(new LockTimeoutException);
+        Cache::partialMock()->shouldReceive('lock')->andReturn($lock);
+
+        $this->asMember($me)->post(route('member.community-message.store', 'gdg-taoyuan'), $this->payload())
+            ->assertSessionHasErrors('body');
+
+        $this->assertSame(0, CommunityMessage::query()->count());
+    }
+
+    public function test_windows_newlines_are_counted_once_and_stored_as_unix(): void
+    {
+        Notification::fake();
+        $me = Member::factory()->create();
+        $body = implode("\r\n", array_fill(0, 400, 'a'));
+
+        $this->asMember($me)->post(route('member.community-message.store', 'gdg-taoyuan'), $this->payload(['body' => $body]))
+            ->assertRedirect(route('member.community-messages'));
+
+        $this->assertStringNotContainsString("\r", CommunityMessage::query()->firstOrFail()->body);
+    }
+
+    public function test_a_subject_of_only_full_width_spaces_is_rejected(): void
+    {
+        $me = Member::factory()->create();
+
+        $this->asMember($me)->post(route('member.community-message.store', 'gdg-taoyuan'), $this->payload(['subject' => "\u{3000}\u{3000}"]))
+            ->assertSessionHasErrors('subject');
+
+        $this->assertSame(0, CommunityMessage::query()->count());
     }
 
     public function test_the_member_list_shows_only_own_messages_without_body_or_note(): void

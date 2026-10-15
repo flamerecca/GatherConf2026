@@ -32,9 +32,10 @@ class CommunityMessageInfolist
                 ->badge(),
             TextEntry::make('created_at')->label('送出時間')->dateTime(),
             TextEntry::make('subject')->label('主旨')->columnSpanFull(),
-            TextEntry::make('body')->label('內容')->columnSpanFull()->extraAttributes(['class' => 'whitespace-pre-line']),
+            TextEntry::make('body')->label('內容')->columnSpanFull()->extraAttributes(['style' => 'white-space: pre-line']),
+            TextEntry::make('handler.name')->label('處理人')->placeholder('尚未處理'),
             TextEntry::make('handled_at')->label('處理時間')->dateTime()->placeholder('尚未處理'),
-            TextEntry::make('admin_note')->label('備註')->placeholder('沒有備註')->columnSpanFull()->extraAttributes(['class' => 'whitespace-pre-line']),
+            TextEntry::make('admin_note')->label('備註')->placeholder('沒有備註')->columnSpanFull()->extraAttributes(['style' => 'white-space: pre-line']),
         ]);
     }
 }
