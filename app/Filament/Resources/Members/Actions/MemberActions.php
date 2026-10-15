@@ -86,7 +86,7 @@ class MemberActions
                 try {
                     CarrotLedger::adjust($record, (int) $data['amount'], $data['note'], auth()->id());
                 } catch (DomainException) {
-                    Notification::make()->title('扣除後胡蘿蔔會小於 0，未調整')->danger()->send();
+                    Notification::make()->title('調整後胡蘿蔔超出可儲存的範圍，未調整')->danger()->send();
 
                     return;
                 }

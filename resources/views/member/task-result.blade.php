@@ -19,7 +19,7 @@
                 {{ __('carrots.result.closed') }}
             @endif
         </p>
-        <p class="text-sm text-ink/80">{{ __('carrots.balance', ['count' => $carrots]) }}</p>
+        <p @class(['text-sm', 'text-ink/80' => $carrots >= 0, 'text-red-600 dark:text-red-400 font-bold' => $carrots < 0])>{{ __('carrots.balance', ['count' => $carrots]) }}</p>
         <a href="{{ route('member.tasks'.$s) }}" class="font-semibold text-moss underline underline-offset-4">{{ __('carrots.result.to_list') }}</a>
     </div>
 @endsection

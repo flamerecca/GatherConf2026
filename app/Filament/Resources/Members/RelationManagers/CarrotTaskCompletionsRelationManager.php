@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Members\RelationManagers;
 use App\Models\CarrotLedger;
 use App\Models\CarrotTask;
 use App\Models\Member;
+use DomainException;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -25,17 +26,32 @@ class CarrotTaskCompletionsRelationManager extends RelationManager
     {
         /** @var Member $member */
         $member = $this->getOwnerRecord();
-        $completedBy = fn (Builder $query) => $query->where('member_id', $member->getKey());
+        $completedBy = fn (Builder $query) => $query
+            ->where('member_id', $member->getKey())
+            ->where('reason', CarrotLedger::REASON_TASK);
+        $revokedBy = fn (Builder $query) => $query
+            ->where('member_id', $member->getKey())
+            ->where('reason', CarrotLedger::REASON_TASK_REVOKED);
 
         return $table
             ->query(
-                CarrotTask::query()->withExists(['transactions as is_completed' => $completedBy]),
+                CarrotTask::query()->withExists([
+                    'transactions as has_completion' => $completedBy,
+                    'transactions as is_revoked' => $revokedBy,
+                ]),
             )
             ->recordTitleAttribute('name')
             ->columns([
                 TextColumn::make('name')->label('任務名稱')->searchable(),
                 TextColumn::make('reward')->label('獎勵'),
-                IconColumn::make('is_completed')->label('已完成')->boolean(),
+                IconColumn::make('is_completed')
+                    ->label('已完成')
+                    ->state(fn (CarrotTask $record): bool => $record->has_completion && ! $record->is_revoked)
+                    ->boolean(),
+                TextColumn::make('is_revoked')
+                    ->label('備註')
+                    ->state(fn (CarrotTask $record): ?string => $record->is_revoked ? '已取消完成' : null)
+                    ->placeholder('無'),
             ])
             ->filters([
                 TernaryFilter::make('is_completed')
@@ -44,8 +60,14 @@ class CarrotTaskCompletionsRelationManager extends RelationManager
                     ->trueLabel('已完成')
                     ->falseLabel('未完成')
                     ->queries(
-                        true: fn (Builder $query) => $query->whereHas('transactions', $completedBy),
-                        false: fn (Builder $query) => $query->whereDoesntHave('transactions', $completedBy),
+                        true: fn (Builder $query) => $query
+                            ->whereHas('transactions', $completedBy)
+                            ->whereDoesntHave('transactions', $revokedBy),
+                        false: fn (Builder $query) => $query->where(
+                            fn (Builder $query) => $query
+                                ->whereDoesntHave('transactions', $completedBy)
+                                ->orWhereHas('transactions', $revokedBy),
+                        ),
                         blank: fn (Builder $query) => $query,
                     ),
             ])
@@ -56,7 +78,7 @@ class CarrotTaskCompletionsRelationManager extends RelationManager
                     ->color('success')
                     ->requiresConfirmation()
                     ->modalDescription('將依任務獎勵為此會員加上胡蘿蔔，且只會發放一次。')
-                    ->visible(fn (CarrotTask $record): bool => ! $record->is_completed)
+                    ->visible(fn (CarrotTask $record): bool => ! $record->has_completion)
                     ->action(function (CarrotTask $record) use ($member): void {
                         $earned = CarrotLedger::award(
                             $member,
@@ -68,6 +90,28 @@ class CarrotTaskCompletionsRelationManager extends RelationManager
 
                         Notification::make()
                             ->title($earned ? '已標記為完成' : '此任務先前已完成')
+                            ->success()
+                            ->send();
+                    }),
+                Action::make('revokeCompletion')
+                    ->label('取消完成')
+                    ->icon(Heroicon::OutlinedXCircle)
+                    ->color('danger')
+                    ->requiresConfirmation()
+                    ->modalHeading('取消任務完成')
+                    ->modalDescription('將扣回此任務發放的胡蘿蔔，並留下一筆扣回紀錄。取消後，會員無法再重新完成同一個任務。')
+                    ->visible(fn (CarrotTask $record): bool => $record->has_completion && ! $record->is_revoked)
+                    ->action(function (CarrotTask $record) use ($member): void {
+                        try {
+                            $revoked = CarrotLedger::revokeTask($member, $record, auth()->id());
+                        } catch (DomainException) {
+                            Notification::make()->title('扣回後胡蘿蔔超出可儲存的範圍，未取消')->danger()->send();
+
+                            return;
+                        }
+
+                        Notification::make()
+                            ->title($revoked !== null ? '已取消完成' : '此任務尚未完成或已取消')
                             ->success()
                             ->send();
                     }),

@@ -6,6 +6,7 @@ use App\Models\Member;
 use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Schema;
+use Filament\Support\Enums\FontWeight;
 
 class MemberInfolist
 {
@@ -25,7 +26,9 @@ class MemberInfolist
                 ->state(fn (Member $record): bool => $record->hasPassword())
                 ->boolean(),
             TextEntry::make('carrots')
-                ->label('胡蘿蔔'),
+                ->label('胡蘿蔔')
+                ->color(fn (int $state): ?string => $state < 0 ? 'danger' : null)
+                ->weight(fn (int $state): ?FontWeight => $state < 0 ? FontWeight::Bold : null),
             TextEntry::make('email_verified_at')
                 ->label('Email 驗證時間')
                 ->dateTime()

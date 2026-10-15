@@ -7,7 +7,7 @@
 @section('heading', __('carrots.list.heading'))
 
 @section('member_body')
-    <p data-carrots="{{ $member->carrots }}" class="mt-6 text-lg font-semibold">
+    <p data-carrots="{{ $member->carrots }}" @class(['mt-6 text-lg', 'font-semibold' => $member->carrots >= 0, 'text-red-600 dark:text-red-400 font-bold' => $member->carrots < 0])>
         🥕 {{ __('carrots.balance', ['count' => $member->carrots]) }}
     </p>
 

@@ -101,7 +101,7 @@ class CarrotAdminTest extends TestCase
         $this->assertDatabaseHas('carrot_transactions', ['member_id' => $member->id, 'note' => '活動獎勵', 'created_by' => auth()->id()]);
     }
 
-    public function test_the_adjust_action_rejects_going_below_zero(): void
+    public function test_the_adjust_action_can_go_below_zero(): void
     {
         $member = Member::factory()->create();
 
@@ -109,8 +109,8 @@ class CarrotAdminTest extends TestCase
             ->callAction('adjustCarrots', ['amount' => -1, 'note' => '扣除'])
             ->assertNotified();
 
-        $this->assertSame(0, $member->fresh()->carrots);
-        $this->assertSame(0, CarrotTransaction::query()->count());
+        $this->assertSame(-1, $member->fresh()->carrots);
+        $this->assertSame(1, CarrotTransaction::query()->count());
     }
 
     public function test_the_adjust_action_requires_a_reason_and_a_non_zero_amount(): void

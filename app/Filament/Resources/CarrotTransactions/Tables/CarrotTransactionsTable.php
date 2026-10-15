@@ -13,7 +13,7 @@ class CarrotTransactionsTable
     public static function configure(Table $table): Table
     {
         $reasons = collect(array_keys(CarrotLedger::siteRewards()))
-            ->push(CarrotLedger::REASON_TASK, CarrotLedger::REASON_MANUAL)
+            ->push(CarrotLedger::REASON_TASK, CarrotLedger::REASON_TASK_REVOKED, CarrotLedger::REASON_MANUAL)
             ->mapWithKeys(fn (string $reason) => [$reason => $reason])
             ->all();
 

@@ -42,7 +42,7 @@
         </p>
         <a href="{{ route('member.tasks'.(app()->getLocale() === 'en' ? '.en' : '')) }}"
            data-carrots="{{ $member->carrots }}"
-           class="block font-semibold text-moss underline underline-offset-4">
+           @class(['block underline underline-offset-4', 'font-semibold text-moss' => $member->carrots >= 0, 'text-red-600 dark:text-red-400 font-bold' => $member->carrots < 0])>
             🥕 {{ __('carrots.balance', ['count' => $member->carrots]) }} · {{ __('carrots.list.heading') }}
         </a>
         <a href="{{ route('member.bottles'.(app()->getLocale() === 'en' ? '.en' : '')) }}"

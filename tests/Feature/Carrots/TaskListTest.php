@@ -86,6 +86,28 @@ class TaskListTest extends TestCase
             ->assertSee('data-carrots="7"', false);
     }
 
+    public function test_a_negative_total_is_shown_in_bold_red(): void
+    {
+        $member = Member::factory()->create();
+        CarrotLedger::adjust($member, -2, '測試');
+
+        $this->asMember($member->fresh())->get(route('member.tasks'))
+            ->assertSee('data-carrots="-2"', false)
+            ->assertSee('text-red-600 dark:text-red-400 font-bold', false);
+
+        $this->asMember($member->fresh())->get(route('member.center'))
+            ->assertSee('text-red-600 dark:text-red-400 font-bold', false);
+    }
+
+    public function test_a_positive_total_is_not_shown_in_red(): void
+    {
+        $member = Member::factory()->create();
+        CarrotLedger::adjust($member, 2, '測試');
+
+        $this->asMember($member->fresh())->get(route('member.tasks'))
+            ->assertDontSee('text-red-600', false);
+    }
+
     public function test_guests_and_unverified_members_are_redirected(): void
     {
         $this->get(route('member.tasks'))->assertRedirect(route('member.login'));

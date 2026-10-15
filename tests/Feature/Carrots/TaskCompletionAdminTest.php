@@ -71,4 +71,51 @@ class TaskCompletionAdminTest extends TestCase
         $this->manager(Member::factory()->create())
             ->assertActionVisible(TestAction::make('markCompleted')->table($task));
     }
+
+    public function test_an_admin_can_revoke_a_completion_and_the_carrots_are_taken_back(): void
+    {
+        $member = Member::factory()->create();
+        $task = CarrotTask::factory()->create(['reward' => 4]);
+        CarrotLedger::award($member, CarrotLedger::REASON_TASK, 4, $task->dedupeKeyFor($member), $task);
+
+        $this->manager($member)
+            ->assertActionVisible(TestAction::make('revokeCompletion')->table($task))
+            ->callAction(TestAction::make('revokeCompletion')->table($task))
+            ->assertNotified('已取消完成')
+            ->assertActionHidden(TestAction::make('revokeCompletion')->table($task))
+            ->assertActionHidden(TestAction::make('markCompleted')->table($task));
+
+        $this->assertSame(0, $member->fresh()->carrots);
+        $this->assertSame(2, $member->carrotTransactions()->count());
+        $this->assertNull(CarrotLedger::revokeTask($member, $task));
+        $this->assertSame(0, $member->fresh()->carrots);
+    }
+
+    public function test_a_revoked_task_counts_as_not_completed_in_the_filter(): void
+    {
+        $member = Member::factory()->create();
+        $task = CarrotTask::factory()->create();
+        CarrotLedger::award($member, CarrotLedger::REASON_TASK, $task->reward, $task->dedupeKeyFor($member), $task);
+        CarrotLedger::revokeTask($member, $task);
+
+        $this->manager($member)
+            ->filterTable('is_completed', false)
+            ->assertCanSeeTableRecords([$task])
+            ->filterTable('is_completed', true)
+            ->assertCanNotSeeTableRecords([$task]);
+    }
+
+    public function test_revoking_can_leave_the_member_with_a_negative_balance(): void
+    {
+        $member = Member::factory()->create();
+        $task = CarrotTask::factory()->create(['reward' => 4]);
+        CarrotLedger::award($member, CarrotLedger::REASON_TASK, 4, $task->dedupeKeyFor($member), $task);
+        CarrotLedger::adjust($member, -3, '兌換');
+
+        $this->manager($member)
+            ->callAction(TestAction::make('revokeCompletion')->table($task))
+            ->assertNotified('已取消完成');
+
+        $this->assertSame(-3, $member->fresh()->carrots);
+    }
 }

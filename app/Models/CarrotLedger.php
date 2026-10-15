@@ -15,10 +15,14 @@ final class CarrotLedger
 
     public const REASON_TASK = 'task';
 
+    public const REASON_TASK_REVOKED = 'task_revoked';
+
     /**
-     * The largest balance the unsigned members.carrots column can hold.
+     * The balance range the signed members.carrots column can hold. A balance may be negative.
      */
-    public const MAX_BALANCE = 4294967295;
+    public const MAX_BALANCE = 2147483647;
+
+    public const MIN_BALANCE = -2147483648;
 
     /**
      * @return array<string, int>
@@ -70,7 +74,7 @@ final class CarrotLedger
     }
 
     /**
-     * Admin adjustment. Every call is its own record and the balance may not go below zero.
+     * Admin adjustment. Every call is its own record and the balance may go below zero.
      */
     public static function adjust(Member $member, int $amount, string $note, ?int $createdBy = null): CarrotTransaction
     {
@@ -79,6 +83,34 @@ final class CarrotLedger
         }
 
         return self::record($member, $amount, self::REASON_MANUAL, 'manual:'.Str::uuid7(), null, $note, $createdBy);
+    }
+
+    /**
+     * Take back a task reward by adding a reversing entry, the original entry is left untouched.
+     * Returns null when the task was never completed or was already revoked.
+     * The member cannot earn the same task again afterwards.
+     *
+     * @throws DomainException when the resulting balance is outside the supported range.
+     */
+    public static function revokeTask(Member $member, CarrotTask $task, ?int $createdBy = null): ?CarrotTransaction
+    {
+        $original = CarrotTransaction::query()
+            ->where('dedupe_key', $task->dedupeKeyFor($member))
+            ->first();
+
+        if ($original === null) {
+            return null;
+        }
+
+        return self::record(
+            $member,
+            -$original->amount,
+            self::REASON_TASK_REVOKED,
+            'revoke:'.$task->dedupeKeyFor($member),
+            $task->getKey(),
+            null,
+            $createdBy,
+        );
     }
 
     public static function balance(Member $member): int
@@ -104,12 +136,8 @@ final class CarrotLedger
 
             $balance = $locked->carrots + $amount;
 
-            if ($balance < 0) {
-                throw new DomainException('Carrot balance cannot go below zero.');
-            }
-
-            if ($balance > self::MAX_BALANCE) {
-                throw new DomainException('Carrot balance is above the supported limit.');
+            if ($balance < self::MIN_BALANCE || $balance > self::MAX_BALANCE) {
+                throw new DomainException('Carrot balance is outside the supported range.');
             }
 
             $transaction = CarrotTransaction::query()->create([

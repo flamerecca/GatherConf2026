@@ -50,22 +50,26 @@ class CarrotLedgerTest extends TestCase
         CarrotLedger::award(Member::factory()->create(), 'x', 0, 'k');
     }
 
-    public function test_adjust_can_reach_zero_but_not_go_below(): void
+    public function test_adjust_can_take_the_balance_below_zero(): void
     {
         $member = Member::factory()->create();
         CarrotLedger::award($member, 'x', 3, 'k');
 
-        CarrotLedger::adjust($member, -3, '扣除', 1);
-        $this->assertSame(0, $member->fresh()->carrots);
+        CarrotLedger::adjust($member, -5, '扣除', 1);
 
-        try {
-            CarrotLedger::adjust($member, -1, '再扣', 1);
-            $this->fail('Expected DomainException.');
-        } catch (DomainException) {
-        }
-
-        $this->assertSame(0, $member->fresh()->carrots);
+        $this->assertSame(-2, $member->fresh()->carrots);
+        $this->assertSame(-2, CarrotLedger::balance($member));
         $this->assertSame(2, CarrotTransaction::query()->count());
+    }
+
+    public function test_a_balance_below_the_column_limit_is_refused(): void
+    {
+        $member = Member::factory()->create();
+        Member::query()->whereKey($member->id)->update(['carrots' => CarrotLedger::MIN_BALANCE]);
+
+        $this->expectException(DomainException::class);
+
+        CarrotLedger::adjust($member->fresh(), -1, '再扣', 1);
     }
 
     public function test_each_adjustment_is_its_own_record_with_note_and_actor(): void
