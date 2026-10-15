@@ -91,8 +91,10 @@ class FieldTaskTest extends TestCase
         $member = Member::factory()->inactive()->create();
         $task = CarrotTask::factory()->create();
 
-        $this->asMember($member)->get($task->completeUrl('zh_TW'));
+        $this->asMember($member)->get($task->completeUrl('zh_TW'))
+            ->assertRedirect(route('member.login'));
 
+        $this->assertGuest('member');
         $this->assertSame(0, $member->fresh()->carrots);
     }
 

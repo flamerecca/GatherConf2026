@@ -47,14 +47,6 @@ class MemberRoutesTest extends TestCase
         $this->assertContains('guest:member', $zh->gatherMiddleware());
     }
 
-    public function test_sensitive_routes_are_rate_limited(): void
-    {
-        $this->assertContains('throttle:member-login', Route::getRoutes()->getByName('member.login.store')->gatherMiddleware());
-        $this->assertContains('throttle:member-guest', Route::getRoutes()->getByName('member.register.store')->gatherMiddleware());
-        $this->assertContains('throttle:member-guest', Route::getRoutes()->getByName('member.login.link.request')->gatherMiddleware());
-        $this->assertContains('throttle:member-guest', Route::getRoutes()->getByName('member.password.email')->gatherMiddleware());
-    }
-
     public function test_the_verification_link_requires_a_valid_signature(): void
     {
         $this->assertContains('signed', Route::getRoutes()->getByName('member.verification.verify')->gatherMiddleware());

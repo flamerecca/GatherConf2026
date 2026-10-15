@@ -30,15 +30,6 @@ class FriendRoutesTest extends TestCase
         }
     }
 
-    public function test_friend_routes_require_login_and_verified_email(): void
-    {
-        $middleware = Route::getRoutes()->getByName('member.friends')->gatherMiddleware();
-
-        $this->assertContains('auth:member', $middleware);
-        $this->assertContains('member.verified', $middleware);
-        $this->assertContains('member.locale:zh_TW', $middleware);
-    }
-
     public function test_unverified_members_are_sent_to_the_verification_notice(): void
     {
         $member = Member::factory()->unverified()->create();

@@ -43,6 +43,17 @@ class PasswordResetTest extends TestCase
         $this->get('/en/reset-password/tok?email=a@example.com')->assertOk()->assertSee('Reset your password');
     }
 
+    public function test_forgot_password_requests_are_rate_limited_per_ip(): void
+    {
+        Notification::fake();
+
+        for ($i = 0; $i < 5; $i++) {
+            $this->post('/forgot-password', ['email' => "u{$i}@example.com"])->assertSessionHasNoErrors();
+        }
+
+        $this->post('/forgot-password', ['email' => 'u6@example.com'])->assertStatus(429);
+    }
+
     public function test_requesting_a_reset_emails_a_registered_member(): void
     {
         Notification::fake();

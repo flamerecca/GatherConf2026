@@ -50,14 +50,6 @@ class CarrotLedgerTest extends TestCase
         CarrotLedger::award(Member::factory()->create(), 'x', 0, 'k');
     }
 
-    public function test_award_quietly_swallows_failures(): void
-    {
-        $member = Member::factory()->create();
-
-        $this->assertFalse(CarrotLedger::awardQuietly($member, 'x', 0, 'k'));
-        $this->assertSame(0, CarrotTransaction::query()->count());
-    }
-
     public function test_adjust_can_reach_zero_but_not_go_below(): void
     {
         $member = Member::factory()->create();

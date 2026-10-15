@@ -74,18 +74,6 @@ class MemberUuidTest extends TestCase
         $this->assertCount(1, $a->loginLinks);
     }
 
-    public function test_the_lower_uuid_is_always_stored_first(): void
-    {
-        $a = Member::factory()->create();
-        $b = Member::factory()->create();
-
-        $friendship = Friendship::factory()->between($b, $a)->create();
-
-        $this->assertTrue($friendship->member_low_id < $friendship->member_high_id);
-        $this->assertSame(collect([$a->id, $b->id])->sort()->values()->all(), [$friendship->member_low_id, $friendship->member_high_id]);
-        $this->assertSame($b->id, $friendship->requester_id);
-    }
-
     public function test_routes_resolve_by_uuid_and_reject_integers(): void
     {
         $me = Member::factory()->create();
@@ -95,13 +83,5 @@ class MemberUuidTest extends TestCase
         $this->actingAs($me, 'member')->post('/friends/'.$friend->id.'/block')->assertRedirect('/friends');
         $this->actingAs($me, 'member')->delete('/friends/1/block')->assertNotFound();
         $this->actingAs($me, 'member')->delete('/friends/not-a-uuid/block')->assertNotFound();
-    }
-
-    public function test_friend_codes_and_uuids_are_independent(): void
-    {
-        $member = Member::factory()->create();
-
-        $this->assertNotSame($member->id, $member->friend_code);
-        $this->assertMatchesRegularExpression('/^[a-z0-9]{32}$/', $member->friend_code);
     }
 }

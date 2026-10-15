@@ -48,6 +48,8 @@ class MemberAuthConfigTest extends TestCase
 
         $this->actingAs($member, 'member')
             ->get('/admin')
-            ->assertRedirect();
+            ->assertRedirect(url('/admin/login'));
+
+        $this->assertGuest('web');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Carrots;
 
+use App\Models\CarrotTransaction;
 use App\Models\Friendship;
 use App\Models\Member;
 use App\Models\MemberLoginLink;
@@ -9,7 +10,10 @@ use App\Models\Message;
 use App\Models\PersonalityType;
 use App\Models\QuizAttempt;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Exceptions;
 use Illuminate\Support\Str;
+use RuntimeException;
 use Tests\TestCase;
 
 class SiteAwardsTest extends TestCase
@@ -142,12 +146,17 @@ class SiteAwardsTest extends TestCase
 
     public function test_a_failing_award_does_not_break_the_behaviour(): void
     {
-        config(['carrots.site.set_password' => 0]);
+        Exceptions::fake();
+        Event::listen('eloquent.creating: '.CarrotTransaction::class, function (): void {
+            throw new RuntimeException('ledger down');
+        });
         $member = Member::factory()->passwordless()->create();
 
         $this->assertTrue($member->forceFill(['password' => 'a-new-password'])->save());
+
         $this->assertTrue($member->fresh()->hasPassword());
         $this->assertSame(0, $this->carrotsOf($member));
+        Exceptions::assertReported(fn (RuntimeException $exception) => $exception->getMessage() === 'ledger down');
     }
 
     public function test_the_login_link_flow_awards_the_verification(): void
