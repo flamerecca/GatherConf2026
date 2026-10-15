@@ -19,7 +19,7 @@ return [
         'uncompromised' => '這個 :attribute 曾出現在外洩資料中，請換一個。',
     ],
     'attributes' => [
-        'name' => '姓名',
+        'name' => '暱稱',
         'email' => 'Email',
         'password' => '密碼',
         'organization' => '所屬社群或公司',

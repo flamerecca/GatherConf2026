@@ -13,7 +13,7 @@ class MemberInfolist
     public static function configure(Schema $schema): Schema
     {
         return $schema->components([
-            TextEntry::make('name')->label('姓名'),
+            TextEntry::make('name')->label('暱稱'),
             TextEntry::make('email')->label('Email'),
             TextEntry::make('organization')
                 ->label('所屬社群或公司')

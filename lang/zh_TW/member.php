@@ -148,7 +148,7 @@ return [
     'back' => '回到首頁',
     'switch_label' => 'English',
     'fields' => [
-        'name' => '姓名',
+        'name' => '暱稱',
         'email' => 'Email',
         'password' => '密碼',
         'password_confirmation' => '確認密碼',

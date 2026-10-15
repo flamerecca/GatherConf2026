@@ -18,7 +18,7 @@ class MembersTable
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->label('姓名')
+                    ->label('暱稱')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('email')

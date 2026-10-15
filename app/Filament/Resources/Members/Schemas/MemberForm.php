@@ -13,7 +13,7 @@ class MemberForm
     {
         return $schema->components([
             TextInput::make('name')
-                ->label('姓名')
+                ->label('暱稱')
                 ->required()
                 ->maxLength(255),
             TextInput::make('organization')

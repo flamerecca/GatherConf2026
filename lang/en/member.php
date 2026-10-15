@@ -148,7 +148,7 @@ return [
     'back' => 'Back to home',
     'switch_label' => '中文',
     'fields' => [
-        'name' => 'Name',
+        'name' => 'Nickname',
         'email' => 'Email',
         'password' => 'Password',
         'password_confirmation' => 'Confirm password',
