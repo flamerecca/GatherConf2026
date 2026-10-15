@@ -74,3 +74,29 @@
     --color-tier-silver: var(--c-tier-silver);
     --color-tier-bronze: var(--c-tier-bronze);
 }
+
+/* Keyboard focus: a 2px outline that keeps 3:1 against the page and the dark blocks. */
+:focus-visible {
+    outline: 2px solid var(--c-moss);
+    outline-offset: 2px;
+}
+
+.bg-deep :focus-visible {
+    outline-color: var(--c-gold);
+}
+
+/* The skip link target is focused by script, not by the keyboard, so it needs no ring. */
+main:focus {
+    outline: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+    }
+}

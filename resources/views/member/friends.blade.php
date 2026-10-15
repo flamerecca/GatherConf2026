@@ -14,7 +14,7 @@
         <p class="text-sm leading-relaxed text-ink/80">{{ __('member.friends.my_code_intro') }}</p>
         <x-qr-code :value="$friendUrl" :label="__('member.friends.qr_alt')" class="mx-auto" />
         <input type="text" readonly value="{{ $friendUrl }}" aria-label="{{ __('member.friends.my_code_heading') }}"
-               class="w-full rounded-xl border border-ink/30 bg-parchment px-4 py-3 text-sm"
+               class="w-full rounded-xl border border-ink/60 bg-parchment px-4 py-3 text-sm"
                onclick="this.select()">
         <form method="POST" action="{{ route('member.friends.code.regenerate'.$s) }}">
             @csrf

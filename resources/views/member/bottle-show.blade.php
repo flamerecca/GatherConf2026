@@ -24,7 +24,7 @@
                     @csrf
                     <label for="reply-body" class="block text-sm font-semibold">{{ __('bottles.show.reply_heading') }}</label>
                     <textarea id="reply-body" name="body" rows="4" maxlength="300" required
-                              class="w-full rounded-xl border border-ink/30 bg-parchment px-4 py-3 focus:border-moss focus:outline-none focus:ring-2 focus:ring-moss/40">{{ old('body') }}</textarea>
+                              class="w-full rounded-xl border border-ink/60 bg-parchment px-4 py-3 focus:border-moss">{{ old('body') }}</textarea>
                     @error('body')
                         <p class="text-sm text-copper" role="alert">{{ $message }}</p>
                     @enderror
@@ -37,7 +37,7 @@
                 <input type="hidden" name="target" value="bottle">
                 <label for="report-reason" class="block text-sm">{{ __('bottles.show.reason') }}</label>
                 <input id="report-reason" name="reason" type="text" maxlength="200"
-                       class="w-full rounded-xl border border-ink/30 bg-parchment px-4 py-2">
+                       class="w-full rounded-xl border border-ink/60 bg-parchment px-4 py-2">
                 <button type="submit" class="text-sm font-medium text-copper underline underline-offset-4">{{ __('bottles.show.report') }}</button>
             </form>
         @else
@@ -59,7 +59,7 @@
                         <input type="hidden" name="target" value="reply">
                         <label for="report-reason" class="block text-sm">{{ __('bottles.show.reason') }}</label>
                         <input id="report-reason" name="reason" type="text" maxlength="200"
-                               class="w-full rounded-xl border border-ink/30 bg-parchment px-4 py-2">
+                               class="w-full rounded-xl border border-ink/60 bg-parchment px-4 py-2">
                         <button type="submit" class="text-sm font-medium text-copper underline underline-offset-4">{{ __('bottles.show.report_reply') }}</button>
                     </form>
                 @else

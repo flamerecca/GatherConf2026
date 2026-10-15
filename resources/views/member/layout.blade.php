@@ -9,7 +9,7 @@
     @endphp
     <x-subpage-header :switch-url="$isEnglish ? $zhUrl : $enUrl"
                       :switch-label="__('member.switch_label')" :back-label="__('member.back')" />
-    <main class="mx-auto max-w-md px-4 py-12">
+    <main id="main" tabindex="-1" class="mx-auto max-w-md px-4 py-12">
         <h1 class="text-4xl font-bold tracking-tight">@yield('heading')</h1>
         @hasSection('intro')
             <p class="mt-4 leading-relaxed text-ink/80">@yield('intro')</p>

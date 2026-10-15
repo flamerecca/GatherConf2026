@@ -3,6 +3,7 @@
 return [
     'title' => 'GatherConf 2026',
     'description' => 'Breaking down domain silos and bringing diverse tech communities together. 2026-11-21 at NTU, 120 attendees, dual-track sessions and an open space.',
+    'skip_to_content' => 'Skip to main content',
     'html_lang' => 'en',
     'theme_toggle' => 'Toggle light and dark mode',
     'switch_label' => '繁體中文',

@@ -17,7 +17,7 @@
     <x-subpage-header :switch-url="$isEnglish ? route('call-for-sponsor') : route('call-for-sponsor.en')"
                       :switch-label="__('cfs.switch_label')" :back-label="__('cfs.back')" />
 
-    <main>
+    <main id="main" tabindex="-1">
         <section class="mx-auto max-w-6xl px-4 py-12">
             <h1 class="text-4xl font-bold tracking-tight md:text-5xl">{{ __('cfs.heading') }}</h1>
             <p class="mt-6 max-w-3xl text-lg leading-relaxed text-ink/80">{{ __('cfs.lead') }}</p>

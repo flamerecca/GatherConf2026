@@ -56,6 +56,10 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="bg-parchment text-ink antialiased">
+        <a href="#main"
+           class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-full focus:bg-moss focus:px-6 focus:py-3 focus:font-semibold focus:text-on-accent">
+            {{ __('landing.skip_to_content') }}
+        </a>
         @yield('content')
     </body>
 </html>

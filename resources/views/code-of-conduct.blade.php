@@ -11,7 +11,7 @@
     @endphp
     <x-subpage-header :switch-url="app()->getLocale() === 'en' ? route('conduct') : route('conduct.en')"
                       :switch-label="__('conduct.switch_label')" :back-label="__('conduct.back')" />
-    <main class="mx-auto max-w-3xl px-4 py-12">
+    <main id="main" tabindex="-1" class="mx-auto max-w-3xl px-4 py-12">
         <h1 class="text-4xl font-bold tracking-tight md:text-5xl">{{ __('conduct.heading') }}</h1>
         <p class="mt-6 text-lg leading-relaxed text-ink/80">{{ __('conduct.intro') }}</p>
         @foreach (__('conduct.sections') as $section)

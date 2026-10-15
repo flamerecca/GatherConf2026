@@ -3,6 +3,7 @@
 return [
     'title' => '共聚年會 GatherConf 2026',
     'description' => '打破領域之間的隔閡，將多元的技術社群匯聚在一起。2026-11-21 台大綜合教學館，120 人、雙軌八場議程與 open space。',
+    'skip_to_content' => '跳到主要內容',
     'html_lang' => 'zh-Hant-TW',
     'theme_toggle' => '切換深淺色模式',
     'switch_label' => 'English',

@@ -50,7 +50,7 @@
         <label for="body" class="sr-only">{{ __('member.messages.send') }}</label>
         <textarea id="body" name="body" rows="3" maxlength="{{ \App\Models\Message::MAX_LENGTH }}" required
                   placeholder="{{ __('member.messages.placeholder') }}"
-                  class="w-full rounded-xl border border-ink/30 bg-parchment px-4 py-3 focus:border-moss focus:outline-none focus:ring-2 focus:ring-moss/40">{{ old('body') }}</textarea>
+                  class="w-full rounded-xl border border-ink/60 bg-parchment px-4 py-3 focus:border-moss">{{ old('body') }}</textarea>
         @error('body')
             <p class="text-sm text-copper" role="alert">{{ $message }}</p>
         @enderror

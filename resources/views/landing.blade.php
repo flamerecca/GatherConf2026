@@ -9,12 +9,15 @@
 @endpush
 
 @section('content')
-        @include('landing.hero')
-        @include('landing.mission')
-        @include('landing.why')
-        @include('landing.overview')
-        @include('landing.communities')
-        @include('landing.sponsorship')
-        @include('landing.sponsors')
+        @include('landing.header')
+        <main id="main" tabindex="-1">
+            @include('landing.hero')
+            @include('landing.mission')
+            @include('landing.why')
+            @include('landing.overview')
+            @include('landing.communities')
+            @include('landing.sponsorship')
+            @include('landing.sponsors')
+        </main>
         @include('landing.footer')
 @endsection
