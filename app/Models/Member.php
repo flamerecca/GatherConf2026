@@ -134,6 +134,11 @@ class Member extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(CarrotTransaction::class);
     }
 
+    public function communityMessages(): HasMany
+    {
+        return $this->hasMany(CommunityMessage::class);
+    }
+
     public function hasBlocked(Member $other): bool
     {
         return MemberBlock::query()

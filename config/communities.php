@@ -7,10 +7,13 @@
  * description 為合作社群頁卡片上的簡短說明，需同時提供 zh_TW 與 en。
  * logo_padding 為 contain 時的內縮百分比，預設 15。數字越小，Logo 越大。
  *
- * @var list<array{name: array{zh_TW: string, en: string}, logo: string, logo_fit: string, logo_padding?: int, url: string, description: array{zh_TW: string, en: string}}>
+ * slug 為固定識別，用於聯絡表單網址，公開後請勿更動。
+ *
+ * @var list<array{slug: string, name: array{zh_TW: string, en: string}, logo: string, logo_fit: string, logo_padding?: int, url: string, description: array{zh_TW: string, en: string}}>
  */
 return [
     [
+        'slug' => 'taiwan-kotlin-user-group',
         'name' => [
             'zh_TW' => 'Taiwan Kotlin User Group',
             'en' => 'Taiwan Kotlin User Group',
@@ -25,6 +28,7 @@ return [
         'url' => 'https://taiwan-kotlin-user-group.github.io/',
     ],
     [
+        'slug' => 'digital-rogue',
         'name' => [
             'zh_TW' => '網路遊民探險中',
             'en' => 'Digital Rogue',
@@ -38,6 +42,7 @@ return [
         'url' => 'https://digitalrogue.world/',
     ],
     [
+        'slug' => 'taiwan-obsidian-user-group',
         'name' => [
             'zh_TW' => 'Taiwan Obsidian User Group',
             'en' => 'Taiwan Obsidian User Group',
@@ -52,6 +57,7 @@ return [
         'url' => 'https://www.meetup.com/taiwan-obsidian-user-group/',
     ],
     [
+        'slug' => 'gdg-taoyuan',
         'name' => [
             'zh_TW' => 'GDG 桃園',
             'en' => 'GDG Taoyuan',
@@ -66,6 +72,7 @@ return [
         'url' => 'https://gdg.community.dev/gdg-taoyuan/',
     ],
     [
+        'slug' => 'buffet-dev',
         'name' => [
             'zh_TW' => '開發者 Buffet',
             'en' => 'Developer Buffet',
@@ -79,6 +86,7 @@ return [
         'url' => 'https://www.facebook.com/groups/buffet.dev',
     ],
     [
+        'slug' => 'iplayground',
         'name' => [
             'zh_TW' => 'iPlayground',
             'en' => 'iPlayground',
@@ -93,6 +101,7 @@ return [
         'url' => 'https://iplayground.io/',
     ],
     [
+        'slug' => 'orbio-community',
         'name' => [
             'zh_TW' => '人本與科技共融發展協會',
             'en' => 'Orbio Community',
@@ -107,6 +116,7 @@ return [
         'url' => 'https://linktr.ee/orbio.community',
     ],
     [
+        'slug' => 'wordpress-taiwan',
         'name' => [
             'zh_TW' => 'WordPress Taiwan',
             'en' => 'WordPress Taiwan',
