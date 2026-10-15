@@ -130,4 +130,19 @@ return [
         'logo_padding' => 0,
         'url' => 'https://www.facebook.com/groups/wordpresstw',
     ],
+    [
+        'slug' => 'flutter-taipei',
+        'name' => [
+            'zh_TW' => 'Flutter Taipei',
+            'en' => 'Flutter Taipei',
+        ],
+        'description' => [
+            'zh_TW' => '台灣的 Flutter 開發者社群，交流跨平台行動應用的開發經驗與學習資源。',
+            'en' => 'A Taiwanese community of Flutter developers, sharing experience and learning resources on building cross-platform apps.',
+        ],
+        'logo' => 'Flutter-Taipei.png',
+        'logo_fit' => 'contain',
+        'logo_padding' => 8,
+        'url' => 'https://www.facebook.com/groups/flutter.taipei',
+    ],
 ];

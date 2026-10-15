@@ -6,6 +6,13 @@ use Tests\TestCase;
 
 class CommunityCardTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->withoutVite();
+    }
+
     public function test_every_card_on_the_communities_page_links_to_its_message_form(): void
     {
         $response = $this->get('/communities')->assertOk();
