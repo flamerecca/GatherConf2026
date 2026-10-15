@@ -1,6 +1,14 @@
 <?php
 
 return [
+    'profile' => [
+        'title' => 'Edit nickname | GatherConf 2026',
+        'heading' => 'Edit nickname',
+        'intro' => 'Your nickname is shown to your friends and in messages.',
+        'nickname' => 'Nickname',
+        'submit' => 'Save nickname',
+        'saved' => 'Nickname saved.',
+    ],
     'password' => [
         'set_title' => 'Set a password | GatherConf 2026',
         'change_title' => 'Change password | GatherConf 2026',
@@ -120,6 +128,7 @@ return [
         'friends' => 'My friends',
         'set_password_prompt' => 'You have not set a password yet. Set one to log in directly with your email and password.',
         'set_password' => 'Set a password',
+        'edit_profile' => 'Edit nickname',
         'change_password' => 'Change password',
         'unread_messages' => 'Unread messages',
         'logout' => 'Log out',

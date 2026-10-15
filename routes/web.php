@@ -13,6 +13,7 @@ use App\Http\Controllers\Member\LoginLinkController;
 use App\Http\Controllers\Member\MessageController;
 use App\Http\Controllers\Member\PasswordController;
 use App\Http\Controllers\Member\PasswordResetController;
+use App\Http\Controllers\Member\ProfileController;
 use App\Http\Controllers\Member\RegisterController;
 use Illuminate\Support\Facades\Route;
 
@@ -98,6 +99,8 @@ foreach (['' => 'zh_TW', 'en' => 'en'] as $prefix => $locale) {
             Route::delete('/friends/{friendship}', [FriendController::class, 'destroy'])->name('member.friends.decline'.$s);
             Route::post('/friends/{member}/block', [BlockController::class, 'store'])->name('member.friends.block'.$s);
             Route::delete('/friends/{member}/block', [BlockController::class, 'destroy'])->name('member.friends.unblock'.$s);
+            Route::get('/member/profile', [ProfileController::class, 'edit'])->name('member.profile.edit'.$s);
+            Route::put('/member/profile', [ProfileController::class, 'update'])->middleware('throttle:member-password')->name('member.profile.update'.$s);
             Route::get('/member/password', [PasswordController::class, 'edit'])->name('member.password.edit'.$s);
             Route::put('/member/password', [PasswordController::class, 'update'])->middleware('throttle:member-password')->name('member.password.change'.$s);
             Route::get('/messages/{friendship}', [MessageController::class, 'show'])->name('member.messages.show'.$s);

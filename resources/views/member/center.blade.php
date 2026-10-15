@@ -19,6 +19,8 @@
                 <dd class="text-ink/80">{{ $member->organization ?? __('member.center.not_set') }}</dd>
             </div>
         </dl>
+        <a href="{{ route('member.profile.edit'.(app()->getLocale() === 'en' ? '.en' : '')) }}"
+           class="block text-sm font-medium text-moss underline underline-offset-4">{{ __('member.center.edit_profile') }}</a>
         @unless ($hasPassword)
             <p data-set-password-prompt class="rounded-2xl border border-copper p-4 text-sm">
                 {{ __('member.center.set_password_prompt') }}

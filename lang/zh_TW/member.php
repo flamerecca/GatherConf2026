@@ -1,6 +1,14 @@
 <?php
 
 return [
+    'profile' => [
+        'title' => '編輯暱稱 | 共聚年會 GatherConf 2026',
+        'heading' => '編輯暱稱',
+        'intro' => '暱稱會顯示在你的好友與訊息中。',
+        'nickname' => '暱稱',
+        'submit' => '儲存暱稱',
+        'saved' => '暱稱已儲存。',
+    ],
     'password' => [
         'set_title' => '設定密碼 | 共聚年會 GatherConf 2026',
         'change_title' => '變更密碼 | 共聚年會 GatherConf 2026',
@@ -120,6 +128,7 @@ return [
         'friends' => '我的好友',
         'set_password_prompt' => '你還沒有設定密碼，設定後可以直接用 Email 與密碼登入。',
         'set_password' => '設定密碼',
+        'edit_profile' => '編輯暱稱',
         'change_password' => '變更密碼',
         'unread_messages' => '未讀訊息',
         'logout' => '登出',
