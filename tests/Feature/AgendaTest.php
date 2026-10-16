@@ -50,6 +50,7 @@ class AgendaTest extends TestCase
     {
         config(['agenda' => [['id' => 'a', 'sessions' => [[
             'id' => 'a1',
+            'date' => '2026-11-21',
             'time' => '10:00 - 10:45',
             'speaker_name' => '王小明',
             'speaker_photo' => null,
@@ -87,6 +88,7 @@ class AgendaTest extends TestCase
     {
         config(['agenda' => [['id' => 'a', 'sessions' => [[
             'id' => 'a1',
+            'date' => '2026-11-21',
             'time' => '10:00 - 10:45',
             'speaker_name' => '王小明',
             'speaker_photo' => null,
@@ -106,11 +108,11 @@ class AgendaTest extends TestCase
             $this->assertSame($slots, array_column($track['sessions'], 'time'));
         }
 
-        foreach (['/agenda', '/en/agenda', '/', '/en'] as $path) {
+        foreach (['/agenda' => '2026-11-21 ', '/en/agenda' => '2026-11-21 ', '/' => '', '/en' => ''] as $path => $datePrefix) {
             $html = $this->get($path)->assertOk()->getContent();
 
             foreach ($slots as $slot) {
-                $this->assertSame(2, substr_count($html, '<time>'.$slot.'</time>'), "{$path} {$slot}");
+                $this->assertSame(2, substr_count($html, '<time>'.$datePrefix.$slot.'</time>'), "{$path} {$slot}");
             }
         }
     }

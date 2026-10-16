@@ -30,7 +30,7 @@
                             <p class="text-sm font-semibold tracking-widest text-copper uppercase">
                                 {{ __('agenda.session', ['number' => $index + 1]) }}
                                 <span aria-hidden="true">·</span>
-                                <time>{{ $session['time'] }}</time>
+                                <time>{{ $session['date'] }} {{ $session['time'] }}</time>
                             </p>
                             <div class="flex items-center gap-4">
                                 @if ($session['speaker_photo'])
