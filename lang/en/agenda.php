@@ -7,7 +7,7 @@ return [
     'back' => 'Back to home',
     'switch_label' => '繁體中文',
     'heading' => 'Agenda',
-    'intro' => 'One day, two tracks, eight sessions in total with four in each track. Speakers and topics are being confirmed and will be added to this page once announced.',
+    'intro' => 'One day, two tracks, eight sessions in total with four in each track.',
     'view_all' => 'View the full agenda',
     'track' => 'Track :name',
     'session' => 'Session :number',
