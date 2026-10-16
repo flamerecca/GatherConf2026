@@ -13,6 +13,7 @@ return [
     'sponsor_link' => 'Become a sponsor',
     'member_login_link' => 'Member login',
     'member_center_carrots' => 'Member center · 🥕 :count',
+    'agenda_link' => 'Agenda',
     'communities_link' => 'Community Partners',
     'mascot_alt' => 'GatherConf mascot Bunny',
     'gathering_alt' => 'Watercolor illustration of many people at a conference in a forest, some listening to a talk and some discussing around a table',

@@ -41,6 +41,18 @@ Route::get('/en/code-of-conduct', function () {
     return view('code-of-conduct');
 })->name('conduct.en');
 
+Route::get('/agenda', function () {
+    app()->setLocale('zh_TW');
+
+    return view('agenda');
+})->name('agenda');
+
+Route::get('/en/agenda', function () {
+    app()->setLocale('en');
+
+    return view('agenda');
+})->name('agenda.en');
+
 Route::get('/communities', function () {
     app()->setLocale('zh_TW');
 
@@ -135,7 +147,7 @@ Route::get('/robots.txt', function () {
 })->name('robots');
 
 Route::get('/sitemap.xml', function () {
-    $urlset = view('sitemap', ['pages' => ['landing', 'conduct', 'communities', 'call-for-sponsor']])->render();
+    $urlset = view('sitemap', ['pages' => ['landing', 'conduct', 'agenda', 'communities', 'call-for-sponsor']])->render();
 
     return response('<?xml version="1.0" encoding="UTF-8"?>'."\n".$urlset)
         ->header('Content-Type', 'application/xml');

@@ -25,6 +25,8 @@ class AccessibilityTest extends TestCase
         return [
             'landing zh' => ['/', '跳到主要內容'],
             'landing en' => ['/en', 'Skip to main content'],
+            'agenda zh' => ['/agenda', '跳到主要內容'],
+            'agenda en' => ['/en/agenda', 'Skip to main content'],
             'conduct zh' => ['/code-of-conduct', '跳到主要內容'],
             'communities en' => ['/en/communities', 'Skip to main content'],
             'call for sponsor zh' => ['/call-for-sponsor', '跳到主要內容'],

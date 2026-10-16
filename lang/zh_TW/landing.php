@@ -13,6 +13,7 @@ return [
     'sponsor_link' => '成為贊助夥伴',
     'member_login_link' => '會員登入',
     'member_center_carrots' => '會員頁面 · 🥕 :count',
+    'agenda_link' => '議程',
     'communities_link' => '合作社群',
     'mascot_alt' => 'GatherConf 吉祥物 Bunny',
     'gathering_alt' => '水彩插畫，許多人在森林裡共同參加年會，有人聽講、有人圍著長桌討論',
