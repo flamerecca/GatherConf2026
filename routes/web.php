@@ -14,6 +14,7 @@ use App\Http\Controllers\Member\MessageController;
 use App\Http\Controllers\Member\PasswordController;
 use App\Http\Controllers\Member\PasswordResetController;
 use App\Http\Controllers\Member\ProfileController;
+use App\Http\Controllers\Member\QuizController;
 use App\Http\Controllers\Member\RegisterController;
 use Illuminate\Support\Facades\Route;
 
@@ -117,6 +118,8 @@ foreach (['' => 'zh_TW', 'en' => 'en'] as $prefix => $locale) {
             Route::put('/member/password', [PasswordController::class, 'update'])->middleware('throttle:member-password')->name('member.password.change'.$s);
             Route::get('/messages/{friendship}', [MessageController::class, 'show'])->name('member.messages.show'.$s);
             Route::post('/messages/{friendship}', [MessageController::class, 'store'])->middleware('throttle:member-message')->name('member.messages.store'.$s);
+            Route::get('/quiz', [QuizController::class, 'show'])->name('quiz'.$s);
+            Route::post('/quiz', [QuizController::class, 'store'])->middleware('throttle:member-task')->name('quiz.store'.$s);
             Route::get('/member/tasks', [CarrotTaskController::class, 'index'])->name('member.tasks'.$s);
             Route::get('/member/tasks/{code}', [CarrotTaskController::class, 'complete'])->middleware('throttle:member-task')->name('member.tasks.complete'.$s);
             Route::get('/member/bottles', [BottleController::class, 'index'])->name('member.bottles'.$s);
@@ -131,6 +134,9 @@ foreach (['' => 'zh_TW', 'en' => 'en'] as $prefix => $locale) {
             Route::get('/member/community-messages', [CommunityMessageController::class, 'index'])->name('member.community-messages'.$s);
         });
 
+        Route::get('/bbti', [QuizController::class, 'intro'])->name('bbti'.$s);
+        Route::get('/results/{attempt:uuid}', [QuizController::class, 'result'])->middleware('throttle:results')->name('quiz.result'.$s);
+
         Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])
             ->middleware(['signed', 'throttle:6,1'])
             ->name('member.verification.verify'.$s);
@@ -138,7 +144,7 @@ foreach (['' => 'zh_TW', 'en' => 'en'] as $prefix => $locale) {
 }
 
 Route::get('/robots.txt', function () {
-    $disallow = collect(['/admin', '/member', '/login', '/register', '/forgot-password', '/reset-password', '/email/verify', '/en/member', '/en/login', '/en/register', '/en/forgot-password', '/en/reset-password', '/en/email/verify'])
+    $disallow = collect(['/admin', '/member', '/login', '/register', '/forgot-password', '/reset-password', '/email/verify', '/quiz', '/en/quiz', '/en/member', '/en/login', '/en/register', '/en/forgot-password', '/en/reset-password', '/en/email/verify'])
         ->map(fn (string $path) => 'Disallow: '.$path)
         ->implode("\n");
 
@@ -147,7 +153,7 @@ Route::get('/robots.txt', function () {
 })->name('robots');
 
 Route::get('/sitemap.xml', function () {
-    $urlset = view('sitemap', ['pages' => ['landing', 'conduct', 'agenda', 'communities', 'call-for-sponsor']])->render();
+    $urlset = view('sitemap', ['pages' => ['landing', 'conduct', 'agenda', 'bbti', 'communities', 'call-for-sponsor']])->render();
 
     return response('<?xml version="1.0" encoding="UTF-8"?>'."\n".$urlset)
         ->header('Content-Type', 'application/xml');

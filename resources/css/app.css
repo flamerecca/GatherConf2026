@@ -22,6 +22,10 @@
     --c-tier-gold: #9c7000;
     --c-tier-silver: #6f7a85;
     --c-tier-bronze: #9a5524;
+    --c-axis-nm: #a8481f;
+    --c-axis-sv: #2a6a96;
+    --c-axis-ha: #8a6212;
+    --c-axis-gd: #8b3a62;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -39,6 +43,10 @@
         --c-tier-gold: #e6c35c;
         --c-tier-silver: #c3cbd3;
         --c-tier-bronze: #d9843a;
+        --c-axis-nm: #e08a5f;
+        --c-axis-sv: #6fa8d6;
+        --c-axis-ha: #d4ad4f;
+        --c-axis-gd: #d58ab0;
     }
 }
 
@@ -56,6 +64,10 @@
     --c-tier-gold: #e6c35c;
     --c-tier-silver: #c3cbd3;
     --c-tier-bronze: #d9843a;
+    --c-axis-nm: #e08a5f;
+    --c-axis-sv: #6fa8d6;
+    --c-axis-ha: #d4ad4f;
+    --c-axis-gd: #d58ab0;
 }
 
 @custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
@@ -73,6 +85,10 @@
     --color-tier-gold: var(--c-tier-gold);
     --color-tier-silver: var(--c-tier-silver);
     --color-tier-bronze: var(--c-tier-bronze);
+    --color-axis-nm: var(--c-axis-nm);
+    --color-axis-sv: var(--c-axis-sv);
+    --color-axis-ha: var(--c-axis-ha);
+    --color-axis-gd: var(--c-axis-gd);
 }
 
 /* Keyboard focus: a 2px outline that keeps 3:1 against the page and the dark blocks. */
