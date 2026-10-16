@@ -8,6 +8,7 @@ return [
     'switch_label' => 'English',
     'heading' => '議程',
     'intro' => '一日雙軌，共八場講題，每軌四場。講者與議題正在邀請與確認中，公布後會更新在這一頁。',
+    'view_all' => '查看完整議程',
     'track' => ':name 軌',
     'session' => '第 :number 場',
     'speaker_photo_alt' => ':name 的照片',

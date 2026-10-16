@@ -29,6 +29,8 @@
                             class="flex h-full flex-col gap-4 rounded-2xl border-4 border-moss/60 bg-parchment-dark p-6">
                             <p class="text-sm font-semibold tracking-widest text-copper uppercase">
                                 {{ __('agenda.session', ['number' => $index + 1]) }}
+                                <span aria-hidden="true">·</span>
+                                <time>{{ $session['time'] }}</time>
                             </p>
                             <div class="flex items-center gap-4">
                                 @if ($session['speaker_photo'])

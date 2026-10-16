@@ -50,6 +50,7 @@ class AgendaTest extends TestCase
     {
         config(['agenda' => [['id' => 'a', 'sessions' => [[
             'id' => 'a1',
+            'time' => '10:00 - 10:45',
             'speaker_name' => '王小明',
             'speaker_photo' => null,
             'title' => ['zh_TW' => '給新手的 Kotlin', 'en' => 'Kotlin for beginners'],
@@ -71,5 +72,46 @@ class AgendaTest extends TestCase
     {
         $this->get('/')->assertSee(route('agenda'), false);
         $this->get('/en')->assertSee(route('agenda.en'), false);
+    }
+
+    public function test_the_landing_page_shows_the_eight_sessions_and_links_to_the_full_agenda(): void
+    {
+        $zh = $this->get('/')->assertOk()->assertSee('查看完整議程')->assertSee(route('agenda'), false);
+        $this->assertSame(8, substr_count($zh->getContent(), 'data-landing-session="'));
+
+        $en = $this->get('/en')->assertOk()->assertSee('View the full agenda')->assertSee(route('agenda.en'), false);
+        $this->assertSame(8, substr_count($en->getContent(), 'data-landing-session="'));
+    }
+
+    public function test_filled_in_sessions_show_on_the_landing_page(): void
+    {
+        config(['agenda' => [['id' => 'a', 'sessions' => [[
+            'id' => 'a1',
+            'time' => '10:00 - 10:45',
+            'speaker_name' => '王小明',
+            'speaker_photo' => null,
+            'title' => ['zh_TW' => '給新手的 Kotlin', 'en' => 'Kotlin for beginners'],
+            'outline' => ['zh_TW' => null, 'en' => null],
+        ]]]]]);
+
+        $this->get('/')->assertSee('王小明')->assertSee('給新手的 Kotlin');
+        $this->get('/en')->assertSee('Kotlin for beginners');
+    }
+
+    public function test_each_session_shows_its_time_on_the_agenda_and_landing_pages(): void
+    {
+        $slots = ['10:00 - 10:45', '10:45 - 11:30', '13:00 - 13:45', '13:45 - 14:30'];
+
+        foreach (config('agenda') as $track) {
+            $this->assertSame($slots, array_column($track['sessions'], 'time'));
+        }
+
+        foreach (['/agenda', '/en/agenda', '/', '/en'] as $path) {
+            $html = $this->get($path)->assertOk()->getContent();
+
+            foreach ($slots as $slot) {
+                $this->assertSame(2, substr_count($html, '<time>'.$slot.'</time>'), "{$path} {$slot}");
+            }
+        }
     }
 }

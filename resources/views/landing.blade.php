@@ -15,6 +15,7 @@
             @include('landing.mission')
             @include('landing.why')
             @include('landing.overview')
+            @include('landing.agenda')
             @include('landing.communities')
             @include('landing.sponsorship')
             @include('landing.sponsors')
