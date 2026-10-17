@@ -18,4 +18,15 @@ return [
         'url' => 'https://www.rabbit-gather.com/',
         'tier' => 'gold',
     ],
+    [
+        'name' => [
+            'zh_TW' => 'JetBrains',
+            'en' => 'JetBrains',
+        ],
+        'logo' => 'JetBrains.png',
+        'logo_fit' => 'contain',
+        'logo_padding' => 5,
+        'url' => 'https://www.jetbrains.com/',
+        'tier' => 'bronze',
+    ],
 ];

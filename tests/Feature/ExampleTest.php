@@ -163,6 +163,17 @@ class ExampleTest extends TestCase
             ->assertSee('https://www.rabbit-gather.com/', false);
     }
 
+    public function test_jetbrains_is_listed_as_a_bronze_sponsor(): void
+    {
+        $this->get('/')
+            ->assertSeeInOrder(['感謝贊助商', '金獎級', '兔給得資訊有限公司', '銅獎級', 'JetBrains'])
+            ->assertSee('size-32 rounded-full', false)
+            ->assertSee('https://www.jetbrains.com/', false);
+
+        $this->get('/en')
+            ->assertSeeInOrder(['Our Sponsors', 'Gold Tier', 'Rabbit Gather Co., Ltd.', 'Bronze Tier', 'JetBrains']);
+    }
+
     public function test_sponsor_list_is_hidden_when_there_are_no_sponsors(): void
     {
         config(['sponsors' => []]);
