@@ -10,16 +10,6 @@
 return [
     [
         'name' => [
-            'zh_TW' => '兔給得資訊有限公司',
-            'en' => 'Rabbit Gather Co., Ltd.',
-        ],
-        'logo' => 'rabbit-gather.png',
-        'logo_fit' => 'contain',
-        'url' => 'https://www.rabbit-gather.com/',
-        'tier' => 'gold',
-    ],
-    [
-        'name' => [
             'zh_TW' => '領角鴞資訊整合有限公司',
             'en' => 'Leadowl Information Integration Co., Ltd.',
         ],
@@ -27,6 +17,16 @@ return [
         'logo_fit' => 'contain',
         'logo_padding' => 8,
         'url' => 'https://odoo.leadowl.tw/',
+        'tier' => 'gold',
+    ],
+    [
+        'name' => [
+            'zh_TW' => '兔給得資訊有限公司',
+            'en' => 'Rabbit Gather Co., Ltd.',
+        ],
+        'logo' => 'rabbit-gather.png',
+        'logo_fit' => 'contain',
+        'url' => 'https://www.rabbit-gather.com/',
         'tier' => 'gold',
     ],
     [

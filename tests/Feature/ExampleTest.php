@@ -177,11 +177,11 @@ class ExampleTest extends TestCase
     public function test_leadowl_is_listed_as_a_gold_sponsor(): void
     {
         $this->get('/')
-            ->assertSeeInOrder(['金獎級', '領角鴞資訊整合有限公司', '銅獎級', 'JetBrains'])
+            ->assertSeeInOrder(['金獎級', '領角鴞資訊整合有限公司', '兔給得資訊有限公司', '銅獎級', 'JetBrains'])
             ->assertSee('https://odoo.leadowl.tw/', false);
 
         $this->get('/en')
-            ->assertSeeInOrder(['Gold Tier', 'Leadowl Information Integration Co., Ltd.', 'Bronze Tier', 'JetBrains'])
+            ->assertSeeInOrder(['Gold Tier', 'Leadowl Information Integration Co., Ltd.', 'Rabbit Gather Co., Ltd.', 'Bronze Tier', 'JetBrains'])
             ->assertDontSee('領角鴞資訊整合有限公司');
     }
 
