@@ -134,6 +134,27 @@ class ExampleTest extends TestCase
             ->assertSee('A community for Claude users in Taiwan');
     }
 
+    public function test_landing_images_are_served_as_responsive_webp_with_a_png_fallback(): void
+    {
+        $html = $this->get('/')->assertOk()->getContent();
+
+        foreach (['community-gathering-watercolor' => [1024, 572], 'community-silos-watercolor' => [1024, 434]] as $name => [$width, $height]) {
+            foreach ([480, 768, 1024] as $variant) {
+                $this->assertFileExists(resource_path("images/{$name}-{$variant}.webp"));
+            }
+
+            $this->assertFileExists(resource_path("images/{$name}.png"));
+            $this->assertSame([$width, $height], array_slice(getimagesize(resource_path("images/{$name}.png")), 0, 2));
+        }
+
+        $this->assertSame(2, substr_count($html, '<source type="image/webp" sizes="(min-width: 1184px) 1120px, calc(100vw - 32px)"'));
+        $this->assertSame(2, substr_count($html, '480w, '));
+        $this->assertSame(2, substr_count($html, '768w, '));
+        $this->assertSame(2, substr_count($html, '1024w"'));
+        $this->assertStringContainsString('width="1024" height="572"', $html);
+        $this->assertStringContainsString('width="1024" height="434"', $html);
+    }
+
     public function test_landing_footer_links_to_the_communities_page(): void
     {
         $this->get('/')->assertSee(route('communities'), false);

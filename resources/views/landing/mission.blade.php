@@ -1,7 +1,7 @@
 <section class="bg-deep text-on-deep">
     <div class="mx-auto max-w-6xl px-4 py-16">
-        <img src="{{ Vite::asset('resources/images/community-gathering-watercolor.png') }}" alt="{{ __('landing.gathering_alt') }}"
-             class="aspect-video w-full rounded-2xl object-cover shadow-xl">
+        <x-responsive-image name="community-gathering-watercolor" :alt="__('landing.gathering_alt')" :width="1024" :height="572"
+                            class="aspect-video w-full rounded-2xl object-cover shadow-xl" />
         <div class="mt-12 max-w-3xl">
             <h2 class="text-3xl font-bold">{{ __('landing.mission_title') }}</h2>
             <p class="mt-6 text-lg leading-relaxed">{{ __('landing.mission_lead') }}</p>

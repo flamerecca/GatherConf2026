@@ -2,8 +2,8 @@
     <h2 class="text-3xl font-bold">{{ __('landing.why_title') }}</h2>
     <p class="mt-6 max-w-3xl text-lg leading-relaxed text-ink/80">{{ __('landing.why_lead') }}</p>
     <figure class="mt-12">
-        <img src="{{ Vite::asset('resources/images/community-silos-watercolor.png') }}" alt="{{ __('landing.why_image_alt') }}"
-             class="w-full rounded-2xl shadow-xl">
+        <x-responsive-image name="community-silos-watercolor" :alt="__('landing.why_image_alt')" :width="1024" :height="434"
+                            class="w-full rounded-2xl shadow-xl" />
         <figcaption class="mt-4 grid grid-cols-2 gap-4 text-center font-semibold">
             <span>{{ __('landing.why_before') }}</span>
             <span class="text-moss">{{ __('landing.why_after') }}</span>
