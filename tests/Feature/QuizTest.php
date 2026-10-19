@@ -216,6 +216,21 @@ class QuizTest extends TestCase
         $this->get(route('quiz.result.en', $attempt->uuid))->assertOk()->assertSee('Your bunny type');
     }
 
+    public function test_result_bars_grow_toward_the_preferred_pole_label(): void
+    {
+        $this->seedQuiz();
+        $attempt = QuizAttempt::query()->create([
+            'uuid' => (string) Str::uuid(), 'user_id' => null,
+            'scores' => ['NM' => 2, 'SV' => -4, 'HA' => -2, 'GD' => 0], 'type_code' => 'NVAD', 'completed_at' => now(),
+        ]);
+
+        $html = $this->get(route('quiz.result', $attempt->uuid))->assertOk()->getContent();
+
+        // The positive pole label is on the left and the negative one on the right.
+        $this->assertMatchesRegularExpression('/data-bar-side="left"[^>]*style="width: 25%; right: 50%/', $html);
+        $this->assertMatchesRegularExpression('/data-bar-side="right"[^>]*style="width: 50%; left: 50%/', $html);
+    }
+
     public function test_an_unknown_result_is_a_404(): void
     {
         $this->get(route('quiz.result', (string) Str::uuid()))->assertNotFound();

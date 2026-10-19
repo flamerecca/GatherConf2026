@@ -34,8 +34,8 @@
                         <div class="relative mt-1 h-4 rounded-full bg-parchment-dark" role="img"
                              aria-label="{{ __('quiz.result.leaning', ['pole' => $bar['leaning'].' '.__('quiz.result.pole.'.$bar['leaning']), 'percent' => $bar['percent']]) }}">
                             <div class="absolute inset-y-0 left-1/2 w-px bg-ink/40"></div>
-                            <div @class(['absolute inset-y-0 rounded-full', 'bg-axis-nm' => $bar['axis'] === 'NM', 'bg-axis-sv' => $bar['axis'] === 'SV', 'bg-axis-ha' => $bar['axis'] === 'HA', 'bg-axis-gd' => $bar['axis'] === 'GD'])
-                                 style="width: {{ $bar['percent'] / 2 }}%; {{ $bar['leaning'] === $bar['positive'] ? 'left: 50%' : 'right: 50%' }}"></div>
+                            <div data-bar-side="{{ $bar['leaning'] === $bar['positive'] ? 'left' : 'right' }}" @class(['absolute inset-y-0 rounded-full', 'bg-axis-nm' => $bar['axis'] === 'NM', 'bg-axis-sv' => $bar['axis'] === 'SV', 'bg-axis-ha' => $bar['axis'] === 'HA', 'bg-axis-gd' => $bar['axis'] === 'GD'])
+                                 style="width: {{ $bar['percent'] / 2 }}%; {{ $bar['leaning'] === $bar['positive'] ? 'right: 50%' : 'left: 50%' }}"></div>
                         </div>
                         <p class="mt-1 text-sm text-ink/70">{{ __('quiz.result.leaning', ['pole' => $bar['leaning'], 'percent' => $bar['percent']]) }}</p>
                     </div>
