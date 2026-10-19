@@ -53,7 +53,12 @@
         <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">
         <link rel="manifest" href="{{ asset('site.webmanifest') }}">
         @stack('structured-data')
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @if (Vite::isRunningHot())
+            @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @else
+            <style>{!! Vite::content('resources/css/app.css') !!}</style>
+            @vite('resources/js/app.js')
+        @endif
     </head>
     <body class="bg-parchment text-ink antialiased">
         <a href="#main"

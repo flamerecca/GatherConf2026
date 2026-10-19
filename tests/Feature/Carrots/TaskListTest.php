@@ -104,8 +104,10 @@ class TaskListTest extends TestCase
         $member = Member::factory()->create();
         CarrotLedger::adjust($member, 2, '測試');
 
-        $this->asMember($member->fresh())->get(route('member.tasks'))
-            ->assertDontSee('text-red-700', false);
+        $html = $this->asMember($member->fresh())->get(route('member.tasks'))->getContent();
+
+        $this->assertSame(1, preg_match('/<p data-carrots="2"[^>]*>/', $html, $balance));
+        $this->assertStringNotContainsString('text-red-700', $balance[0]);
     }
 
     public function test_guests_and_unverified_members_are_redirected(): void
