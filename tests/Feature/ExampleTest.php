@@ -139,7 +139,7 @@ class ExampleTest extends TestCase
         $html = $this->get('/')->assertOk()->getContent();
 
         foreach (['community-gathering-watercolor' => [1024, 572], 'community-silos-watercolor' => [1024, 434]] as $name => [$width, $height]) {
-            foreach ([480, 768, 1024] as $variant) {
+            foreach ([360, 480, 576, 672, 768, 864, 960, 1024] as $variant) {
                 $this->assertFileExists(resource_path("images/{$name}-{$variant}.webp"));
             }
 
@@ -149,7 +149,7 @@ class ExampleTest extends TestCase
 
         $this->assertSame(2, substr_count($html, '<source type="image/webp" sizes="(min-width: 1184px) 1120px, calc(100vw - 32px)"'));
         $this->assertSame(2, substr_count($html, '480w, '));
-        $this->assertSame(2, substr_count($html, '768w, '));
+        $this->assertSame(2, substr_count($html, '672w, '));
         $this->assertSame(2, substr_count($html, '1024w"'));
         $this->assertStringContainsString('width="1024" height="572"', $html);
         $this->assertStringContainsString('width="1024" height="434"', $html);
@@ -185,6 +185,7 @@ class ExampleTest extends TestCase
 
         $this->assertSame(2, substr_count($this->get('/')->getContent(), '128w, '));
         $this->assertSame(2, substr_count($this->get('/agenda')->getContent(), '128w, '));
+        $this->assertSame(1, substr_count($this->get('/')->getContent(), 'fetchpriority="high"'));
     }
 
     public function test_landing_footer_links_to_the_communities_page(): void
