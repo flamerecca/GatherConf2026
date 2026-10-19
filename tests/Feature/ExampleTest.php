@@ -123,6 +123,17 @@ class ExampleTest extends TestCase
             ->assertDontSee('合作社群');
     }
 
+    public function test_claude_taiwan_is_listed_as_a_community_partner(): void
+    {
+        $this->get('/communities')
+            ->assertSee('Claude Taiwan')
+            ->assertSee('https://www.facebook.com/share/g/1DmSxiabtn/', false);
+
+        $this->get('/en/communities')
+            ->assertSee('Claude Taiwan')
+            ->assertSee('A community for Claude users in Taiwan');
+    }
+
     public function test_landing_footer_links_to_the_communities_page(): void
     {
         $this->get('/')->assertSee(route('communities'), false);
