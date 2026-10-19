@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AssetController;
 use App\Http\Controllers\Member\BlockController;
 use App\Http\Controllers\Member\BottleController;
 use App\Http\Controllers\Member\CarrotTaskController;
@@ -17,6 +18,11 @@ use App\Http\Controllers\Member\ProfileController;
 use App\Http\Controllers\Member\QuizController;
 use App\Http\Controllers\Member\RegisterController;
 use Illuminate\Support\Facades\Route;
+
+Route::get('/assets/{file}', AssetController::class)
+    ->where('file', '[A-Za-z0-9._-]+')
+    ->withoutMiddleware('web')
+    ->name('assets');
 
 Route::get('/', function () {
     app()->setLocale('zh_TW');
