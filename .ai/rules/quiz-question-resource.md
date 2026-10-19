@@ -1,6 +1,6 @@
 ---
 paths:
-  - 'app/Filament/Resources/QuizQuestionResource/**'
+  - 'app/Filament/Resources/QuizQuestions/**'
 ---
 
 # Quiz Question Resource
