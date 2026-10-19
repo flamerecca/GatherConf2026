@@ -216,6 +216,46 @@ class QuizTest extends TestCase
         $this->get(route('quiz.result.en', $attempt->uuid))->assertOk()->assertSee('Your bunny type');
     }
 
+    public function test_every_one_of_the_sixteen_types_has_a_bunny_image(): void
+    {
+        $this->seed(PersonalityTypeSeeder::class);
+
+        $this->assertSame(16, PersonalityType::count());
+
+        foreach (PersonalityType::all() as $type) {
+            $this->assertNotNull($type->bunnyImagePath(), $type->code.' has no bunny image');
+            $this->assertFileExists(base_path($type->bunnyImagePath()));
+        }
+    }
+
+    public function test_the_result_page_shows_the_bunny_for_the_type(): void
+    {
+        $this->seed(PersonalityTypeSeeder::class);
+        $attempt = QuizAttempt::query()->create([
+            'uuid' => (string) Str::uuid(), 'user_id' => null,
+            'scores' => ['NM' => 2, 'SV' => 2, 'HA' => 2, 'GD' => 2], 'type_code' => 'NSHG', 'completed_at' => now(),
+        ]);
+
+        $this->get(route('quiz.result', $attempt->uuid))
+            ->assertOk()
+            ->assertSee('data-bunny="NSHG"', false)
+            ->assertSee('/NSHG-', false)
+            ->assertSee('NSHG 拓荒工匠的創客兔插圖', false);
+
+        $this->get(route('quiz.result.en', $attempt->uuid))->assertSee('Bunny illustration of NSHG', false);
+    }
+
+    public function test_a_type_without_an_image_still_renders_the_result(): void
+    {
+        $this->seedQuiz();
+        PersonalityType::query()->create(['code' => 'ZZZZ', 'name' => '無圖', 'summary' => '摘要', 'description' => '說明']);
+        $attempt = QuizAttempt::query()->create([
+            'uuid' => (string) Str::uuid(), 'user_id' => null, 'scores' => [], 'type_code' => 'ZZZZ', 'completed_at' => now(),
+        ]);
+
+        $this->get(route('quiz.result', $attempt->uuid))->assertOk()->assertDontSee('data-bunny', false);
+    }
+
     public function test_result_bars_grow_toward_the_preferred_pole_label(): void
     {
         $this->seedQuiz();

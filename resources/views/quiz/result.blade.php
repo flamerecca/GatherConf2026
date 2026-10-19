@@ -14,6 +14,11 @@
     <x-subpage-header :switch-url="$isEnglish ? route('quiz.result', $attempt) : route('quiz.result.en', $attempt)"
                       :switch-label="__('quiz.switch_label')" :back-label="__('quiz.back')" />
     <main id="main" tabindex="-1" class="mx-auto max-w-2xl px-4 py-12">
+        @if ($bunny = $type->bunnyImagePath())
+            <img src="{{ Vite::asset($bunny) }}" width="1024" height="1024" data-bunny="{{ $type->code }}"
+                 alt="{{ __('quiz.result.bunny_alt', ['code' => $type->code, 'name' => $type->name]) }}"
+                 class="mx-auto mb-8 aspect-square w-full max-w-sm rounded-3xl border-4 border-moss/60 bg-white object-cover">
+        @endif
         <p class="text-sm font-semibold tracking-widest text-copper uppercase">{{ __('quiz.result.your_type') }}</p>
         <h1 class="mt-2 text-5xl font-bold tracking-tight" data-type-code="{{ $type->code }}">
             {{ $type->code }}

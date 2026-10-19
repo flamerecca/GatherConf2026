@@ -36,6 +36,7 @@ return [
     'result' => [
         'title' => ':code :name | BBTI Bunny Builder Type Indicator',
         'description' => 'I am :code :name. :summary',
+        'bunny_alt' => 'Bunny illustration of :code :name',
         'your_type' => 'Your bunny type',
         'axes' => 'Your leaning on four axes',
         'leaning' => 'Leaning :pole, strength :percent%',
