@@ -18,6 +18,7 @@
             {{ __('landing.register') }}
         </a>
     </div>
-    <img src="{{ Vite::asset('resources/images/GatherConf-Logo.png') }}" alt="{{ __('landing.logo_alt') }}"
-         class="mx-auto w-full max-w-md rounded-full mix-blend-multiply dark:mix-blend-normal">
+    <x-responsive-image name="GatherConf-Logo" :alt="__('landing.logo_alt')" :width="687" :height="687" :widths="[128, 256, 448, 687]"
+                        sizes="(min-width: 480px) 448px, calc(100vw - 32px)" loading="eager"
+                        class="mx-auto w-full max-w-md rounded-full mix-blend-multiply dark:mix-blend-normal" />
 </section>

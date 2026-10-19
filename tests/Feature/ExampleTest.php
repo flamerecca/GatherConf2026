@@ -155,6 +155,38 @@ class ExampleTest extends TestCase
         $this->assertStringContainsString('width="1024" height="434"', $html);
     }
 
+    public function test_every_partner_logo_has_responsive_webp_variants(): void
+    {
+        $logos = collect(config('communities'))->map(fn (array $c) => 'community-logo/'.$c['logo'])
+            ->merge(collect(config('sponsors'))->map(fn (array $s) => 'sponsor-logo/'.$s['logo']));
+
+        foreach ($logos as $logo) {
+            $base = resource_path('images/'.preg_replace('/\.[^.]+$/', '', $logo));
+
+            foreach ([200, 400, 500] as $width) {
+                $this->assertFileExists("{$base}-{$width}.webp");
+            }
+        }
+
+        $html = $this->get('/communities')->assertOk()->getContent();
+
+        $this->assertSame(count(config('communities')), preg_match_all('/200w,\s+400w,\s+500w"/', $html));
+        $this->assertStringContainsString('sizes="160px"', $html);
+        $this->assertStringContainsString('width="160" height="160"', $html);
+
+        $this->assertStringContainsString('sizes="192px"', $this->get('/')->getContent());
+    }
+
+    public function test_the_site_logo_is_served_as_responsive_webp(): void
+    {
+        foreach ([128, 256, 448, 687] as $width) {
+            $this->assertFileExists(resource_path("images/GatherConf-Logo-{$width}.webp"));
+        }
+
+        $this->assertSame(2, substr_count($this->get('/')->getContent(), '128w, '));
+        $this->assertSame(2, substr_count($this->get('/agenda')->getContent(), '128w, '));
+    }
+
     public function test_landing_footer_links_to_the_communities_page(): void
     {
         $this->get('/')->assertSee(route('communities'), false);
