@@ -20,6 +20,17 @@ return [
     ],
     [
         'name' => [
+            'zh_TW' => '領角鴞資訊整合有限公司',
+            'en' => 'Leadowl Information Integration Co., Ltd.',
+        ],
+        'logo' => 'LeadOwl.png',
+        'logo_fit' => 'contain',
+        'logo_padding' => 8,
+        'url' => 'https://odoo.leadowl.tw/',
+        'tier' => 'gold',
+    ],
+    [
+        'name' => [
             'zh_TW' => 'JetBrains',
             'en' => 'JetBrains',
         ],
