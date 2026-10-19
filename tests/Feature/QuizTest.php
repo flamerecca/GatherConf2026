@@ -6,6 +6,7 @@ use App\Models\Member;
 use App\Models\PersonalityType;
 use App\Models\QuizAttempt;
 use App\Models\QuizQuestion;
+use Database\Seeders\QuizQuestionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -51,6 +52,32 @@ class QuizTest extends TestCase
         $this->get(route('bbti'))->assertOk()->assertSee(__('quiz.intro.start'), false)->assertSee(route('quiz'), false);
 
         $this->get(route('bbti.en'))->assertOk()->assertSee('Start the quiz', false)->assertSee(route('quiz.en'), false);
+    }
+
+    public function test_the_intro_page_states_the_number_of_active_questions(): void
+    {
+        $this->seedQuiz();
+        QuizQuestion::query()->where('text', '題目 NM M')->update(['is_active' => false]);
+
+        $this->get(route('bbti'))->assertSee('回答 7 題，約需 2 分鐘', false);
+        $this->get(route('bbti.en'))->assertSee('Answer 7 questions in about 2 minutes', false);
+    }
+
+    public function test_the_seeded_questions_are_balanced_across_axes_and_poles(): void
+    {
+        $this->seed(QuizQuestionSeeder::class);
+
+        $this->assertSame(40, QuizQuestion::count());
+
+        foreach (['NM' => ['N', 'M'], 'SV' => ['S', 'V'], 'HA' => ['H', 'A'], 'GD' => ['G', 'D']] as $axis => $poles) {
+            $this->assertSame(10, QuizQuestion::where('axis', $axis)->count(), $axis);
+
+            foreach ($poles as $pole) {
+                $this->assertSame(5, QuizQuestion::where('axis', $axis)->where('positive_pole', $pole)->count(), $axis.$pole);
+            }
+        }
+
+        $this->assertSame(40, QuizQuestion::distinct('text')->count('text'));
     }
 
     public function test_guests_are_sent_to_login_before_the_quiz(): void

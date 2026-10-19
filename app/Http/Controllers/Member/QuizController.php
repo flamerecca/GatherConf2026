@@ -15,7 +15,9 @@ class QuizController extends MemberController
 {
     public function intro(): View
     {
-        return view('quiz.intro');
+        $count = $this->activeQuestions()->count();
+
+        return view('quiz.intro', ['count' => $count, 'minutes' => max(1, (int) ceil($count * 9 / 60))]);
     }
 
     public function show(): View

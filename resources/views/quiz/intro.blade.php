@@ -2,7 +2,7 @@
 
 @section('route', 'bbti')
 @section('title', __('quiz.intro.title'))
-@section('description', __('quiz.intro.description'))
+@section('description', __('quiz.intro.description', ['count' => $count]))
 
 @section('content')
     @php
@@ -14,7 +14,7 @@
         <h1 class="text-4xl font-bold tracking-tight md:text-5xl">{{ __('quiz.intro.heading') }}</h1>
         <p class="mt-2 text-lg font-semibold text-moss">{{ __('quiz.intro.subheading') }}</p>
         <p class="mt-6 text-lg leading-relaxed text-ink/80">{{ __('quiz.intro.body') }}</p>
-        <p class="mt-4 leading-relaxed text-ink/80">{{ __('quiz.intro.how') }}</p>
+        <p class="mt-4 leading-relaxed text-ink/80">{{ __('quiz.intro.how', ['count' => $count, 'minutes' => $minutes]) }}</p>
         <p class="mt-2 text-sm text-ink/70">
             {{ __('quiz.intro.reward', ['count' => config('carrots.site.complete_quiz')]) }}
             @guest('member')

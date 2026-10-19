@@ -5,11 +5,11 @@ return [
     'switch_label' => '繁體中文',
     'intro' => [
         'title' => 'BBTI Bunny Builder Type Indicator | GatherConf 2026',
-        'description' => 'BBTI is a community personality quiz for digital product builders. Answer 20 questions to find your bunny type.',
+        'description' => 'BBTI is a community personality quiz for digital product builders. Answer :count questions to find your bunny type.',
         'heading' => 'BBTI Bunny Builder Type Indicator',
         'subheading' => 'Bunny Builder Type Indicator',
         'body' => 'In an era driven by code, design systems, automated workflows and AI, makers are no longer bound to a single role. Whether you are a backend engineer, a UI/UX designer polishing pixels and interactions, or an indie maker who stitches tools together to test ideas fast, if you turn ideas into products with your own hands, you are an essential builder in the village.',
-        'how' => 'Answer 20 questions in about 3 minutes. Your result is a four letter type such as NSHG.',
+        'how' => 'Answer :count questions in about :minutes minutes. Your result is a four letter type such as NSHG.',
         'reward' => 'Finish the quiz for the first time and earn :count carrots.',
         'start' => 'Start the quiz',
         'login_hint' => 'You need to log in as a member before you start.',

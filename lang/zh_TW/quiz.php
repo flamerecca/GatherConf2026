@@ -5,11 +5,11 @@ return [
     'switch_label' => 'English',
     'intro' => [
         'title' => 'BBTI 創客兔性格測驗 | 共聚年會 GatherConf 2026',
-        'description' => 'BBTI 是給數位產品打造者的社群性格測驗，回答 20 題，找出你是哪一種創客兔。',
+        'description' => 'BBTI 是給數位產品打造者的社群性格測驗，回答 :count 題，找出你是哪一種創客兔。',
         'heading' => 'BBTI 創客兔性格指標',
         'subheading' => 'Bunny Builder Type Indicator',
         'body' => '在程式碼、設計系統、自動化工作流與 AI 共同驅動的新時代，創作者不再受限於單一職能。無論你是深耕後端架構的工程師、雕琢像素與互動的 UI/UX 設計師，還是擅長整合工具快速驗證點子的獨立創作者，只要你動手把想法變成產品，你就是聚落裡不可或缺的創作者。',
-        'how' => '回答 20 題，約需 3 分鐘，結果會是四個字母組成的類型，例如 NSHG。',
+        'how' => '回答 :count 題，約需 :minutes 分鐘，結果會是四個字母組成的類型，例如 NSHG。',
         'reward' => '第一次完成測驗可獲得 :count 根胡蘿蔔。',
         'start' => '開始測驗',
         'login_hint' => '開始測驗前需要先登入會員。',
