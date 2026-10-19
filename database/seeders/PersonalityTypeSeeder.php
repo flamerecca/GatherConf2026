@@ -16,7 +16,7 @@ class PersonalityTypeSeeder extends Seeder
     public function run(): void
     {
         foreach ($this->types() as $type) {
-            PersonalityType::create($type);
+            PersonalityType::withTrashed()->firstOrCreate(['code' => $type['code']], $type);
         }
     }
 

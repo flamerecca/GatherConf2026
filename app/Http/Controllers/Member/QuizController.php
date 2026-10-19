@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Member;
 
 use App\Actions\ComputePersonalityType;
+use App\Models\PersonalityType;
 use App\Models\QuizAttempt;
 use App\Models\QuizQuestion;
 use Illuminate\Contracts\View\View;
@@ -40,6 +41,8 @@ class QuizController extends MemberController
         $validated = $request->validate($rules, [], ['answers' => __('quiz.show.answers')]);
 
         $result = $compute($questions, $validated['answers']);
+
+        abort_unless(PersonalityType::query()->where('code', $result['code'])->exists(), 503);
 
         $attempt = QuizAttempt::query()->create([
             'uuid' => (string) Str::uuid7(),

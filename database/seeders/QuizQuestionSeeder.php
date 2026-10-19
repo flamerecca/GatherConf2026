@@ -16,7 +16,7 @@ class QuizQuestionSeeder extends Seeder
     public function run(): void
     {
         foreach ($this->questions() as $order => $question) {
-            QuizQuestion::create([
+            QuizQuestion::withTrashed()->firstOrCreate(['text' => $question['text']], [
                 ...$question,
                 'order' => $order + 1,
                 'is_active' => true,

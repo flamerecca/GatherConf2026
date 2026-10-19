@@ -42,7 +42,7 @@ php artisan db:seed --class=PersonalityTypeSeeder
 php artisan db:seed --class=QuizQuestionSeeder
 ```
 
-這兩個 Seeder 重複執行會重複建立資料，每個環境只要跑一次。
+這兩個 Seeder 可以重複執行，已存在的類型與題目會略過，不會覆蓋後台的修改，所以日後新增題目後再跑一次就能補進去。正式環境執行時要加 `--force`。
 
 ### 環境變數
 

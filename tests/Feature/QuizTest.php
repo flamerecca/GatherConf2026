@@ -6,6 +6,7 @@ use App\Models\Member;
 use App\Models\PersonalityType;
 use App\Models\QuizAttempt;
 use App\Models\QuizQuestion;
+use Database\Seeders\PersonalityTypeSeeder;
 use Database\Seeders\QuizQuestionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
@@ -148,6 +149,31 @@ class QuizTest extends TestCase
 
         $this->assertSame(2, QuizAttempt::count());
         $this->assertSame(config('carrots.site.complete_quiz'), $member->fresh()->carrots);
+    }
+
+    public function test_submitting_fails_cleanly_when_the_resulting_type_is_not_seeded(): void
+    {
+        $this->seedQuiz();
+        PersonalityType::query()->delete();
+
+        $this->asMember(Member::factory()->create())->post(route('quiz.store'), ['answers' => $this->answersOf(3)])->assertStatus(503);
+
+        $this->assertSame(0, QuizAttempt::count());
+    }
+
+    public function test_seeders_can_run_twice_without_duplicating_or_overwriting_edits(): void
+    {
+        $this->seed([PersonalityTypeSeeder::class, QuizQuestionSeeder::class]);
+        PersonalityType::query()->where('code', 'NSHG')->update(['name' => '後台改過']);
+        QuizQuestion::query()->first()->update(['is_active' => false]);
+        QuizQuestion::query()->orderByDesc('id')->first()->delete();
+
+        $this->seed([PersonalityTypeSeeder::class, QuizQuestionSeeder::class]);
+
+        $this->assertSame(16, PersonalityType::count());
+        $this->assertSame('後台改過', PersonalityType::where('code', 'NSHG')->value('name'));
+        $this->assertSame(40, QuizQuestion::withTrashed()->count());
+        $this->assertFalse(QuizQuestion::query()->orderBy('id')->first()->is_active);
     }
 
     public function test_missing_or_invalid_answers_are_rejected(): void
