@@ -9,8 +9,9 @@
                 <h2 class="text-3xl font-bold">{{ __('landing.sponsor_title') }}</h2>
                 <p class="mt-4 text-ink/70">{{ __('landing.sponsor_intro') }}</p>
             </div>
-            <img src="{{ Vite::asset('resources/images/bunny/NVHG.jpeg') }}" alt="{{ __('landing.mascot_alt') }}"
-                 class="hidden h-40 mix-blend-multiply sm:block dark:rounded-2xl dark:mix-blend-normal">
+            <x-responsive-image name="bunny/NVHG" ext="jpeg" :alt="__('landing.mascot_alt')" :width="1024" :height="1024"
+                                :widths="[160, 320, 480]" sizes="160px"
+                                class="hidden h-40 w-auto mix-blend-multiply sm:block dark:rounded-2xl dark:mix-blend-normal" />
         </div>
         <div class="mt-12 grid gap-6 md:grid-cols-3">
             @foreach (__('landing.tiers') as $tier)

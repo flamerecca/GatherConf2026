@@ -52,6 +52,7 @@
         <link rel="icon" href="{{ asset('favicon-16x16.png') }}" sizes="16x16" type="image/png">
         <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">
         <link rel="manifest" href="{{ asset('site.webmanifest') }}">
+        @stack('preload')
         @stack('structured-data')
         @if (Vite::isRunningHot())
             @vite(['resources/css/app.css', 'resources/js/app.js'])

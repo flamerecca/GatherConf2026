@@ -150,9 +150,9 @@ class ExampleTest extends TestCase
 
         $this->assertSame(2, substr_count($html, '<source type="image/avif"'));
         $this->assertSame(2, substr_count($html, '<source type="image/webp" sizes="(min-width: 1184px) 1120px, calc(100vw - 32px)"'));
-        $this->assertSame(4, substr_count($html, '480w, '));
-        $this->assertSame(4, substr_count($html, '672w, '));
-        $this->assertSame(4, substr_count($html, '1024w"'));
+        $this->assertSame(5, substr_count($html, '480w, '));
+        $this->assertSame(5, substr_count($html, '672w, '));
+        $this->assertSame(5, substr_count($html, '1024w"'));
         $this->assertStringContainsString('width="1024" height="572"', $html);
         $this->assertStringContainsString('width="1024" height="434"', $html);
     }
@@ -188,9 +188,11 @@ class ExampleTest extends TestCase
         $this->assertSame(2, substr_count($this->get('/')->getContent(), '128w, '));
         $this->assertSame(2, substr_count($this->get('/agenda')->getContent(), '128w, '));
         $this->assertSame(2, substr_count($this->get('/')->getContent(), 'fetchpriority="high"'));
+        $this->assertSame(1, preg_match('/<img[^>]*width="687"[^>]*>/s', $this->get('/')->getContent(), $heroLogo));
+        $this->assertStringContainsString('fetchpriority="high"', $heroLogo[0]);
     }
 
-    public function test_the_gathering_illustration_loads_eagerly_with_high_priority(): void
+    public function test_the_gathering_illustration_is_preloaded_with_high_priority_only_on_wide_screens(): void
     {
         $html = $this->get('/')->assertOk()->getContent();
 
@@ -198,9 +200,26 @@ class ExampleTest extends TestCase
         preg_match('/<img[^>]*width="1024" height="434"[^>]*>/s', $html, $silos);
 
         $this->assertStringContainsString('loading="eager"', $gathering[0]);
-        $this->assertStringContainsString('fetchpriority="high"', $gathering[0]);
+        $this->assertStringNotContainsString('fetchpriority', $gathering[0]);
+
+        $this->assertSame(1, preg_match('/<link rel="preload" as="image" type="image\/avif" media="\(min-width: 1024px\)" fetchpriority="high"[^>]*imagesrcset="[^"]*1024w"/s', $html));
+        $this->assertSame(1, substr_count($html, 'rel="preload"'));
         $this->assertStringNotContainsString('loading="eager"', $silos[0]);
         $this->assertStringContainsString('loading="lazy"', $silos[0]);
+    }
+
+    public function test_the_mascot_is_small_lazy_and_does_not_compete_with_the_hero(): void
+    {
+        foreach ([160, 320, 480] as $width) {
+            $this->assertFileExists(resource_path("images/bunny/NVHG-{$width}.webp"));
+        }
+
+        $html = $this->get('/')->assertOk()->getContent();
+
+        $this->assertSame(1, preg_match('/<img[^>]*alt="GatherConf 吉祥物 Bunny"[^>]*>/s', $html, $mascot));
+        $this->assertStringContainsString('loading="lazy"', $mascot[0]);
+        $this->assertStringNotContainsString('fetchpriority', $mascot[0]);
+        $this->assertStringContainsString('160w, ', $html);
     }
 
     public function test_landing_footer_links_to_the_communities_page(): void
