@@ -18,7 +18,11 @@ class QuizController extends MemberController
     {
         $count = $this->activeQuestions()->count();
 
-        return view('quiz.intro', ['count' => $count, 'minutes' => max(1, (int) ceil($count * 9 / 60))]);
+        return view('quiz.intro', [
+            'count' => $count,
+            'minutes' => max(1, (int) ceil($count * 9 / 60)),
+            'lastAttempt' => $this->guard()->user()?->latestQuizAttempt()->with('personalityType')->first(),
+        ]);
     }
 
     public function show(): View

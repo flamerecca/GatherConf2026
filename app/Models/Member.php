@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
@@ -132,6 +133,19 @@ class Member extends Authenticatable implements MustVerifyEmail
     public function carrotTransactions(): HasMany
     {
         return $this->hasMany(CarrotTransaction::class);
+    }
+
+    public function quizAttempts(): HasMany
+    {
+        return $this->hasMany(QuizAttempt::class, 'user_id');
+    }
+
+    /**
+     * The BBTI result the member completed most recently.
+     */
+    public function latestQuizAttempt(): HasOne
+    {
+        return $this->hasOne(QuizAttempt::class, 'user_id')->latestOfMany(['completed_at', 'id']);
     }
 
     public function communityMessages(): HasMany

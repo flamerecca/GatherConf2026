@@ -14,6 +14,13 @@ return [
         'start' => 'Start the quiz',
         'login_hint' => 'You need to log in as a member before you start.',
     ],
+    'last' => [
+        'heading' => 'Your last BBTI result',
+        'completed_at' => 'Completed on :date',
+        'view' => 'View the full result',
+        'retake' => 'Take it again',
+        'take' => 'Take the BBTI quiz',
+    ],
     'show' => [
         'title' => 'Quiz | BBTI Bunny Builder Type Indicator',
         'heading' => 'BBTI quiz',

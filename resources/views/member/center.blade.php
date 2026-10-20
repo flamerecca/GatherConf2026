@@ -47,6 +47,19 @@
            @class(['block underline underline-offset-4', 'font-semibold text-moss' => $member->carrots >= 0, 'text-red-700 dark:text-red-400 font-bold' => $member->carrots < 0])>
             🥕 {{ __('carrots.balance', ['count' => $member->carrots]) }} · {{ __('carrots.list.heading') }}
         </a>
+        @php($quizSuffix = app()->getLocale() === 'en' ? '.en' : '')
+        @if ($lastAttempt?->personalityType)
+            <div data-last-bbti="{{ $lastAttempt->type_code }}" class="rounded-2xl border border-ink/15 p-4 text-sm">
+                <p class="font-semibold">{{ __('quiz.last.heading') }}</p>
+                <p class="mt-1 text-lg font-bold">{{ $lastAttempt->type_code }} <span class="text-moss">{{ $lastAttempt->personalityType->name }}</span></p>
+                <p class="text-ink/70">{{ __('quiz.last.completed_at', ['date' => $lastAttempt->completed_at->format('Y-m-d')]) }}</p>
+                <a href="{{ route('quiz.result'.$quizSuffix, $lastAttempt) }}" class="mt-2 inline-block font-semibold text-moss underline underline-offset-4">{{ __('quiz.last.view') }}</a>
+                <span aria-hidden="true"> · </span>
+                <a href="{{ route('quiz'.$quizSuffix) }}" class="font-semibold text-moss underline underline-offset-4">{{ __('quiz.last.retake') }}</a>
+            </div>
+        @else
+            <a href="{{ route('bbti'.$quizSuffix) }}" data-take-bbti class="block font-semibold text-moss underline underline-offset-4">{{ __('quiz.last.take') }}</a>
+        @endif
         <a href="{{ route('member.bottles'.(app()->getLocale() === 'en' ? '.en' : '')) }}"
            data-bottle-holding="{{ \App\Models\DriftBottle::heldCount($member) }}"
            class="block font-semibold text-moss underline underline-offset-4">

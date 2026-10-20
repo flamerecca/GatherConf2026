@@ -14,6 +14,13 @@ return [
         'start' => '開始測驗',
         'login_hint' => '開始測驗前需要先登入會員。',
     ],
+    'last' => [
+        'heading' => '你上次的 BBTI 結果',
+        'completed_at' => '完成於 :date',
+        'view' => '查看完整結果',
+        'retake' => '重新測驗',
+        'take' => '做 BBTI 創客兔性格測驗',
+    ],
     'show' => [
         'title' => '作答 | BBTI 創客兔性格測驗',
         'heading' => 'BBTI 測驗',

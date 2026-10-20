@@ -22,6 +22,7 @@ class CenterController extends MemberController
             'member' => $member,
             'unreadMessages' => $member->unreadMessageCount(),
             'hasPassword' => $member->hasPassword(),
+            'lastAttempt' => $member->latestQuizAttempt()->with('personalityType')->first(),
             'pendingInvitations' => Friendship::query()
                 ->pending()
                 ->involving($member)

@@ -176,6 +176,96 @@ class QuizTest extends TestCase
         $this->assertFalse(QuizQuestion::query()->orderBy('id')->first()->is_active);
     }
 
+    private function attemptFor(?Member $member, string $code, string $completedAt): QuizAttempt
+    {
+        return QuizAttempt::query()->create([
+            'uuid' => (string) Str::uuid(), 'user_id' => $member?->id,
+            'scores' => ['NM' => 1, 'SV' => 1, 'HA' => 1, 'GD' => 1], 'type_code' => $code, 'completed_at' => $completedAt,
+        ]);
+    }
+
+    public function test_the_member_center_remembers_the_latest_result(): void
+    {
+        $this->seedQuiz();
+        $member = Member::factory()->create();
+        $this->attemptFor($member, 'NSHG', now()->subDays(3)->toDateTimeString());
+        $latest = $this->attemptFor($member, 'MVAD', now()->subDay()->toDateTimeString());
+        $this->attemptFor(Member::factory()->create(), 'NVAD', now()->toDateTimeString());
+
+        $this->asMember($member)->get(route('member.center'))
+            ->assertOk()
+            ->assertSee('data-last-bbti="MVAD"', false)
+            ->assertSee('類型MVAD')
+            ->assertSee(route('quiz.result', $latest->uuid), false)
+            ->assertSee(now()->subDay()->format('Y-m-d'))
+            ->assertDontSee('data-last-bbti="NSHG"', false)
+            ->assertDontSee('data-last-bbti="NVAD"', false);
+
+        $this->asMember($member)->get(route('member.center.en'))
+            ->assertSee(route('quiz.result.en', $latest->uuid), false)
+            ->assertSee('Take it again');
+    }
+
+    public function test_the_member_center_offers_the_quiz_when_there_is_no_result_yet(): void
+    {
+        $this->seedQuiz();
+        $this->attemptFor(null, 'NSHG', now()->toDateTimeString());
+
+        $this->asMember(Member::factory()->create())->get(route('member.center'))
+            ->assertOk()
+            ->assertSee('data-take-bbti', false)
+            ->assertDontSee('data-last-bbti', false);
+    }
+
+    public function test_a_deleted_result_is_no_longer_remembered(): void
+    {
+        $this->seedQuiz();
+        $member = Member::factory()->create();
+        $this->attemptFor($member, 'NSHG', now()->subDay()->toDateTimeString());
+        $this->attemptFor($member, 'MVAD', now()->toDateTimeString())->delete();
+
+        $this->asMember($member)->get(route('member.center'))->assertSee('data-last-bbti="NSHG"', false);
+    }
+
+    public function test_the_intro_shows_the_last_result_to_a_member_who_has_one(): void
+    {
+        $this->seedQuiz();
+        $member = Member::factory()->create();
+        $attempt = $this->attemptFor($member, 'NSHG', now()->toDateTimeString());
+
+        $this->asMember($member)->get(route('bbti'))
+            ->assertOk()
+            ->assertSee('data-last-result="NSHG"', false)
+            ->assertSee(route('quiz.result', $attempt->uuid), false)
+            ->assertSee('重新測驗');
+
+        $this->asMember($member)->get(route('bbti.en'))->assertSee('Your last BBTI result')->assertSee('Take it again');
+    }
+
+    public function test_the_intro_shows_no_last_result_to_guests_or_members_without_one(): void
+    {
+        $this->seedQuiz();
+        $this->attemptFor(null, 'NSHG', now()->toDateTimeString());
+
+        $this->get(route('bbti'))->assertOk()->assertDontSee('data-last-result', false)->assertSee('開始測驗');
+
+        $this->asMember(Member::factory()->create())->get(route('bbti'))
+            ->assertDontSee('data-last-result', false)
+            ->assertSee('開始測驗');
+    }
+
+    public function test_submitting_makes_the_new_result_the_remembered_one(): void
+    {
+        $this->seedQuiz();
+        $member = Member::factory()->create();
+        $this->attemptFor($member, 'NSHG', now()->subDay()->toDateTimeString());
+
+        $this->asMember($member)->post(route('quiz.store'), ['answers' => $this->answersOf(3)]);
+
+        $this->assertSame('NVAD', $member->fresh()->latestQuizAttempt->type_code);
+        $this->assertSame(2, $member->quizAttempts()->count());
+    }
+
     public function test_missing_or_invalid_answers_are_rejected(): void
     {
         $this->seedQuiz();
