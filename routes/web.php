@@ -158,6 +158,74 @@ Route::get('/robots.txt', function () {
         ->header('Content-Type', 'text/plain');
 })->name('robots');
 
+Route::get('/llms.txt', function () {
+    $communities = collect(config('communities'))
+        ->map(fn (array $c) => '- ['.$c['name']['en'].']('.$c['url'].'): '.$c['description']['en'])
+        ->implode("\n");
+
+    $sponsors = collect(config('sponsors'))
+        ->map(fn (array $s) => '- ['.$s['name']['en'].']('.$s['url'].'), '.$s['tier'])
+        ->implode("\n");
+
+    $url = collect(['landing', 'landing.en', 'agenda', 'conduct', 'communities', 'call-for-sponsor', 'bbti'])
+        ->mapWithKeys(fn (string $name) => [$name => route($name)]);
+
+    $body = <<<MD
+# GatherConf 2026
+
+> GatherConf 2026 is a one-day conference that brings Taiwan's tech communities into the same room. Date: 2026-11-21. Venue: National Taiwan University, General Teaching Building, rooms 201-203. About 120 attendees, two tracks with eight sessions, plus open space. Pages are available in Traditional Chinese and English, English URLs start with /en.
+
+## Pages
+
+- [Home]({$url['landing']}): overview, schedule, partner communities and sponsors
+- [Agenda]({$url['agenda']}): two tracks, eight sessions
+- [Code of conduct]({$url['conduct']}): behaviour expected of everyone at the event
+- [Communities]({$url['communities']}): partner communities
+- [Call for sponsors]({$url['call-for-sponsor']}): sponsorship tiers and how to join
+- [BBTI quiz]({$url['bbti']}): a playful 40-question maker personality quiz with 16 bunny types
+
+## Partner communities
+
+{$communities}
+
+## Sponsors
+
+{$sponsors}
+
+## Optional
+
+- [Traditional Chinese home]({$url['landing']}): the default language
+- [English home]({$url['landing.en']}): English version
+MD;
+
+    return response($body."\n")->header('Content-Type', 'text/plain; charset=UTF-8');
+})->name('llms');
+
+Route::get('/humans.txt', function () {
+    $communities = collect(config('communities'))->map(fn (array $c) => $c['name']['en'])->implode(', ');
+    $sponsors = collect(config('sponsors'))->map(fn (array $s) => $s['name']['en'])->implode(', ');
+
+    $site = url('/');
+
+    $body = <<<TXT
+/* TEAM */
+Developer: Recca Chao
+Site: {$site}
+
+/* THANKS */
+Partner communities: {$communities}
+Sponsors: {$sponsors}
+
+/* SITE */
+Event: GatherConf 2026, 2026-11-21, National Taiwan University
+Standards: HTML5, CSS3, WCAG 2.2 AA
+Software: Laravel, Filament, Tailwind CSS, Vite
+Hosting: Laravel Cloud
+TXT;
+
+    return response($body."\n")->header('Content-Type', 'text/plain; charset=UTF-8');
+})->name('humans');
+
 Route::get('/sitemap.xml', function () {
     $urlset = view('sitemap', ['pages' => ['landing', 'conduct', 'agenda', 'bbti', 'communities', 'call-for-sponsor']])->render();
 

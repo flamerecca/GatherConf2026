@@ -327,6 +327,31 @@ class ExampleTest extends TestCase
         $this->get('/communities')->assertDontSee('application/ld+json', false);
     }
 
+    public function test_llms_and_humans_files_are_served_as_plain_text(): void
+    {
+        $llms = $this->get('/llms.txt')->assertOk()
+            ->assertHeader('Content-Type', 'text/plain; charset=UTF-8')
+            ->assertSee('# GatherConf 2026')
+            ->assertSee('('.route('agenda').')', false)
+            ->assertSee('('.route('bbti').')', false);
+
+        foreach (config('communities') as $community) {
+            $llms->assertSee($community['name']['en'], false)->assertSee($community['url'], false);
+        }
+
+        foreach (config('sponsors') as $sponsor) {
+            $llms->assertSee($sponsor['name']['en'], false);
+        }
+
+        $this->assertStringNotContainsString('{route(', $llms->getContent());
+
+        $this->get('/humans.txt')->assertOk()
+            ->assertHeader('Content-Type', 'text/plain; charset=UTF-8')
+            ->assertSee('/* TEAM */', false)
+            ->assertSee('Site: '.url('/'), false)
+            ->assertSee('SITCON');
+    }
+
     public function test_robots_and_sitemap_are_served(): void
     {
         $this->get('/robots.txt')
