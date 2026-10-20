@@ -44,6 +44,18 @@ class TaskListTest extends TestCase
             ->assertSee('data-site-task="set_password" data-state="todo"', false);
     }
 
+    public function test_done_and_todo_tasks_get_different_colours(): void
+    {
+        $member = Member::factory()->unverified()->create();
+        $member->markEmailAsVerified();
+
+        $html = $this->asMember($member->fresh())->get(route('member.tasks'))->assertOk()->getContent();
+
+        $this->assertMatchesRegularExpression('/data-site-task="verify_email"[^>]*class="[^"]*bg-moss\/10/', $html);
+        $this->assertMatchesRegularExpression('/data-site-task="set_password"[^>]*class="[^"]*border-copper\/50/', $html);
+        $this->assertStringContainsString('✓ '.__('carrots.list.done'), $html);
+    }
+
     public function test_only_open_field_tasks_are_listed_and_their_code_is_never_shown(): void
     {
         $member = Member::factory()->create();

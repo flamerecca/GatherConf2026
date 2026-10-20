@@ -15,12 +15,16 @@
         <h2 class="text-xl font-bold text-moss">{{ __('carrots.list.site_heading') }}</h2>
         @foreach ($siteTasks as $row)
             <div data-site-task="{{ $row['code'] }}" data-state="{{ $row['done'] ? 'done' : 'todo' }}" data-reward="{{ $row['reward'] }}"
-                 class="mt-4 rounded-2xl border border-ink/15 bg-parchment-dark p-4">
+                 @class([
+                     'mt-4 rounded-2xl border p-4',
+                     'border-moss/60 bg-moss/10' => $row['done'],
+                     'border-copper/50 bg-parchment-dark' => ! $row['done'],
+                 ])>
                 <p class="font-semibold">{{ __('carrots.site.'.$row['code'].'.name') }}</p>
                 <p class="text-sm text-ink/70">{{ __('carrots.site.'.$row['code'].'.description') }}</p>
                 <p class="mt-2 text-sm">
                     🥕 × {{ $row['reward'] }} ·
-                    {{ $row['done'] ? __('carrots.list.done') : __('carrots.list.todo') }}
+                    <span @class(['font-semibold', 'text-moss' => $row['done'], 'text-copper' => ! $row['done']])>{{ $row['done'] ? '✓ '.__('carrots.list.done') : __('carrots.list.todo') }}</span>
                 </p>
             </div>
         @endforeach
@@ -31,14 +35,18 @@
         <p class="mt-2 text-sm text-ink/70">{{ __('carrots.list.field_intro') }}</p>
         @forelse ($fieldTasks as $row)
             <div data-field-task="{{ $row['task']->id }}" data-state="{{ $row['done'] ? 'done' : 'todo' }}"
-                 class="mt-4 rounded-2xl border border-ink/15 bg-parchment-dark p-4">
+                 @class([
+                     'mt-4 rounded-2xl border p-4',
+                     'border-moss/60 bg-moss/10' => $row['done'],
+                     'border-copper/50 bg-parchment-dark' => ! $row['done'],
+                 ])>
                 <p class="font-semibold">{{ $row['task']->name }}</p>
                 @if ($row['task']->description)
                     <p class="text-sm text-ink/70">{{ $row['task']->description }}</p>
                 @endif
                 <p class="mt-2 text-sm">
                     🥕 × {{ $row['task']->reward }} ·
-                    {{ $row['done'] ? __('carrots.list.done') : __('carrots.list.todo') }}
+                    <span @class(['font-semibold', 'text-moss' => $row['done'], 'text-copper' => ! $row['done']])>{{ $row['done'] ? '✓ '.__('carrots.list.done') : __('carrots.list.todo') }}</span>
                 </p>
             </div>
         @empty
