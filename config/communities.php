@@ -159,4 +159,19 @@ return [
         'logo_fit' => 'cover',
         'url' => 'https://www.facebook.com/share/g/1DmSxiabtn/',
     ],
+    [
+        'slug' => 'sitcon',
+        'name' => [
+            'zh_TW' => 'SITCON 學生計算機年會',
+            'en' => 'SITCON',
+        ],
+        'description' => [
+            'zh_TW' => '由學生自發舉辦的資訊科技社群，每年舉辦年會與各地活動，讓學生與開發者分享技術、交流經驗。',
+            'en' => 'A student-run information technology community that holds an annual conference and local events, where students and developers share technology and experience.',
+        ],
+        'logo' => 'SITCON.png',
+        'logo_fit' => 'contain',
+        'logo_padding' => 0,
+        'url' => 'https://sitcon.org/',
+    ],
 ];
