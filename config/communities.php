@@ -57,6 +57,20 @@ return [
         'url' => 'https://www.meetup.com/taiwan-obsidian-user-group/',
     ],
     [
+        'slug' => 'claude-taiwan',
+        'name' => [
+            'zh_TW' => 'Claude Taiwan',
+            'en' => 'Claude Taiwan',
+        ],
+        'description' => [
+            'zh_TW' => '給台灣 Claude 使用者的交流社群，分享使用心得、實作經驗與 AI 輔助開發的實用技巧。',
+            'en' => 'A community for Claude users in Taiwan, sharing usage tips, hands-on experience and practical techniques for AI-assisted development.',
+        ],
+        'logo' => 'claude-taiwan.png',
+        'logo_fit' => 'cover',
+        'url' => 'https://www.facebook.com/share/g/1DmSxiabtn/',
+    ],
+    [
         'slug' => 'gdg-taoyuan',
         'name' => [
             'zh_TW' => 'GDG 桃園',
@@ -144,20 +158,6 @@ return [
         'logo_fit' => 'contain',
         'logo_padding' => 8,
         'url' => 'https://www.facebook.com/groups/flutter.taipei',
-    ],
-    [
-        'slug' => 'claude-taiwan',
-        'name' => [
-            'zh_TW' => 'Claude Taiwan',
-            'en' => 'Claude Taiwan',
-        ],
-        'description' => [
-            'zh_TW' => '給台灣 Claude 使用者的交流社群，分享使用心得、實作經驗與 AI 輔助開發的實用技巧。',
-            'en' => 'A community for Claude users in Taiwan, sharing usage tips, hands-on experience and practical techniques for AI-assisted development.',
-        ],
-        'logo' => 'claude-taiwan.png',
-        'logo_fit' => 'cover',
-        'url' => 'https://www.facebook.com/share/g/1DmSxiabtn/',
     ],
     [
         'slug' => 'sitcon',
