@@ -174,4 +174,19 @@ return [
         'logo_padding' => 0,
         'url' => 'https://sitcon.org/',
     ],
+    [
+        'slug' => 'golden-code-awards',
+        'name' => [
+            'zh_TW' => '金源獎',
+            'en' => 'Golden Code Awards',
+        ],
+        'description' => [
+            'zh_TW' => '表揚台灣優秀開發者與開源貢獻的程式碼獎項，鼓勵工程師持續創作與分享。',
+            'en' => 'An award recognizing outstanding developers and open-source contributions in Taiwan, encouraging engineers to keep building and sharing.',
+        ],
+        'logo' => 'GCA.png',
+        'logo_fit' => 'contain',
+        'logo_padding' => 0,
+        'url' => 'https://goldencodeawards.com/',
+    ],
 ];
