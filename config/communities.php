@@ -189,4 +189,19 @@ return [
         'logo_padding' => 0,
         'url' => 'https://goldencodeawards.com/',
     ],
+    [
+        'slug' => 'chatbot-taiwan',
+        'name' => [
+            'zh_TW' => 'Chatbot Taiwan',
+            'en' => 'Chatbot Taiwan',
+        ],
+        'description' => [
+            'zh_TW' => '台灣的聊天機器人社群，交流對話式介面與 AI 應用的開發經驗與實作心得。',
+            'en' => 'A Taiwanese chatbot community, sharing experience and hands-on lessons in building conversational interfaces and AI applications.',
+        ],
+        'logo' => 'chatbot-taiwan.png',
+        'logo_fit' => 'contain',
+        'logo_padding' => 0,
+        'url' => 'https://www.facebook.com/chatbot.tw/',
+    ],
 ];
