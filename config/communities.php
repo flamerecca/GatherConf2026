@@ -204,4 +204,19 @@ return [
         'logo_padding' => 0,
         'url' => 'https://www.facebook.com/chatbot.tw/',
     ],
+    [
+        'slug' => 'taiwan-cybersecurity-alliance',
+        'name' => [
+            'zh_TW' => '台灣數位安全聯盟',
+            'en' => 'Taiwan Cybersecurity Alliance',
+        ],
+        'description' => [
+            'zh_TW' => '推廣資訊安全與數位安全的台灣社群，串連產學各界，交流防護技術、實務經驗與最新資安議題。',
+            'en' => 'A Taiwanese community promoting information and digital security, connecting industry and academia to share defensive techniques, practical experience and the latest security topics.',
+        ],
+        'logo' => 'TWCSA.png',
+        'logo_fit' => 'contain',
+        'logo_padding' => 0,
+        'url' => 'https://twcsa.org/',
+    ],
 ];
