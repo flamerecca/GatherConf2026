@@ -12,6 +12,7 @@ use App\Filament\Resources\Members\RelationManagers\LoginLinksRelationManager;
 use App\Filament\Resources\Members\Schemas\MemberForm;
 use App\Filament\Resources\Members\Schemas\MemberInfolist;
 use App\Filament\Resources\Members\Tables\MembersTable;
+use App\Filament\Resources\Members\Widgets\BbtiDistributionChart;
 use App\Models\Member;
 use BackedEnum;
 use Filament\Resources\Resource;
@@ -59,6 +60,13 @@ class MemberResource extends Resource
             CarrotSiteTaskCompletionsRelationManager::class,
             CarrotTaskCompletionsRelationManager::class,
             CarrotTransactionsRelationManager::class,
+        ];
+    }
+
+    public static function getWidgets(): array
+    {
+        return [
+            BbtiDistributionChart::class,
         ];
     }
 

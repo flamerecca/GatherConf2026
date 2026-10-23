@@ -29,6 +29,15 @@ class MemberInfolist
                 ->label('胡蘿蔔')
                 ->color(fn (int $state): ?string => $state < 0 ? 'danger' : null)
                 ->weight(fn (int $state): ?FontWeight => $state < 0 ? FontWeight::Bold : null),
+            TextEntry::make('latestQuizAttempt.type_code')
+                ->label('BBTI')
+                ->badge()
+                ->formatStateUsing(fn (string $state, Member $record): string => $state.' '.$record->latestQuizAttempt->personalityType?->name)
+                ->placeholder('尚未測驗'),
+            TextEntry::make('latestQuizAttempt.completed_at')
+                ->label('BBTI 完成時間')
+                ->dateTime()
+                ->placeholder('尚未測驗'),
             TextEntry::make('email_verified_at')
                 ->label('Email 驗證時間')
                 ->dateTime()
