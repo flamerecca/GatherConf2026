@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\Storage;
 
 #[Fillable(['uuid', 'user_id', 'scores', 'type_code', 'unique_bunny_path', 'unique_bunny_traits', 'completed_at'])]
 class QuizAttempt extends Model
@@ -50,11 +49,11 @@ class QuizAttempt extends Model
     }
 
     /**
-     * The URL of the bunny drawn for this attempt, or null while it is not generated yet.
+     * The URL of the bunny drawn for this attempt, served by the app so the bucket can stay private, or null while it is not generated yet.
      */
     public function uniqueBunnyUrl(): ?string
     {
-        return $this->unique_bunny_path === null ? null : Storage::disk(config('filesystems.unique_bunny_disk'))->url($this->unique_bunny_path);
+        return $this->unique_bunny_path === null ? null : route('quiz.result.bunny', $this);
     }
 
     /**

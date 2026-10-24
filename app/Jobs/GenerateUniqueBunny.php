@@ -82,7 +82,7 @@ class GenerateUniqueBunny implements ShouldQueue
 
         $path = 'unique-bunnies/'.$attempt->uuid.'.'.$extension;
 
-        if (! Storage::disk(config('filesystems.unique_bunny_disk'))->put($path, $contents, 'public')) {
+        if (! Storage::disk(config('filesystems.unique_bunny_disk'))->put($path, $contents)) {
             throw new RuntimeException('The unique bunny of attempt '.$attempt->uuid.' could not be saved to the "'.config('filesystems.unique_bunny_disk').'" disk.');
         }
 

@@ -11,7 +11,9 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Symfony\Component\HttpFoundation\Response;
 
 class QuizController extends MemberController
 {
@@ -90,6 +92,22 @@ class QuizController extends MemberController
             'attempt' => $attempt,
             'type' => $attempt->personalityType,
             'bars' => $bars,
+        ]);
+    }
+
+    /**
+     * Stream the unique bunny of an attempt from its disk, so the bucket itself can stay private.
+     */
+    public function bunny(QuizAttempt $attempt): Response
+    {
+        abort_if($attempt->unique_bunny_path === null, 404);
+
+        $disk = Storage::disk(config('filesystems.unique_bunny_disk'));
+
+        abort_unless($disk->exists($attempt->unique_bunny_path), 404);
+
+        return $disk->response($attempt->unique_bunny_path, null, [
+            'Cache-Control' => 'public, max-age=31536000, immutable',
         ]);
     }
 

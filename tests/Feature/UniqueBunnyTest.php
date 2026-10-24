@@ -102,7 +102,7 @@ class UniqueBunnyTest extends TestCase
         $this->assertLessThan(strlen($png), strlen(Storage::disk('public')->get($path)));
     }
 
-    public function test_the_drawing_goes_to_the_configured_disk_with_public_visibility(): void
+    public function test_the_drawing_goes_to_the_configured_disk_and_is_served_by_the_app(): void
     {
         config(['services.gemini.key' => 'secret-key', 'filesystems.unique_bunny_disk' => 's3']);
         Storage::fake('s3');
@@ -115,8 +115,24 @@ class UniqueBunnyTest extends TestCase
         $path = $attempt->fresh()->unique_bunny_path;
         Storage::disk('s3')->assertExists($path);
         Storage::disk('public')->assertMissing($path);
-        $this->assertSame('public', Storage::disk('s3')->getVisibility($path));
-        $this->assertSame(Storage::disk('s3')->url($path), $attempt->fresh()->uniqueBunnyUrl());
+        $this->assertSame(route('quiz.result.bunny', $attempt->uuid), $attempt->fresh()->uniqueBunnyUrl());
+
+        $this->get(route('quiz.result.bunny', $attempt->uuid))
+            ->assertOk()
+            ->assertHeader('Cache-Control', 'immutable, max-age=31536000, public');
+    }
+
+    public function test_the_bunny_route_is_a_404_until_the_drawing_exists_and_when_the_file_is_missing(): void
+    {
+        Storage::fake('public');
+        $attempt = $this->attempt();
+
+        $this->get(route('quiz.result.bunny', $attempt->uuid))->assertNotFound();
+
+        $attempt->update(['unique_bunny_path' => 'unique-bunnies/gone.webp']);
+        $this->get(route('quiz.result.bunny', $attempt->uuid))->assertNotFound();
+
+        $this->get(route('quiz.result.bunny', '00000000-0000-7000-8000-000000000000'))->assertNotFound();
     }
 
     public function test_a_failed_upload_fails_the_job_and_keeps_the_type_bunny(): void
@@ -273,7 +289,7 @@ class UniqueBunnyTest extends TestCase
         $this->get(route('quiz.result', $attempt->uuid))
             ->assertOk()
             ->assertSee('data-unique-bunny', false)
-            ->assertSee('unique-bunnies/'.$attempt->uuid.'.png', false)
+            ->assertSee(route('quiz.result.bunny', $attempt->uuid), false)
             ->assertSee('專屬創客兔')
             ->assertSee('data-type-bunny="NVHG"', false)
             ->assertDontSee('data-awaiting-unique-bunny', false);

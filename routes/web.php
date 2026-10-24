@@ -149,6 +149,8 @@ foreach (['' => 'zh_TW', 'en' => 'en'] as $prefix => $locale) {
     });
 }
 
+Route::get('/results/{attempt:uuid}/bunny', [QuizController::class, 'bunny'])->middleware('throttle:results')->name('quiz.result.bunny');
+
 Route::get('/robots.txt', function () {
     $disallow = collect(['/admin', '/member', '/login', '/register', '/forgot-password', '/reset-password', '/email/verify', '/quiz', '/en/quiz', '/en/member', '/en/login', '/en/register', '/en/forgot-password', '/en/reset-password', '/en/email/verify'])
         ->map(fn (string $path) => 'Disallow: '.$path)
