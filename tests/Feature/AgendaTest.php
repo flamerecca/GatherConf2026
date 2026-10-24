@@ -22,7 +22,7 @@ class AgendaTest extends TestCase
         $this->assertCount(8, collect($tracks)->flatMap(fn (array $track) => $track['sessions'])->pluck('id')->unique());
     }
 
-    public function test_the_chinese_page_shows_eight_placeholder_sessions(): void
+    public function test_the_chinese_page_shows_eight_sessions_with_seven_placeholders(): void
     {
         $response = $this->get('/agenda')->assertOk()
             ->assertSee('<h1', false)
@@ -31,19 +31,19 @@ class AgendaTest extends TestCase
             ->assertSee('第 4 場');
 
         $this->assertSame(8, substr_count($response->getContent(), 'data-session="'));
-        $this->assertSame(8, substr_count($response->getContent(), '議題待公布'));
-        $this->assertSame(8, substr_count($response->getContent(), '講者待公布'));
+        $this->assertSame(7, substr_count($response->getContent(), '議題待公布'));
+        $this->assertSame(7, substr_count($response->getContent(), '講者待公布'));
         $this->assertSame(8, substr_count($response->getContent(), '議題大綱待公布'));
     }
 
-    public function test_the_english_page_shows_eight_placeholder_sessions(): void
+    public function test_the_english_page_shows_eight_sessions_with_seven_placeholders(): void
     {
         $response = $this->get('/en/agenda')->assertOk()
             ->assertSee('Track A')
             ->assertSee('Track B')
             ->assertSee('Session 4');
 
-        $this->assertSame(8, substr_count($response->getContent(), 'Topic to be announced'));
+        $this->assertSame(7, substr_count($response->getContent(), 'Topic to be announced'));
     }
 
     public function test_filled_in_sessions_show_their_content_in_the_right_language(): void
@@ -54,12 +54,26 @@ class AgendaTest extends TestCase
             'time' => '10:00 - 10:45',
             'speaker_name' => '王小明',
             'speaker_photo' => null,
+            'speaker_bio' => ['zh_TW' => '資深開發者', 'en' => 'Veteran developer'],
             'title' => ['zh_TW' => '給新手的 Kotlin', 'en' => 'Kotlin for beginners'],
             'outline' => ['zh_TW' => '從語法到實戰', 'en' => 'From syntax to practice'],
         ]]]]]);
 
-        $this->get('/agenda')->assertSee('王小明')->assertSee('給新手的 Kotlin')->assertSee('從語法到實戰')->assertDontSee('議題待公布');
-        $this->get('/en/agenda')->assertSee('Kotlin for beginners')->assertSee('From syntax to practice');
+        $this->get('/agenda')->assertSee('王小明')->assertSee('給新手的 Kotlin')->assertSee('資深開發者')->assertSee('從語法到實戰')->assertDontSee('議題待公布');
+        $this->get('/en/agenda')->assertSee('Kotlin for beginners')->assertSee('Veteran developer')->assertSee('From syntax to practice');
+    }
+
+    public function test_matthias_geisler_is_scheduled_for_track_a_second_slot(): void
+    {
+        $session = config('agenda.0.sessions.1');
+
+        $this->assertSame('a2', $session['id']);
+        $this->assertSame('10:45 - 11:30', $session['time']);
+        $this->assertSame('Matthias Geisler', $session['speaker_name']);
+        $this->assertFileExists(resource_path('images/speakers/'.$session['speaker_photo']));
+
+        $this->get('/agenda')->assertSee('Matthias Geisler')->assertSee('Beyond the Code: Building Community in the Age of AI')->assertSee('KUG Berlin');
+        $this->get('/en/agenda')->assertSee('Matthias Geisler')->assertSee('Berlindroid');
     }
 
     public function test_the_pages_link_to_each_other_and_are_in_the_sitemap(): void

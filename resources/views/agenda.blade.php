@@ -24,6 +24,7 @@
                             $title = $session['title'][$locale] ?? null;
                             $outline = $session['outline'][$locale] ?? null;
                             $speaker = $session['speaker_name'];
+                            $bio = $session['speaker_bio'][$locale] ?? null;
                         @endphp
                         <li id="session-{{ $session['id'] }}" data-session="{{ $session['id'] }}"
                             class="flex h-full flex-col gap-4 rounded-2xl border-4 border-moss/60 bg-parchment-dark p-6">
@@ -48,6 +49,9 @@
                                 @endif
                                 <p class="font-semibold">{{ $speaker ?? __('agenda.speaker_tbd') }}</p>
                             </div>
+                            @if ($bio)
+                                <p class="text-sm leading-relaxed text-ink/80">{{ $bio }}</p>
+                            @endif
                             <h3 @class(['text-xl font-bold', 'text-ink/70' => ! $title])>{{ $title ?? __('agenda.title_tbd') }}</h3>
                             <div>
                                 <p class="text-sm font-semibold">{{ __('agenda.outline_label') }}</p>
