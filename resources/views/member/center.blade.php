@@ -51,11 +51,23 @@
         @if ($lastAttempt?->personalityType)
             <div data-last-bbti="{{ $lastAttempt->type_code }}" class="rounded-2xl border border-ink/15 p-4 text-sm">
                 <p class="font-semibold">{{ __('quiz.last.heading') }}</p>
-                <p class="mt-1 text-lg font-bold">{{ $lastAttempt->type_code }} <span class="text-moss">{{ $lastAttempt->personalityType->name }}</span></p>
-                <p class="text-ink/70">{{ __('quiz.last.completed_at', ['date' => $lastAttempt->completed_at->format('Y-m-d')]) }}</p>
-                <a href="{{ route('quiz.result'.$quizSuffix, $lastAttempt) }}" class="mt-2 inline-block font-semibold text-moss underline underline-offset-4">{{ __('quiz.last.view') }}</a>
-                <span aria-hidden="true"> · </span>
-                <a href="{{ route('quiz'.$quizSuffix) }}" class="font-semibold text-moss underline underline-offset-4">{{ __('quiz.last.retake') }}</a>
+                <div class="mt-2 flex items-center gap-4">
+                    @if ($bunny = $lastAttempt->personalityType->bunnyImagePath())
+                        @php($thumbnails = $lastAttempt->personalityType->bunnyThumbnailPaths())
+                        <img src="{{ Vite::asset($bunny) }}"
+                             @if ($thumbnails) srcset="{{ collect($thumbnails)->map(fn (string $file, int $width) => Vite::asset($file).' '.$width.'w')->implode(', ') }}" sizes="80px" @endif
+                             width="80" height="80" loading="lazy" decoding="async" data-bunny-thumbnail="{{ $lastAttempt->type_code }}"
+                             alt="{{ __('quiz.result.bunny_alt', ['code' => $lastAttempt->type_code, 'name' => $lastAttempt->personalityType->name]) }}"
+                             class="size-20 shrink-0 rounded-2xl border-2 border-moss/60 bg-white object-cover">
+                    @endif
+                    <div>
+                        <p class="text-lg font-bold">{{ $lastAttempt->type_code }} <span class="text-moss">{{ $lastAttempt->personalityType->name }}</span></p>
+                        <p class="text-ink/70">{{ __('quiz.last.completed_at', ['date' => $lastAttempt->completed_at->format('Y-m-d')]) }}</p>
+                        <a href="{{ route('quiz.result'.$quizSuffix, $lastAttempt) }}" class="mt-2 inline-block font-semibold text-moss underline underline-offset-4">{{ __('quiz.last.view') }}</a>
+                        <span aria-hidden="true"> · </span>
+                        <a href="{{ route('quiz'.$quizSuffix) }}" class="font-semibold text-moss underline underline-offset-4">{{ __('quiz.last.retake') }}</a>
+                    </div>
+                </div>
             </div>
         @else
             <a href="{{ route('bbti'.$quizSuffix) }}" data-take-bbti class="block font-semibold text-moss underline underline-offset-4">{{ __('quiz.last.take') }}</a>
@@ -63,7 +75,7 @@
         <a href="{{ route('member.bottles'.(app()->getLocale() === 'en' ? '.en' : '')) }}"
            data-bottle-holding="{{ \App\Models\DriftBottle::heldCount($member) }}"
            class="block font-semibold text-moss underline underline-offset-4">
-            {{ __('bottles.index.heading') }}
+            🍾 {{ __('bottles.index.heading') }}
         </a>
         <a href="{{ route('member.community-messages'.(app()->getLocale() === 'en' ? '.en' : '')) }}"
            class="block font-semibold text-moss underline underline-offset-4">

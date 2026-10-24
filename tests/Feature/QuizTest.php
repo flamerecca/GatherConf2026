@@ -206,6 +206,33 @@ class QuizTest extends TestCase
             ->assertSee('Take it again');
     }
 
+    public function test_the_member_center_shows_the_bunny_thumbnail_of_the_latest_result(): void
+    {
+        $this->seedQuiz();
+        $member = Member::factory()->create();
+        $this->attemptFor($member, 'NSHG', now()->subDay()->toDateTimeString());
+        $this->attemptFor($member, 'MVAD', now()->toDateTimeString());
+
+        $html = $this->asMember($member)->get(route('member.center'))
+            ->assertOk()
+            ->assertSee('data-bunny-thumbnail="MVAD"', false)
+            ->assertDontSee('data-bunny-thumbnail="NSHG"', false)
+            ->getContent();
+
+        $this->assertMatchesRegularExpression('/data-bunny-thumbnail="MVAD"/', $html);
+        $this->assertStringContainsString('MVAD-160', $html);
+        $this->assertStringContainsString('MVAD-320', $html);
+    }
+
+    public function test_every_bunny_has_thumbnails_for_the_member_center(): void
+    {
+        $this->seed(PersonalityTypeSeeder::class);
+
+        foreach (PersonalityType::all() as $type) {
+            $this->assertSame([160, 320], array_slice(array_keys($type->bunnyThumbnailPaths()), 0, 2), $type->code);
+        }
+    }
+
     public function test_the_member_center_offers_the_quiz_when_there_is_no_result_yet(): void
     {
         $this->seedQuiz();

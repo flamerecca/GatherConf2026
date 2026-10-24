@@ -22,6 +22,24 @@ class PersonalityType extends Model
     }
 
     /**
+     * The resized WebP copies of the bunny illustration, keyed by pixel width and valued by path relative to the project root.
+     *
+     * @return array<int, string>
+     */
+    public function bunnyThumbnailPaths(): array
+    {
+        $thumbnails = [];
+
+        foreach (glob(resource_path('images/bunny/'.$this->code.'-*.webp')) ?: [] as $file) {
+            $thumbnails[(int) preg_replace('/^.*-(\d+)\.webp$/', '$1', $file)] = 'resources/images/bunny/'.basename($file);
+        }
+
+        ksort($thumbnails);
+
+        return $thumbnails;
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
