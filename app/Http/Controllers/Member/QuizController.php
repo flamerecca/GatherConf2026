@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Member;
 
 use App\Actions\ComputePersonalityType;
+use App\Jobs\GenerateUniqueBunny;
 use App\Models\PersonalityType;
 use App\Models\QuizAttempt;
 use App\Models\QuizQuestion;
@@ -55,6 +56,10 @@ class QuizController extends MemberController
             'type_code' => $result['code'],
             'completed_at' => now(),
         ]);
+
+        if (filled(config('services.gemini.key'))) {
+            GenerateUniqueBunny::dispatch($attempt);
+        }
 
         return redirect($this->localizedRoute('quiz.result', ['attempt' => $attempt->uuid]));
     }

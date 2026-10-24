@@ -44,6 +44,8 @@ return [
         'title' => ':code :name | BBTI 創客兔性格測驗',
         'description' => '我是 :code :name。:summary',
         'bunny_alt' => ':code :name的創客兔插圖',
+        'unique_bunny' => '這是為這次測驗專門畫的專屬創客兔',
+        'unique_bunny_drawing' => '專屬創客兔繪製中，完成後這裡會自動換成牠。',
         'your_type' => '你的創客兔類型',
         'axes' => '四個維度的傾向',
         'leaning' => '傾向 :pole，強度 :percent%',

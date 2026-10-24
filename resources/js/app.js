@@ -34,6 +34,32 @@ document.addEventListener('click', async (event) => {
     }
 });
 
+const awaitingBunny = document.querySelector('[data-awaiting-unique-bunny]');
+
+if (awaitingBunny) {
+    let attempts = 0;
+
+    const timer = setInterval(async () => {
+        attempts += 1;
+
+        try {
+            const response = await fetch(window.location.href, { headers: { Accept: 'text/html' } });
+            const next = new DOMParser().parseFromString(await response.text(), 'text/html').querySelector('[data-bunny-frame]');
+
+            if (next && !next.hasAttribute('data-awaiting-unique-bunny')) {
+                document.querySelector('[data-bunny-frame]').replaceWith(next);
+                clearInterval(timer);
+            }
+        } catch (error) {
+            // 網路暫時失敗時，下一輪再試
+        }
+
+        if (attempts >= 15) {
+            clearInterval(timer);
+        }
+    }, 8000);
+}
+
 const quiz = document.querySelector('[data-quiz]');
 
 if (quiz) {

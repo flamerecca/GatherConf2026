@@ -6,8 +6,9 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
 
-#[Fillable(['uuid', 'user_id', 'scores', 'type_code', 'completed_at'])]
+#[Fillable(['uuid', 'user_id', 'scores', 'type_code', 'unique_bunny_path', 'unique_bunny_traits', 'completed_at'])]
 class QuizAttempt extends Model
 {
     use SoftDeletes;
@@ -43,8 +44,27 @@ class QuizAttempt extends Model
     {
         return [
             'scores' => 'array',
+            'unique_bunny_traits' => 'array',
             'completed_at' => 'datetime',
         ];
+    }
+
+    /**
+     * The URL of the bunny drawn for this attempt, or null while it is not generated yet.
+     */
+    public function uniqueBunnyUrl(): ?string
+    {
+        return $this->unique_bunny_path === null ? null : Storage::disk('public')->url($this->unique_bunny_path);
+    }
+
+    /**
+     * Whether a unique bunny is still expected to arrive for this attempt.
+     */
+    public function isAwaitingUniqueBunny(): bool
+    {
+        return $this->unique_bunny_path === null
+            && filled(config('services.gemini.key'))
+            && $this->completed_at->gt(now()->subMinutes(5));
     }
 
     public function personalityType(): BelongsTo
