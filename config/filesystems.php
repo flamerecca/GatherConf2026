@@ -73,6 +73,19 @@ return [
     |
     */
 
+    /*
+    |--------------------------------------------------------------------------
+    | Unique Bunny Disk
+    |--------------------------------------------------------------------------
+    |
+    | The disk that holds the one-of-a-kind bunny drawn for each BBTI result.
+    | Files are readable by anyone. Set it to "s3" in production so the images
+    | live in the bucket instead of on a single server.
+    |
+    */
+
+    'unique_bunny_disk' => env('UNIQUE_BUNNY_DISK', 'public'),
+
     'links' => [
         public_path('storage') => storage_path('app/public'),
     ],

@@ -8,6 +8,7 @@ use App\Models\Member;
 use App\Models\QuizAttempt;
 use App\Models\QuizQuestion;
 use Database\Seeders\PersonalityTypeSeeder;
+use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Queue;
@@ -99,6 +100,42 @@ class UniqueBunnyTest extends TestCase
         $this->assertSame('image/webp', $size['mime']);
         $this->assertSame(768, $size[0]);
         $this->assertLessThan(strlen($png), strlen(Storage::disk('public')->get($path)));
+    }
+
+    public function test_the_drawing_goes_to_the_configured_disk_with_public_visibility(): void
+    {
+        config(['services.gemini.key' => 'secret-key', 'filesystems.unique_bunny_disk' => 's3']);
+        Storage::fake('s3');
+        Storage::fake('public');
+        $this->fakeGeminiWithLimbCheck(['bunnies' => 1, 'arms' => 2, 'hands' => 2, 'legs' => 2, 'feet' => 2]);
+        $attempt = $this->attempt();
+
+        GenerateUniqueBunny::dispatchSync($attempt);
+
+        $path = $attempt->fresh()->unique_bunny_path;
+        Storage::disk('s3')->assertExists($path);
+        Storage::disk('public')->assertMissing($path);
+        $this->assertSame('public', Storage::disk('s3')->getVisibility($path));
+        $this->assertSame(Storage::disk('s3')->url($path), $attempt->fresh()->uniqueBunnyUrl());
+    }
+
+    public function test_a_failed_upload_fails_the_job_and_keeps_the_type_bunny(): void
+    {
+        config(['services.gemini.key' => 'secret-key']);
+        $disk = \Mockery::mock(Filesystem::class);
+        $disk->shouldReceive('put')->once()->andReturn(false);
+        Storage::shouldReceive('disk')->with('public')->andReturn($disk);
+        $this->fakeGeminiWithLimbCheck(['bunnies' => 1, 'arms' => 2, 'hands' => 2, 'legs' => 2, 'feet' => 2]);
+        $attempt = $this->attempt();
+
+        try {
+            GenerateUniqueBunny::dispatchSync($attempt);
+            $this->fail('A failed upload should fail the job.');
+        } catch (\RuntimeException $exception) {
+            $this->assertStringContainsString('could not be saved', $exception->getMessage());
+        }
+
+        $this->assertNull($attempt->fresh()->unique_bunny_path);
     }
 
     public function test_the_job_does_nothing_without_a_key_or_when_a_drawing_exists(): void

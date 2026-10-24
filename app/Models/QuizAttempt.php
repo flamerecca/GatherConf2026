@@ -54,7 +54,7 @@ class QuizAttempt extends Model
      */
     public function uniqueBunnyUrl(): ?string
     {
-        return $this->unique_bunny_path === null ? null : Storage::disk('public')->url($this->unique_bunny_path);
+        return $this->unique_bunny_path === null ? null : Storage::disk(config('filesystems.unique_bunny_disk'))->url($this->unique_bunny_path);
     }
 
     /**
