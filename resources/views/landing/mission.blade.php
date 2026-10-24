@@ -1,6 +1,6 @@
 <section class="bg-deep text-on-deep">
     <div class="mx-auto max-w-6xl px-4 py-16">
-        <x-responsive-image name="community-gathering-watercolor" avif loading="eager" :alt="__('landing.gathering_alt')" :width="1024" :height="572"
+        <x-responsive-image name="illustrations/community-gathering-watercolor" avif loading="eager" :alt="__('landing.gathering_alt')" :width="1024" :height="572"
                             class="aspect-video w-full rounded-2xl object-cover shadow-xl" />
         <div class="mt-12 max-w-3xl">
             <h2 class="text-3xl font-bold">{{ __('landing.mission_title') }}</h2>

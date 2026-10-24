@@ -1,5 +1,5 @@
 <footer class="bg-deep py-12 text-center text-on-deep/80">
-    <x-responsive-image name="GatherConf-Logo" :alt="__('landing.logo_alt')" :width="687" :height="687" :widths="[128, 256, 448, 687]"
+    <x-responsive-image name="brand/GatherConf-Logo" :alt="__('landing.logo_alt')" :width="687" :height="687" :widths="[128, 256, 448, 687]"
                         sizes="96px" loading="lazy"
                         class="mx-auto mb-4 size-24 rounded-full" />
     <p class="font-semibold text-on-deep">{{ __('landing.name') }} GatherConf 2026</p>

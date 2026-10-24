@@ -25,9 +25,9 @@ GatherConf 想給人的感覺是「開放、包容、充滿活力的森林聚會
 
 | 資源                       | 路徑                                                  | 用途與規則                                                                                                                                                                       |
 |:---------------------------|:------------------------------------------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Logo**                   | `resources/images/GatherConf-Logo.png`                | 圓形徽章，森林中一群人加上電路線，綠色字標。用於 Hero、頁尾與 favicon。在米白底上可使用 `mix-blend-multiply` 融入背景。不可拉伸、不可重新上色、周圍至少留 Logo 寬度 10% 的空間。 |
-| **水彩插畫：共同參加年會** | `resources/images/community-gathering-watercolor.png` | 主視覺插畫，水彩手繪，描繪許多人在森林中共同參加年會。16:9，用於年會宗旨區塊。                                                                                                   |
-| **水彩插畫：打破隔閡**     | `resources/images/community-silos-watercolor.png`     | 左半邊是被石牆與藤蔓隔開的安靜森林，右半邊是燈串下熱絡交流的聚會。約 2.4:1 的超寬構圖，用於「為什麼要舉辦」區塊。上方冷色、下方暖色的對比就是想傳達的訊息。                      |
+| **Logo**                   | `resources/images/brand/GatherConf-Logo.png`                | 圓形徽章，森林中一群人加上電路線，綠色字標。用於 Hero、頁尾與 favicon。在米白底上可使用 `mix-blend-multiply` 融入背景。不可拉伸、不可重新上色、周圍至少留 Logo 寬度 10% 的空間。 |
+| **水彩插畫：共同參加年會** | `resources/images/illustrations/community-gathering-watercolor.png` | 主視覺插畫，水彩手繪，描繪許多人在森林中共同參加年會。16:9，用於年會宗旨區塊。                                                                                                   |
+| **水彩插畫：打破隔閡**     | `resources/images/illustrations/community-silos-watercolor.png`     | 左半邊是被石牆與藤蔓隔開的安靜森林，右半邊是燈串下熱絡交流的聚會。約 2.4:1 的超寬構圖，用於「為什麼要舉辦」區塊。上方冷色、下方暖色的對比就是想傳達的訊息。                      |
 | **吉祥物 Bunny**           | `resources/images/bunny/`                             | 扁平插畫風格的兔子，共 16 個造型。官網只在贊助方案區塊使用一個，不與水彩插畫同區塊並用。                                                                                         |
 | **NPC 插畫**               | `resources/images/npc/`                               | 遊戲化內容專用，不用於官網 landing page。                                                                                                                                        |
 | **合作社群 Logo**          | `resources/images/community-logo/`                    | 各合作社群提供的 Logo，檔名為社群簡稱，如 `TKUG.png`。用於首頁合作社群區塊與合作社群頁。                                                                                         |
@@ -509,7 +509,7 @@ TKUG 的內容半徑超過 0.5，也就是原圖的內容本來就會被圓形�
 | **修改檢舉信箱** | 行為準則頁的信箱定義在 `resources/views/code-of-conduct.blade.php` 的 `$contactEmail`，只需改一處。 |
 | **設定正式環境網域** | 正式環境的 `.env` 設定 `APP_URL=https://gatherconf.net`，細節見第 14 節。 |
 | **更新分享預覽圖** | 覆蓋 `public/og-image.jpg`，尺寸固定 1200×630。社群平台會快取，更新後需到各平台的分享除錯工具重新抓取。 |
-| **更新網站圖示** | 重新由 `resources/images/GatherConf-Logo.png` 產生 `public/` 內的 `favicon.ico`、`favicon-16x16.png`、`favicon-32x32.png`、`apple-touch-icon.png`、`icon-192.png`、`icon-512.png`。 |
+| **更新網站圖示** | 重新由 `resources/images/brand/GatherConf-Logo.png` 產生 `public/` 內的 `favicon.ico`、`favicon-16x16.png`、`favicon-32x32.png`、`apple-touch-icon.png`、`icon-192.png`、`icon-512.png`。 |
 | **修改報名連結** | 報名連結目前寫在 `landing/hero.blade.php` 與 `landing/footer.blade.php` 兩處。 |
 
 改完需要重新 build 前端資源，執行 `npm run build`，或在開發時執行 `composer run dev`。提交前執行 `vendor/bin/pint --dirty --format agent` 與 `php artisan test --compact tests/Feature/ExampleTest.php`。

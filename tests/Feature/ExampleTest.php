@@ -138,7 +138,7 @@ class ExampleTest extends TestCase
     {
         $html = $this->get('/')->assertOk()->getContent();
 
-        foreach (['community-gathering-watercolor' => [1024, 572], 'community-silos-watercolor' => [1024, 434]] as $name => [$width, $height]) {
+        foreach (['illustrations/community-gathering-watercolor' => [1024, 572], 'illustrations/community-silos-watercolor' => [1024, 434]] as $name => [$width, $height]) {
             foreach ([360, 480, 576, 672, 768, 864, 960, 1024] as $variant) {
                 $this->assertFileExists(resource_path("images/{$name}-{$variant}.webp"));
                 $this->assertFileExists(resource_path("images/{$name}-{$variant}.avif"));
@@ -182,7 +182,7 @@ class ExampleTest extends TestCase
     public function test_the_site_logo_is_served_as_responsive_webp(): void
     {
         foreach ([128, 256, 448, 687] as $width) {
-            $this->assertFileExists(resource_path("images/GatherConf-Logo-{$width}.webp"));
+            $this->assertFileExists(resource_path("images/brand/GatherConf-Logo-{$width}.webp"));
         }
 
         $this->assertSame(2, substr_count($this->get('/')->getContent(), '128w, '));

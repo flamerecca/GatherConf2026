@@ -18,7 +18,7 @@
             {{ __('landing.register') }}
         </a>
     </div>
-    <x-responsive-image name="GatherConf-Logo" :alt="__('landing.logo_alt')" :width="687" :height="687" :widths="[128, 256, 448, 687]"
+    <x-responsive-image name="brand/GatherConf-Logo" :alt="__('landing.logo_alt')" :width="687" :height="687" :widths="[128, 256, 448, 687]"
                         sizes="(min-width: 480px) 448px, calc(100vw - 32px)" loading="eager" fetchpriority="high"
                         class="mx-auto w-full max-w-md rounded-full mix-blend-multiply dark:mix-blend-normal" />
 </section>
