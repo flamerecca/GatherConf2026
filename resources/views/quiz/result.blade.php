@@ -18,24 +18,42 @@
             $uniqueBunny = $attempt->uniqueBunnyUrl();
             $awaitingBunny = $attempt->isAwaitingUniqueBunny();
         @endphp
-        @if ($uniqueBunny || $type->bunnyImagePath())
-            <figure data-bunny-frame @if ($awaitingBunny) data-awaiting-unique-bunny @endif class="mb-8">
-                <img src="{{ $uniqueBunny ?? Vite::asset($type->bunnyImagePath()) }}" width="1024" height="1024" data-bunny="{{ $type->code }}"
-                     @if ($uniqueBunny) data-unique-bunny @endif
-                     alt="{{ __('quiz.result.bunny_alt', ['code' => $type->code, 'name' => $type->name]) }}"
-                     class="mx-auto aspect-square w-full max-w-sm rounded-3xl border-4 border-moss/60 bg-white object-cover">
-                @if ($uniqueBunny)
-                    <figcaption class="mt-3 text-center text-sm text-ink/70">{{ __('quiz.result.unique_bunny') }}</figcaption>
-                @elseif ($awaitingBunny)
-                    <figcaption class="mt-3 text-center text-sm text-ink/70" role="status">{{ __('quiz.result.unique_bunny_drawing') }}</figcaption>
+        @php
+            $typeBunny = $type->bunnyImagePath();
+            $typeThumbnails = $type->bunnyThumbnailPaths();
+            $bunnyAlt = __('quiz.result.bunny_alt', ['code' => $type->code, 'name' => $type->name]);
+        @endphp
+        <div data-result-frame @if ($awaitingBunny) data-awaiting-unique-bunny @endif>
+            @if ($uniqueBunny || $typeBunny)
+                <figure class="mb-8">
+                    <img src="{{ $uniqueBunny ?? Vite::asset($typeBunny) }}" width="768" height="768" data-bunny="{{ $type->code }}"
+                         @if ($uniqueBunny) data-unique-bunny @endif
+                         alt="{{ $uniqueBunny ? __('quiz.result.unique_bunny_alt', ['code' => $type->code, 'name' => $type->name]) : $bunnyAlt }}"
+                         class="mx-auto aspect-square w-full max-w-sm rounded-3xl border-4 border-moss/60 bg-white object-cover">
+                    @if ($uniqueBunny)
+                        <figcaption class="mt-3 text-center text-sm text-ink/70">{{ __('quiz.result.unique_bunny') }}</figcaption>
+                    @elseif ($awaitingBunny)
+                        <figcaption class="mt-3 text-center text-sm text-ink/70" role="status">{{ __('quiz.result.unique_bunny_drawing') }}</figcaption>
+                    @endif
+                </figure>
+            @endif
+            <div class="flex items-center gap-4">
+                @if ($uniqueBunny && $typeBunny)
+                    <img src="{{ Vite::asset($typeBunny) }}"
+                         @if ($typeThumbnails) srcset="{{ collect($typeThumbnails)->map(fn (string $file, int $width) => Vite::asset($file).' '.$width.'w')->implode(', ') }}" sizes="64px" @endif
+                         width="64" height="64" loading="lazy" decoding="async" data-type-bunny="{{ $type->code }}"
+                         alt="{{ $bunnyAlt }}"
+                         class="size-16 shrink-0 rounded-2xl border-2 border-moss/60 bg-white object-cover">
                 @endif
-            </figure>
-        @endif
-        <p class="text-sm font-semibold tracking-widest text-copper uppercase">{{ __('quiz.result.your_type') }}</p>
-        <h1 class="mt-2 text-5xl font-bold tracking-tight" data-type-code="{{ $type->code }}">
-            {{ $type->code }}
-            <span class="block text-3xl text-moss">{{ $type->name }}</span>
-        </h1>
+                <div>
+                    <p class="text-sm font-semibold tracking-widest text-copper uppercase">{{ __('quiz.result.your_type') }}</p>
+                    <h1 class="mt-2 text-5xl font-bold tracking-tight" data-type-code="{{ $type->code }}">
+                        {{ $type->code }}
+                        <span class="block text-3xl text-moss">{{ $type->name }}</span>
+                    </h1>
+                </div>
+            </div>
+        </div>
         <p class="mt-6 text-lg leading-relaxed text-ink/80">{{ $type->summary }}</p>
 
         <section class="mt-10" aria-labelledby="axes-heading">

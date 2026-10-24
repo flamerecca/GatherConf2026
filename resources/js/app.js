@@ -44,10 +44,10 @@ if (awaitingBunny) {
 
         try {
             const response = await fetch(window.location.href, { headers: { Accept: 'text/html' } });
-            const next = new DOMParser().parseFromString(await response.text(), 'text/html').querySelector('[data-bunny-frame]');
+            const next = new DOMParser().parseFromString(await response.text(), 'text/html').querySelector('[data-result-frame]');
 
             if (next && !next.hasAttribute('data-awaiting-unique-bunny')) {
-                document.querySelector('[data-bunny-frame]').replaceWith(next);
+                document.querySelector('[data-result-frame]').replaceWith(next);
                 clearInterval(timer);
             }
         } catch (error) {
@@ -73,6 +73,9 @@ if (quiz) {
 
     const answered = (step) => Boolean(step.querySelector('input:checked'));
 
+    // 切換題目後把焦點交給該題的選項，避免按鈕被隱藏時鍵盤焦點掉回頁首。
+    const focusCurrent = () => (steps[current].querySelector('input:checked') ?? steps[current].querySelector('input')).focus();
+
     const render = () => {
         steps.forEach((step, index) => (step.hidden = index !== current));
         previous.hidden = current === 0;
@@ -88,11 +91,12 @@ if (quiz) {
     previous.addEventListener('click', () => {
         current -= 1;
         render();
+        focusCurrent();
     });
     next.addEventListener('click', () => {
         current += 1;
         render();
-        steps[current].querySelector('input').focus();
+        focusCurrent();
     });
     quiz.addEventListener('change', render);
     render();

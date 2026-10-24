@@ -45,6 +45,7 @@ return [
         'description' => 'I am :code :name. :summary',
         'bunny_alt' => 'Bunny illustration of :code :name',
         'unique_bunny' => 'A one-of-a-kind bunny drawn just for this quiz',
+        'unique_bunny_alt' => 'One-of-a-kind bunny for :code :name',
         'unique_bunny_drawing' => 'Your own bunny is being drawn. It will replace this one here when it is ready.',
         'your_type' => 'Your bunny type',
         'axes' => 'Your leaning on four axes',

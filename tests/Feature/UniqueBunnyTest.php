@@ -238,7 +238,23 @@ class UniqueBunnyTest extends TestCase
             ->assertSee('data-unique-bunny', false)
             ->assertSee('unique-bunnies/'.$attempt->uuid.'.png', false)
             ->assertSee('專屬創客兔')
+            ->assertSee('data-type-bunny="NVHG"', false)
             ->assertDontSee('data-awaiting-unique-bunny', false);
+    }
+
+    public function test_the_unique_bunny_is_the_large_picture_and_the_type_bunny_a_small_note_beside_the_type(): void
+    {
+        Storage::fake('public');
+        $attempt = $this->attempt();
+        $attempt->update(['unique_bunny_path' => 'unique-bunnies/'.$attempt->uuid.'.webp']);
+
+        $html = $this->get(route('quiz.result', $attempt->uuid))->assertOk()->getContent();
+
+        $this->assertSame(1, substr_count($html, 'data-unique-bunny'));
+        $this->assertSame(1, substr_count($html, 'data-type-bunny='));
+        $this->assertLessThan(strpos($html, 'data-type-bunny='), strpos($html, 'data-unique-bunny'));
+        $this->assertLessThan(strpos($html, 'data-type-code='), strpos($html, 'data-type-bunny='));
+        $this->assertStringContainsString('NVHG-160', $html);
     }
 
     public function test_the_result_page_shows_the_type_bunny_while_the_drawing_is_pending(): void
@@ -250,6 +266,8 @@ class UniqueBunnyTest extends TestCase
             ->assertOk()
             ->assertSee('data-awaiting-unique-bunny', false)
             ->assertSee('繪製中')
+            ->assertSee('data-bunny="NVHG"', false)
+            ->assertDontSee('data-type-bunny', false)
             ->assertDontSee('data-unique-bunny', false);
     }
 

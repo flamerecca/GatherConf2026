@@ -30,12 +30,12 @@
                 </div>
 
                 @foreach ($questions as $index => $question)
-                    <fieldset data-quiz-step class="mt-6 rounded-2xl border-4 border-moss/60 bg-parchment-dark p-6"
+                    <fieldset data-quiz-step aria-describedby="question-{{ $question->id }}" class="mt-6 rounded-2xl border-4 border-moss/60 bg-parchment-dark p-6"
                               data-question-label="{{ __('quiz.show.question', ['current' => $index + 1, 'total' => $total]) }}">
                         <legend class="px-2 text-sm font-semibold text-ink/70">
                             {{ __('quiz.show.question', ['current' => $index + 1, 'total' => $total]) }}
                         </legend>
-                        <p class="text-xl leading-relaxed font-semibold">{{ $question->text }}</p>
+                        <p id="question-{{ $question->id }}" class="text-xl leading-relaxed font-semibold">{{ $question->text }}</p>
                         <div class="mt-6 grid gap-2 sm:grid-cols-5">
                             @foreach (__('quiz.show.scale') as $value => $label)
                                 <label class="flex min-h-12 cursor-pointer items-center gap-2 rounded-xl border border-ink/40 px-3 py-2 text-sm has-[:checked]:border-moss has-[:checked]:bg-moss has-[:checked]:text-on-accent sm:flex-col sm:justify-center sm:text-center">
