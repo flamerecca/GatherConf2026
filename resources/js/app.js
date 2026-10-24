@@ -69,15 +69,24 @@ if (quiz) {
     const submit = quiz.querySelector('[data-quiz-submit]');
     const progress = quiz.querySelector('progress');
     const status = quiz.querySelector('[data-quiz-status]');
-    let current = Math.max(0, steps.findIndex((step) => !step.querySelector('input:checked')));
+    let current = 0;
 
     const answered = (step) => Boolean(step.querySelector('input:checked'));
 
     // 切換題目後把焦點交給該題的選項，避免按鈕被隱藏時鍵盤焦點掉回頁首。
     const focusCurrent = () => (steps[current].querySelector('input:checked') ?? steps[current].querySelector('input')).focus();
 
+    // 所有題目疊在同一格，容器高度固定為最高的那一題，換題時版面不會跳動。
+    quiz.querySelector('[data-quiz-steps]').classList.add('grid');
+    steps.forEach((step) => step.classList.add('col-start-1', 'row-start-1'));
+
     const render = () => {
-        steps.forEach((step, index) => (step.hidden = index !== current));
+        steps.forEach((step, index) => {
+            const active = index === current;
+
+            step.classList.toggle('invisible', !active);
+            step.inert = !active;
+        });
         previous.hidden = current === 0;
         next.hidden = current === steps.length - 1;
         next.disabled = !answered(steps[current]);
@@ -99,5 +108,24 @@ if (quiz) {
         focusCurrent();
     });
     quiz.addEventListener('change', render);
+
+    // 在選項上按 Enter 直接進下一題，最後一題則送出。
+    quiz.addEventListener('keydown', (event) => {
+        if (event.key !== 'Enter' || event.target.type !== 'radio') {
+            return;
+        }
+
+        event.preventDefault();
+
+        if (current < steps.length - 1) {
+            next.click();
+        } else if (!submit.disabled) {
+            quiz.requestSubmit(submit);
+        }
+    });
+
+    // 送出後鎖住按鈕，避免連按 Enter 重複送出，從上一頁回來時再恢復。
+    quiz.addEventListener('submit', () => (submit.disabled = true));
+    window.addEventListener('pageshow', render);
     render();
 }

@@ -29,6 +29,7 @@
                     <progress class="mt-2 h-2 w-full accent-moss" max="{{ $total }}" value="1" aria-label="{{ __('quiz.show.progress') }}"></progress>
                 </div>
 
+                <div data-quiz-steps>
                 @foreach ($questions as $index => $question)
                     <fieldset data-quiz-step aria-describedby="question-{{ $question->id }}" class="mt-6 rounded-2xl border-4 border-moss/60 bg-parchment-dark p-6"
                               data-question-label="{{ __('quiz.show.question', ['current' => $index + 1, 'total' => $total]) }}">
@@ -40,13 +41,14 @@
                             @foreach (__('quiz.show.scale') as $value => $label)
                                 <label class="flex min-h-12 cursor-pointer items-center gap-2 rounded-xl border border-ink/40 px-3 py-2 text-sm has-[:checked]:border-moss has-[:checked]:bg-moss has-[:checked]:text-on-accent sm:flex-col sm:justify-center sm:text-center">
                                     <input type="radio" name="answers[{{ $question->id }}]" value="{{ $value }}"
-                                           class="accent-moss" @checked((string) old('answers.'.$question->id) === (string) $value)>
+                                           class="accent-moss" @checked((string) old('answers.'.$question->id, 3) === (string) $value)>
                                     <span>{{ $label }}</span>
                                 </label>
                             @endforeach
                         </div>
                     </fieldset>
                 @endforeach
+                </div>
 
                 <div class="mt-8 flex items-center justify-between gap-4">
                     <button type="button" hidden data-quiz-previous

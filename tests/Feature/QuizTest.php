@@ -184,6 +184,16 @@ class QuizTest extends TestCase
         ]);
     }
 
+    public function test_every_question_starts_on_the_neutral_answer(): void
+    {
+        $this->seedQuiz();
+
+        $html = $this->asMember(Member::factory()->create())->get(route('quiz'))->assertOk()->getContent();
+
+        $this->assertSame(QuizQuestion::count(), preg_match_all('/<input type="radio" name="answers\[\d+\]" value="3"\s+class="accent-moss" checked>/', $html));
+        $this->assertSame(0, preg_match_all('/value="[1245]"\s+class="accent-moss" checked/', $html));
+    }
+
     public function test_each_question_is_announced_with_its_radio_group_for_screen_readers(): void
     {
         $this->seedQuiz();

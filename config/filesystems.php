@@ -80,11 +80,12 @@ return [
     |
     | The disk that holds the one-of-a-kind bunny drawn for each BBTI result.
     | Files are readable by anyone. Set it to "s3" in production so the images
-    | live in the bucket instead of on a single server.
+    | live in the bucket instead of on a single server. Without a value it
+    | follows FILESYSTEM_DISK, and falls back to "public" when that is "local".
     |
     */
 
-    'unique_bunny_disk' => env('UNIQUE_BUNNY_DISK', 'public'),
+    'unique_bunny_disk' => env('UNIQUE_BUNNY_DISK', env('FILESYSTEM_DISK', 'local') === 'local' ? 'public' : env('FILESYSTEM_DISK')),
 
     'links' => [
         public_path('storage') => storage_path('app/public'),
