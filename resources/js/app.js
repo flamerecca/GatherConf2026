@@ -109,6 +109,14 @@ if (quiz) {
     });
     quiz.addEventListener('change', render);
 
+    const advance = () => {
+        if (current < steps.length - 1) {
+            next.click();
+        } else if (!submit.disabled) {
+            quiz.requestSubmit(submit);
+        }
+    };
+
     // 在選項上按 Enter 直接進下一題，最後一題則送出。
     quiz.addEventListener('keydown', (event) => {
         if (event.key !== 'Enter' || event.target.type !== 'radio') {
@@ -116,12 +124,38 @@ if (quiz) {
         }
 
         event.preventDefault();
+        advance();
+    });
 
-        if (current < steps.length - 1) {
-            next.click();
-        } else if (!submit.disabled) {
-            quiz.requestSubmit(submit);
+    // 焦點還在頁面上而沒有落在選項時，左右鍵移動目前這題的選項，Enter 進下一題。
+    document.addEventListener('keydown', (event) => {
+        const idle = document.activeElement === document.body || document.activeElement === document.querySelector('main');
+
+        if (!idle || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) {
+            return;
         }
+
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            advance();
+
+            return;
+        }
+
+        const offset = { ArrowLeft: -1, ArrowUp: -1, ArrowRight: 1, ArrowDown: 1 }[event.key];
+
+        if (offset === undefined) {
+            return;
+        }
+
+        const options = [...steps[current].querySelectorAll('input[type="radio"]')];
+        const index = options.findIndex((option) => option.checked);
+        const target = options[(index + offset + options.length) % options.length];
+
+        event.preventDefault();
+        target.checked = true;
+        target.focus();
+        quiz.dispatchEvent(new Event('change', { bubbles: true }));
     });
 
     // 送出後鎖住按鈕，避免連按 Enter 重複送出，從上一頁回來時再恢復。
