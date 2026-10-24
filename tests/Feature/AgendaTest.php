@@ -22,7 +22,7 @@ class AgendaTest extends TestCase
         $this->assertCount(8, collect($tracks)->flatMap(fn (array $track) => $track['sessions'])->pluck('id')->unique());
     }
 
-    public function test_the_chinese_page_shows_eight_sessions_with_seven_placeholders(): void
+    public function test_the_chinese_page_shows_eight_sessions_with_six_placeholders(): void
     {
         $response = $this->get('/agenda')->assertOk()
             ->assertSee('<h1', false)
@@ -31,19 +31,19 @@ class AgendaTest extends TestCase
             ->assertSee('第 4 場');
 
         $this->assertSame(8, substr_count($response->getContent(), 'data-session="'));
-        $this->assertSame(7, substr_count($response->getContent(), '議題待公布'));
-        $this->assertSame(7, substr_count($response->getContent(), '講者待公布'));
-        $this->assertSame(7, substr_count($response->getContent(), '議題大綱待公布'));
+        $this->assertSame(6, substr_count($response->getContent(), '議題待公布'));
+        $this->assertSame(6, substr_count($response->getContent(), '講者待公布'));
+        $this->assertSame(6, substr_count($response->getContent(), '議題大綱待公布'));
     }
 
-    public function test_the_english_page_shows_eight_sessions_with_seven_placeholders(): void
+    public function test_the_english_page_shows_eight_sessions_with_six_placeholders(): void
     {
         $response = $this->get('/en/agenda')->assertOk()
             ->assertSee('Track A')
             ->assertSee('Track B')
             ->assertSee('Session 4');
 
-        $this->assertSame(7, substr_count($response->getContent(), 'Topic to be announced'));
+        $this->assertSame(6, substr_count($response->getContent(), 'Topic to be announced'));
     }
 
     public function test_filled_in_sessions_show_their_content_in_the_right_language(): void

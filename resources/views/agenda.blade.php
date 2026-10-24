@@ -14,8 +14,11 @@
         <h1 class="text-4xl font-bold tracking-tight md:text-5xl">{{ __('agenda.heading') }}</h1>
         <p class="mt-6 max-w-3xl text-lg leading-relaxed text-ink/80">{{ __('agenda.intro') }}</p>
         @foreach (config('agenda') as $track)
+            @php
+                $isTrackB = $track['id'] === 'b';
+            @endphp
             <section class="mt-12" aria-labelledby="track-{{ $track['id'] }}">
-                <h2 id="track-{{ $track['id'] }}" class="text-2xl font-bold text-moss">
+                <h2 id="track-{{ $track['id'] }}" @class(['text-2xl font-bold', 'text-moss' => ! $isTrackB, 'text-copper' => $isTrackB])>
                     {{ __('agenda.track', ['name' => strtoupper($track['id'])]) }}
                 </h2>
                 <ol class="mt-6 grid gap-6">
@@ -27,7 +30,7 @@
                             $bio = $session['speaker_bio'][$locale] ?? null;
                         @endphp
                         <li id="session-{{ $session['id'] }}" data-session="{{ $session['id'] }}"
-                            class="flex h-full flex-col gap-4 rounded-2xl border-4 border-moss/60 bg-parchment-dark p-6">
+                            @class(['flex h-full flex-col gap-4 rounded-2xl border-4 bg-parchment-dark p-6', 'border-moss/60' => ! $isTrackB, 'border-copper/60' => $isTrackB])>
                             <p class="text-sm font-semibold tracking-widest text-copper uppercase">
                                 {{ __('agenda.session', ['number' => $index + 1]) }}
                                 <span aria-hidden="true">·</span>

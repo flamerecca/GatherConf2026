@@ -46,7 +46,22 @@ return [
     ['id' => 'b', 'sessions' => [
         $session('b1', '10:00 - 10:45'),
         $session('b2', '10:45 - 11:30'),
-        $session('b3', '13:00 - 13:45'),
+        array_replace($session('b3', '13:00 - 13:45'), [
+            'speaker_name' => 'Sasha Denisov',
+            'speaker_photo' => 'Sasha.jpg',
+            'speaker_bio' => [
+                'zh_TW' => 'Sasha Denisov is a software engineer and solution architect with over 20 years of experience building scalable, production-ready systems across mobile, web, backend, cloud, and AI. As CTO of Brainform.ai, he leads the development of an agentic commerce platform with AI agents for sales, customer support, and knowledge management. His current focus is Edge AI. Through Yoh, he supports Google’s AI Edge team. He is also the creator and maintainer of Flutter Edge AI (formerly flutter_gemma), an open-source framework for local AI inference across six platforms. Sasha is a Google Developer Expert for Cloud AI, Firebase, Flutter, and Dart, co-organizes the Flutter Berlin community, and has spoken at 30+ conferences worldwide, including WeAreDevelopers, LDX3, Fluttercon, and Droidcon.',
+                'en' => 'Sasha Denisov is a software engineer and solution architect with over 20 years of experience building scalable, production-ready systems across mobile, web, backend, cloud, and AI. As CTO of Brainform.ai, he leads the development of an agentic commerce platform with AI agents for sales, customer support, and knowledge management. His current focus is Edge AI. Through Yoh, he supports Google’s AI Edge team. He is also the creator and maintainer of Flutter Edge AI (formerly flutter_gemma), an open-source framework for local AI inference across six platforms. Sasha is a Google Developer Expert for Cloud AI, Firebase, Flutter, and Dart, co-organizes the Flutter Berlin community, and has spoken at 30+ conferences worldwide, including WeAreDevelopers, LDX3, Fluttercon, and Droidcon.',
+            ],
+            'title' => [
+                'zh_TW' => 'Edge AI: How Far Have We Come?',
+                'en' => 'Edge AI: How Far Have We Come?',
+            ],
+            'outline' => [
+                'zh_TW' => 'Running intelligence on device once felt like a distant promise, constrained by compute, power, and tooling. Today, lightweight models and specialized hardware have reshaped the landscape. This talk cuts through the hype to examine how far Edge AI has truly come, evaluating real-world capabilities, persistent trade-offs, and where the boundaries of edge deployment lie today.',
+                'en' => 'Running intelligence on device once felt like a distant promise, constrained by compute, power, and tooling. Today, lightweight models and specialized hardware have reshaped the landscape. This talk cuts through the hype to examine how far Edge AI has truly come, evaluating real-world capabilities, persistent trade-offs, and where the boundaries of edge deployment lie today.',
+            ],
+        ]),
         $session('b4', '13:45 - 14:30'),
     ]],
 ];
