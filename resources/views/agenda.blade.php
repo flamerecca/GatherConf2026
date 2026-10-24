@@ -18,7 +18,7 @@
                 <h2 id="track-{{ $track['id'] }}" class="text-2xl font-bold text-moss">
                     {{ __('agenda.track', ['name' => strtoupper($track['id'])]) }}
                 </h2>
-                <ol class="mt-6 grid gap-6 sm:grid-cols-2">
+                <ol class="mt-6 grid gap-6">
                     @foreach ($track['sessions'] as $index => $session)
                         @php
                             $title = $session['title'][$locale] ?? null;
