@@ -35,6 +35,10 @@ return [
                 'zh_TW' => 'Beyond the Code: Building Community in the Age of AI',
                 'en' => 'Beyond the Code: Building Community in the Age of AI',
             ],
+            'outline' => [
+                'zh_TW' => 'As AI accelerates code generation, the technical barrier drops—yet the human element matters more than ever. Code can be synthesized, but trust, mentorship, and collective wisdom cannot. This talk explores how developer communities must evolve alongside AI, ensuring we leverage automated intelligence while cultivating the human connection that truly drives innovation forward.',
+                'en' => 'As AI accelerates code generation, the technical barrier drops—yet the human element matters more than ever. Code can be synthesized, but trust, mentorship, and collective wisdom cannot. This talk explores how developer communities must evolve alongside AI, ensuring we leverage automated intelligence while cultivating the human connection that truly drives innovation forward.',
+            ],
         ]),
         $session('a3', '13:00 - 13:45'),
         $session('a4', '13:45 - 14:30'),

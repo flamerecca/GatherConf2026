@@ -33,7 +33,7 @@ class AgendaTest extends TestCase
         $this->assertSame(8, substr_count($response->getContent(), 'data-session="'));
         $this->assertSame(7, substr_count($response->getContent(), '議題待公布'));
         $this->assertSame(7, substr_count($response->getContent(), '講者待公布'));
-        $this->assertSame(8, substr_count($response->getContent(), '議題大綱待公布'));
+        $this->assertSame(7, substr_count($response->getContent(), '議題大綱待公布'));
     }
 
     public function test_the_english_page_shows_eight_sessions_with_seven_placeholders(): void
