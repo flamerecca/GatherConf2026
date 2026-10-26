@@ -12,7 +12,7 @@ return [
         'how' => '回答 :count 題，約需 :minutes 分鐘，結果會是四個字母組成的類型，例如 NSHG。',
         'reward' => '第一次完成測驗可獲得 :count 根胡蘿蔔。',
         'start' => '開始測驗',
-        'login_hint' => '開始測驗前需要先登入會員。',
+        'login_hint' => '不用登入就能直接開始，測完可以再決定要不要註冊會員。',
     ],
     'last' => [
         'heading' => '你上次的 BBTI 結果',

@@ -51,9 +51,11 @@ class QuizController extends MemberController
 
         abort_unless(PersonalityType::query()->where('code', $result['code'])->exists(), 503);
 
+        $member = $this->guard()->user();
+
         $attempt = QuizAttempt::query()->create([
             'uuid' => (string) Str::uuid7(),
-            'user_id' => $this->guard()->id(),
+            'user_id' => $member?->email_verified_at === null ? null : $member->id,
             'scores' => $result['scores'],
             'type_code' => $result['code'],
             'completed_at' => now(),

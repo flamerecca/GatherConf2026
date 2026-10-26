@@ -12,7 +12,7 @@ return [
         'how' => 'Answer :count questions in about :minutes minutes. Your result is a four letter type such as NSHG.',
         'reward' => 'Finish the quiz for the first time and earn :count carrots.',
         'start' => 'Start the quiz',
-        'login_hint' => 'You need to log in as a member before you start.',
+        'login_hint' => 'No login needed to start. You can decide whether to sign up after you see your result.',
     ],
     'last' => [
         'heading' => 'Your last BBTI result',

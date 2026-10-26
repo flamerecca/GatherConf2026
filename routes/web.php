@@ -124,8 +124,6 @@ foreach (['' => 'zh_TW', 'en' => 'en'] as $prefix => $locale) {
             Route::put('/member/password', [PasswordController::class, 'update'])->middleware('throttle:member-password')->name('member.password.change'.$s);
             Route::get('/messages/{friendship}', [MessageController::class, 'show'])->name('member.messages.show'.$s);
             Route::post('/messages/{friendship}', [MessageController::class, 'store'])->middleware('throttle:member-message')->name('member.messages.store'.$s);
-            Route::get('/quiz', [QuizController::class, 'show'])->name('quiz'.$s);
-            Route::post('/quiz', [QuizController::class, 'store'])->middleware('throttle:member-task')->name('quiz.store'.$s);
             Route::get('/member/tasks', [CarrotTaskController::class, 'index'])->name('member.tasks'.$s);
             Route::get('/member/tasks/{code}', [CarrotTaskController::class, 'complete'])->middleware('throttle:member-task')->name('member.tasks.complete'.$s);
             Route::get('/member/bottles', [BottleController::class, 'index'])->name('member.bottles'.$s);
@@ -141,6 +139,8 @@ foreach (['' => 'zh_TW', 'en' => 'en'] as $prefix => $locale) {
         });
 
         Route::get('/bbti', [QuizController::class, 'intro'])->name('bbti'.$s);
+        Route::get('/quiz', [QuizController::class, 'show'])->name('quiz'.$s);
+        Route::post('/quiz', [QuizController::class, 'store'])->middleware('throttle:quiz-store')->name('quiz.store'.$s);
         Route::get('/results/{attempt:uuid}', [QuizController::class, 'result'])->middleware('throttle:results')->name('quiz.result'.$s);
 
         Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])

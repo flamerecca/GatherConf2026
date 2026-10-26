@@ -81,20 +81,25 @@ class QuizTest extends TestCase
         $this->assertSame(40, QuizQuestion::distinct('text')->count('text'));
     }
 
-    public function test_guests_are_sent_to_login_before_the_quiz(): void
+    public function test_guests_can_take_the_quiz_and_get_an_unbound_report(): void
     {
         $this->seedQuiz();
 
-        $this->get(route('quiz'))->assertRedirect();
-        $this->post(route('quiz.store'), ['answers' => $this->answersOf(5)])->assertRedirect();
-        $this->assertSame(0, QuizAttempt::count());
+        $this->get(route('quiz'))->assertOk();
+        $response = $this->post(route('quiz.store'), ['answers' => $this->answersOf(5)]);
+
+        $attempt = QuizAttempt::query()->sole();
+        $this->assertNull($attempt->user_id);
+        $response->assertRedirect(route('quiz.result', $attempt->uuid));
     }
 
-    public function test_unverified_members_cannot_take_the_quiz(): void
+    public function test_unverified_members_get_an_unbound_report(): void
     {
         $this->seedQuiz();
 
-        $this->asMember(Member::factory()->unverified()->create())->get(route('quiz'))->assertRedirect();
+        $this->asMember(Member::factory()->unverified()->create())->post(route('quiz.store'), ['answers' => $this->answersOf(5)]);
+
+        $this->assertNull(QuizAttempt::query()->sole()->user_id);
     }
 
     public function test_the_quiz_lists_only_active_questions_in_order(): void
