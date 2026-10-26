@@ -340,6 +340,14 @@ class UniqueBunnyTest extends TestCase
             ->assertSee(route('member.center'), false);
     }
 
+    public function test_the_copy_button_puts_the_share_text_before_the_link(): void
+    {
+        $attempt = $this->attempt();
+
+        $this->get(route('quiz.result', $attempt->uuid))
+            ->assertSee('data-copy-link="這是我做的創客兔性格測驗結果，也來試看看你的吧！&#10;'.route('quiz.result', $attempt->uuid).'"', false);
+    }
+
     public function test_the_unique_bunny_is_the_large_picture_and_the_type_bunny_a_small_note_beside_the_type(): void
     {
         Storage::fake('public');

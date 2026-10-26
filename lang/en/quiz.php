@@ -47,6 +47,7 @@ return [
         'unique_bunny' => 'A one-of-a-kind bunny drawn just for this quiz',
         'unique_bunny_alt' => 'One-of-a-kind bunny for :code :name',
         'unique_bunny_drawing' => 'Your own bunny is being drawn. It will replace this one here when it is ready.',
+        'share_text' => 'This is my maker bunny personality result. Try yours too!',
         'guest_notice' => 'Results from visitors who are not logged in are cleared regularly. Log in as a member to keep yours.',
         'guest_register' => 'Sign up and keep this report',
         'guest_login' => 'Log in',

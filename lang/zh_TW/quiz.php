@@ -47,6 +47,7 @@ return [
         'unique_bunny' => '這是為這次測驗專門畫的專屬創客兔',
         'unique_bunny_alt' => ':code :name專屬創客兔插圖',
         'unique_bunny_drawing' => '專屬創客兔繪製中，完成後這裡會自動換成牠。',
+        'share_text' => '這是我做的創客兔性格測驗結果，也來試看看你的吧！',
         'guest_notice' => '未登入的測驗結果會定期清除，想長期保留請先登入會員。',
         'guest_register' => '註冊會員並保留這份報告',
         'guest_login' => '登入會員',

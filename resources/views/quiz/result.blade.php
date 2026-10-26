@@ -110,7 +110,7 @@
         </div>
 
         <div class="mt-12 flex flex-wrap items-center gap-4">
-            <button type="button" data-copy-link="{{ url()->current() }}" data-copied-label="{{ __('quiz.result.copied') }}"
+            <button type="button" data-copy-link="{{ __('quiz.result.share_text') }}&#10;{{ url()->current() }}" data-copied-label="{{ __('quiz.result.copied') }}"
                     class="rounded-full bg-moss px-8 py-3 font-semibold text-on-accent shadow transition hover:bg-ink">
                 {{ __('quiz.result.copy') }}
             </button>
