@@ -10,6 +10,7 @@ use App\Models\PersonalityType;
 use App\Models\QuizAttempt;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Livewire\Livewire;
 use Tests\TestCase;
@@ -114,5 +115,30 @@ class MemberBbtiAdminTest extends TestCase
 
         Livewire::test(ViewMember::class, ['record' => $member->getRouteKey()])
             ->assertSee('尚未測驗');
+    }
+
+    public function test_the_purge_action_deletes_only_unbound_reports_and_their_bunny_images(): void
+    {
+        Storage::fake('public');
+        $member = Member::factory()->create();
+        Storage::disk('public')->put('unique-bunnies/guest.webp', 'x');
+        Storage::disk('public')->put('unique-bunnies/mine.webp', 'x');
+
+        $make = fn (int|string|null $userId, string $path) => QuizAttempt::query()->create([
+            'uuid' => (string) Str::uuid(), 'user_id' => $userId, 'scores' => [], 'type_code' => 'SNHG',
+            'unique_bunny_path' => 'unique-bunnies/'.$path, 'completed_at' => now(),
+        ]);
+        $guest = $make(null, 'guest.webp');
+        $trashed = $make(null, 'gone.webp');
+        $trashed->delete();
+        $mine = $make($member->id, 'mine.webp');
+
+        Livewire::test(ListMembers::class)->callAction('purgeGuestQuizAttempts')->assertNotified('已清除 2 份報告');
+
+        $this->assertDatabaseMissing('quiz_attempts', ['id' => $guest->id]);
+        $this->assertDatabaseMissing('quiz_attempts', ['id' => $trashed->id]);
+        $this->assertDatabaseHas('quiz_attempts', ['id' => $mine->id]);
+        Storage::disk('public')->assertMissing('unique-bunnies/guest.webp');
+        Storage::disk('public')->assertExists('unique-bunnies/mine.webp');
     }
 }
