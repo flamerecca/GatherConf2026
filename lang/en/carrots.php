@@ -6,6 +6,8 @@ return [
         'title' => 'Tasks and carrots | GatherConf 2026',
         'heading' => 'Tasks and carrots',
         'site_heading' => 'Site tasks',
+        'group_account' => 'Account tasks',
+        'group_social' => 'Quiz and friends tasks',
         'field_heading' => 'On-site tasks at the conference',
         'field_intro' => 'Scan the task QR code at the venue and log in to earn carrots automatically.',
         'field_empty' => 'No on-site tasks are open right now.',

@@ -150,4 +150,19 @@ class TaskListTest extends TestCase
             ->assertSee('data-carrots="3"', false)
             ->assertSee(route('member.tasks'), false);
     }
+
+    public function test_the_headings_are_collapsible_and_quiz_and_friend_tasks_share_one_group(): void
+    {
+        $html = $this->actingAs(Member::factory()->create(), 'member')->get('/member/tasks')->assertOk()->getContent();
+
+        foreach (['site', 'site-account', 'site-social', 'field'] as $name) {
+            $this->assertStringContainsString('<details open', substr($html, strpos($html, 'data-collapsible="'.$name.'"') - 40, 60));
+        }
+
+        $social = substr($html, strpos($html, 'data-collapsible="site-social"'), strpos($html, 'data-collapsible="field"') - strpos($html, 'data-collapsible="site-social"'));
+        foreach (['complete_quiz', 'first_friend', 'first_message'] as $code) {
+            $this->assertStringContainsString('data-site-task="'.$code.'"', $social);
+        }
+        $this->assertStringNotContainsString('data-site-task="verify_email"', $social);
+    }
 }

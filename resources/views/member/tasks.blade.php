@@ -11,27 +11,38 @@
         🥕 {{ __('carrots.balance', ['count' => $member->carrots]) }}
     </p>
 
-    <section class="mt-8">
-        <h2 class="text-xl font-bold text-moss">{{ __('carrots.list.site_heading') }}</h2>
-        @foreach ($siteTasks as $row)
-            <div data-site-task="{{ $row['code'] }}" data-state="{{ $row['done'] ? 'done' : 'todo' }}" data-reward="{{ $row['reward'] }}"
-                 @class([
-                     'mt-4 rounded-2xl border p-4',
-                     'border-moss/60 bg-moss/10' => $row['done'],
-                     'border-copper/50 bg-parchment-dark' => ! $row['done'],
-                 ])>
-                <p class="font-semibold">{{ __('carrots.site.'.$row['code'].'.name') }}</p>
-                <p class="text-sm text-ink/70">{{ __('carrots.site.'.$row['code'].'.description') }}</p>
-                <p class="mt-2 text-sm">
-                    🥕 × {{ $row['reward'] }} ·
-                    <span @class(['font-semibold', 'text-moss' => $row['done'], 'text-copper' => ! $row['done']])>{{ $row['done'] ? '✓ '.__('carrots.list.done') : __('carrots.list.todo') }}</span>
-                </p>
-            </div>
+    @php
+        $groups = [
+            'account' => ['verify_email', 'set_password'],
+            'social' => ['complete_quiz', 'first_friend', 'first_message'],
+        ];
+    @endphp
+    <details open class="mt-8" data-collapsible="site">
+        <summary class="cursor-pointer text-xl font-bold text-moss">{{ __('carrots.list.site_heading') }}</summary>
+        @foreach ($groups as $group => $codes)
+            <details open class="mt-4" data-collapsible="site-{{ $group }}">
+                <summary class="cursor-pointer text-lg font-bold text-ink">{{ __('carrots.list.group_'.$group) }}</summary>
+                @foreach ($siteTasks->only($codes) as $row)
+                    <div data-site-task="{{ $row['code'] }}" data-state="{{ $row['done'] ? 'done' : 'todo' }}" data-reward="{{ $row['reward'] }}"
+                         @class([
+                             'mt-4 rounded-2xl border p-4',
+                             'border-moss/60 bg-moss/10' => $row['done'],
+                             'border-copper/50 bg-parchment-dark' => ! $row['done'],
+                         ])>
+                        <p class="font-semibold">{{ __('carrots.site.'.$row['code'].'.name') }}</p>
+                        <p class="text-sm text-ink/70">{{ __('carrots.site.'.$row['code'].'.description') }}</p>
+                        <p class="mt-2 text-sm">
+                            🥕 × {{ $row['reward'] }} ·
+                            <span @class(['font-semibold', 'text-moss' => $row['done'], 'text-copper' => ! $row['done']])>{{ $row['done'] ? '✓ '.__('carrots.list.done') : __('carrots.list.todo') }}</span>
+                        </p>
+                    </div>
+                @endforeach
+            </details>
         @endforeach
-    </section>
+    </details>
 
-    <section class="mt-8">
-        <h2 class="text-xl font-bold text-moss">{{ __('carrots.list.field_heading') }}</h2>
+    <details open class="mt-8" data-collapsible="field">
+        <summary class="cursor-pointer text-xl font-bold text-moss">{{ __('carrots.list.field_heading') }}</summary>
         <p class="mt-2 text-sm text-ink/70">{{ __('carrots.list.field_intro') }}</p>
         @forelse ($fieldTasks as $row)
             <div data-field-task="{{ $row['task']->id }}" data-state="{{ $row['done'] ? 'done' : 'todo' }}"
@@ -52,5 +63,5 @@
         @empty
             <p class="mt-4 text-sm text-ink/70">{{ __('carrots.list.field_empty') }}</p>
         @endforelse
-    </section>
+    </details>
 @endsection

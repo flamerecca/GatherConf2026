@@ -6,6 +6,8 @@ return [
         'title' => '任務與胡蘿蔔 | 共聚年會 GatherConf 2026',
         'heading' => '任務與胡蘿蔔',
         'site_heading' => '站上任務',
+        'group_account' => '帳號任務',
+        'group_social' => '人格測驗與好友任務',
         'field_heading' => '年會現場任務',
         'field_intro' => '到年會現場掃描任務 QR Code，登入後就會自動獲得胡蘿蔔。',
         'field_empty' => '目前沒有開放的現場任務。',
