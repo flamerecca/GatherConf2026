@@ -47,6 +47,8 @@ return [
         'unique_bunny' => '這是為這次測驗專門畫的專屬創客兔',
         'unique_bunny_alt' => ':code :name專屬創客兔插圖',
         'unique_bunny_drawing' => '專屬創客兔繪製中，完成後這裡會自動換成牠。',
+        'guest_notice' => '未登入的測驗結果會定期清除，想長期保留請先登入會員。',
+        'guest_login' => '登入會員',
         'your_type' => '你的創客兔類型',
         'axes' => '四個維度的傾向',
         'leaning' => '傾向 :pole，強度 :percent%',

@@ -325,6 +325,21 @@ class UniqueBunnyTest extends TestCase
         $this->assertSame([1200, 630], array_slice(getimagesizefromstring($response->getContent()), 0, 2));
     }
 
+    public function test_the_result_page_warns_guests_that_reports_are_cleared_and_links_to_the_member_page(): void
+    {
+        $attempt = $this->attempt();
+
+        $this->get(route('quiz.result', $attempt->uuid))
+            ->assertSee('data-guest-notice', false)
+            ->assertSee('會定期清除')
+            ->assertSee(route('member.login'), false);
+
+        $member = Member::factory()->create();
+        $this->actingAs($member, 'member')->get(route('quiz.result', $attempt->uuid))
+            ->assertDontSee('data-guest-notice', false)
+            ->assertSee(route('member.center'), false);
+    }
+
     public function test_the_unique_bunny_is_the_large_picture_and_the_type_bunny_a_small_note_beside_the_type(): void
     {
         Storage::fake('public');

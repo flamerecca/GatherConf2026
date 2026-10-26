@@ -19,7 +19,7 @@
         $isEnglish = app()->getLocale() === 'en';
     @endphp
     <x-subpage-header :switch-url="$isEnglish ? route('quiz.result', $attempt) : route('quiz.result.en', $attempt)"
-                      :switch-label="__('quiz.switch_label')" :back-label="__('quiz.back')" />
+                      :switch-label="__('quiz.switch_label')" :back-label="__('quiz.back')" show-member />
     <main id="main" tabindex="-1" class="mx-auto max-w-2xl px-4 py-12">
         @php
             $uniqueBunny = $attempt->uniqueBunnyUrl();
@@ -30,6 +30,12 @@
             $typeThumbnails = $type->bunnyThumbnailPaths();
             $bunnyAlt = __('quiz.result.bunny_alt', ['code' => $type->code, 'name' => $type->name]);
         @endphp
+        @guest('member')
+            <p data-guest-notice class="mb-8 rounded-2xl border border-copper/60 bg-parchment-dark p-4 text-sm leading-relaxed">
+                {{ __('quiz.result.guest_notice') }}
+                <a href="{{ $isEnglish ? route('member.login.en') : route('member.login') }}" class="font-semibold text-moss underline underline-offset-4">{{ __('quiz.result.guest_login') }}</a>
+            </p>
+        @endguest
         <div data-result-frame @if ($awaitingBunny) data-awaiting-unique-bunny @endif>
             @if ($uniqueBunny || $typeBunny)
                 <figure class="mb-8">
