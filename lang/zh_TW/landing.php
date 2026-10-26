@@ -17,6 +17,7 @@ return [
     'communities_link' => '合作社群',
     'mascot_alt' => 'GatherConf 吉祥物 Bunny',
     'gathering_alt' => '水彩插畫，許多人在森林裡共同參加年會，有人聽講、有人圍著長桌討論',
+    'bbti_cta' => '測測你是哪種創客兔',
     'hero_tagline' => '打破領域之間的隔閡，將開源、商業技術與企業方案社群，匯聚在同一個屋簷下。',
     'time_label' => '時間',
     'place_label' => '地點',

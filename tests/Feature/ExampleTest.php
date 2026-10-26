@@ -46,6 +46,12 @@ class ExampleTest extends TestCase
             ->assertDontSee('金獎級');
     }
 
+    public function test_the_landing_hero_links_to_the_bbti_quiz_in_both_languages(): void
+    {
+        $this->get('/')->assertSee('data-hero-bbti', false)->assertSee(route('bbti'), false)->assertSee('測測你是哪種創客兔');
+        $this->get('/en')->assertSee(route('bbti.en'), false)->assertSee('Find your maker bunny');
+    }
+
     public function test_language_switch_links_to_the_other_locale(): void
     {
         $this->get('/')->assertSee(route('landing.en'), false);

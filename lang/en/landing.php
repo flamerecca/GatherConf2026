@@ -17,6 +17,7 @@ return [
     'communities_link' => 'Community Partners',
     'mascot_alt' => 'GatherConf mascot Bunny',
     'gathering_alt' => 'Watercolor illustration of many people at a conference in a forest, some listening to a talk and some discussing around a table',
+    'bbti_cta' => 'Find your maker bunny',
     'hero_tagline' => 'Breaking down domain silos and bringing open-source, commercial and enterprise tech communities together under one roof.',
     'time_label' => 'When',
     'place_label' => 'Where',

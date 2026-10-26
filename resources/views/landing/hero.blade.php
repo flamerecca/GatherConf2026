@@ -13,10 +13,16 @@
                 <dd>{{ __('landing.place') }}</dd>
             </div>
         </dl>
-        <a href="https://luma.com/wfjisb47" target="_blank" rel="noopener"
-           class="mt-12 inline-block rounded-full bg-moss px-8 py-4 text-lg font-semibold text-on-accent shadow transition hover:bg-ink">
-            {{ __('landing.register') }}
-        </a>
+        <div class="mt-12 flex flex-wrap items-center gap-4">
+            <a href="https://luma.com/wfjisb47" target="_blank" rel="noopener"
+               class="inline-block rounded-full bg-moss px-8 py-4 text-lg font-semibold text-on-accent shadow transition hover:bg-ink">
+                {{ __('landing.register') }}
+            </a>
+            <a href="{{ app()->getLocale() === 'en' ? route('bbti.en') : route('bbti') }}" data-hero-bbti
+               class="inline-block rounded-full border-2 border-moss px-8 py-4 text-lg font-semibold text-moss transition hover:bg-moss hover:text-on-accent">
+                {{ __('landing.bbti_cta') }}
+            </a>
+        </div>
     </div>
     <x-responsive-image name="brand/GatherConf-Logo" :alt="__('landing.logo_alt')" :width="687" :height="687" :widths="[128, 256, 448, 687]"
                         sizes="(min-width: 480px) 448px, calc(100vw - 32px)" loading="eager" fetchpriority="high"
