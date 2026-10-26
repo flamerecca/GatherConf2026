@@ -13,6 +13,8 @@ use App\Filament\Resources\Members\Schemas\MemberForm;
 use App\Filament\Resources\Members\Schemas\MemberInfolist;
 use App\Filament\Resources\Members\Tables\MembersTable;
 use App\Filament\Resources\Members\Widgets\BbtiDistributionChart;
+use App\Filament\Resources\Members\Widgets\ResultReferralOverview;
+use App\Filament\Resources\Members\Widgets\ResultReferralTable;
 use App\Models\Member;
 use BackedEnum;
 use Filament\Resources\Resource;
@@ -67,6 +69,8 @@ class MemberResource extends Resource
     {
         return [
             BbtiDistributionChart::class,
+            ResultReferralOverview::class,
+            ResultReferralTable::class,
         ];
     }
 

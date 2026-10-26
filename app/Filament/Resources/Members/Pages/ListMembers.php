@@ -5,6 +5,8 @@ namespace App\Filament\Resources\Members\Pages;
 use App\Actions\PurgeGuestQuizAttempts;
 use App\Filament\Resources\Members\MemberResource;
 use App\Filament\Resources\Members\Widgets\BbtiDistributionChart;
+use App\Filament\Resources\Members\Widgets\ResultReferralOverview;
+use App\Filament\Resources\Members\Widgets\ResultReferralTable;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
@@ -33,6 +35,8 @@ class ListMembers extends ListRecords
     {
         return [
             BbtiDistributionChart::class,
+            ResultReferralOverview::class,
+            ResultReferralTable::class,
         ];
     }
 }

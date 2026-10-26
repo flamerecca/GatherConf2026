@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -133,6 +134,14 @@ class Member extends Authenticatable implements MustVerifyEmail
     public function carrotTransactions(): HasMany
     {
         return $this->hasMany(CarrotTransaction::class);
+    }
+
+    /**
+     * Visitors who first arrived through one of this member's result pages.
+     */
+    public function receivedReferrals(): HasManyThrough
+    {
+        return $this->hasManyThrough(ResultReferral::class, QuizAttempt::class, 'user_id', 'quiz_attempt_id');
     }
 
     public function quizAttempts(): HasMany

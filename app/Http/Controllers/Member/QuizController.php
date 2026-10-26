@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Member;
 
 use App\Actions\ComputePersonalityType;
+use App\Actions\TrackResultReferral;
 use App\Jobs\GenerateUniqueBunny;
 use App\Models\PersonalityType;
 use App\Models\QuizAttempt;
@@ -33,7 +34,7 @@ class QuizController extends MemberController
         return view('quiz.show', ['questions' => $this->activeQuestions()]);
     }
 
-    public function store(Request $request, ComputePersonalityType $compute): RedirectResponse
+    public function store(Request $request, ComputePersonalityType $compute, TrackResultReferral $referral): RedirectResponse
     {
         $questions = $this->activeQuestions();
 
@@ -61,6 +62,8 @@ class QuizController extends MemberController
             'completed_at' => now(),
         ]);
 
+        $referral->completed($request, $attempt);
+
         if (filled(config('services.gemini.key'))) {
             GenerateUniqueBunny::dispatch($attempt);
         }
@@ -68,11 +71,13 @@ class QuizController extends MemberController
         return redirect($this->localizedRoute('quiz.result', ['attempt' => $attempt->uuid]));
     }
 
-    public function result(QuizAttempt $attempt): View
+    public function result(Request $request, QuizAttempt $attempt, TrackResultReferral $referral): View
     {
         $attempt->load('personalityType');
 
         abort_if($attempt->personalityType === null, 404);
+
+        $referral->visit($request, $attempt);
 
         $totals = $this->activeQuestions()->countBy('axis');
 

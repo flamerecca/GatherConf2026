@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Member;
 
+use App\Actions\TrackResultReferral;
 use App\Models\Member;
 use App\Models\QuizAttempt;
 use Illuminate\Contracts\View\View;
@@ -16,7 +17,7 @@ class RegisterController extends MemberController
         return view('member.register', ['attempt' => $request->query('attempt')]);
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request, TrackResultReferral $referral): RedirectResponse
     {
         $request->merge(['email' => Str::lower(trim((string) $request->input('email')))]);
 
@@ -33,6 +34,10 @@ class RegisterController extends MemberController
             ['email' => $data['email']],
             ['name' => $data['name'], 'organization' => $data['organization'] ?? null, 'is_active' => true],
         );
+
+        if ($member->wasRecentlyCreated) {
+            $referral->registered($request);
+        }
 
         if ($member->wasRecentlyCreated && filled($data['attempt'] ?? null)) {
             QuizAttempt::query()->where('uuid', $data['attempt'])->whereNull('user_id')->first()?->update(['user_id' => $member->id]);
