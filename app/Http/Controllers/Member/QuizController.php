@@ -98,7 +98,7 @@ class QuizController extends MemberController
     /**
      * Stream the unique bunny of an attempt from its disk, so the bucket itself can stay private.
      */
-    public function bunny(QuizAttempt $attempt): Response
+    public function bunny(Request $request, QuizAttempt $attempt): Response
     {
         abort_if($attempt->unique_bunny_path === null, 404);
 
@@ -106,7 +106,32 @@ class QuizController extends MemberController
 
         abort_unless($disk->exists($attempt->unique_bunny_path), 404);
 
+        if ($request->boolean('og')) {
+            return $this->socialCard((string) $disk->get($attempt->unique_bunny_path));
+        }
+
         return $disk->response($attempt->unique_bunny_path, null, [
+            'Cache-Control' => 'public, max-age=31536000, immutable',
+        ]);
+    }
+
+    /**
+     * Put the bunny on a 1200x630 JPEG card, since social platforms crop square or webp previews badly.
+     */
+    private function socialCard(string $contents): Response
+    {
+        $bunny = imagecreatefromstring($contents);
+        abort_if($bunny === false, 404);
+
+        $card = imagecreatetruecolor(1200, 630);
+        imagefill($card, 0, 0, imagecolorallocate($card, 244, 239, 225));
+        imagecopyresampled($card, $bunny, 285, 0, 0, 0, 630, 630, imagesx($bunny), imagesy($bunny));
+
+        ob_start();
+        imagejpeg($card, null, 88);
+
+        return response((string) ob_get_clean(), 200, [
+            'Content-Type' => 'image/jpeg',
             'Cache-Control' => 'public, max-age=31536000, immutable',
         ]);
     }

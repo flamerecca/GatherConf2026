@@ -5,7 +5,8 @@
     $zhUrl = trim($__env->yieldContent('zh_url')) ?: route($routeBase);
     $enUrl = trim($__env->yieldContent('en_url')) ?: route($routeBase.'.en');
     $canonicalUrl = $isEnglish ? $enUrl : $zhUrl;
-    $ogImage = asset('og-image.jpg');
+    $ogImage = trim($__env->yieldContent('og_image')) ?: asset('og-image.jpg');
+    $ogImageAlt = trim($__env->yieldContent('og_image_alt')) ?: __('landing.gathering_alt');
 @endphp
 <html lang="{{ __('landing.html_lang') }}">
     <head>
@@ -31,13 +32,16 @@
         <meta property="og:locale" content="{{ $isEnglish ? 'en_US' : 'zh_TW' }}">
         <meta property="og:locale:alternate" content="{{ $isEnglish ? 'zh_TW' : 'en_US' }}">
         <meta property="og:image" content="{{ $ogImage }}">
-        <meta property="og:image:width" content="1200">
-        <meta property="og:image:height" content="630">
-        <meta property="og:image:alt" content="{{ __('landing.gathering_alt') }}">
+        @unless ($__env->hasSection('og_image'))
+            <meta property="og:image:width" content="1200">
+            <meta property="og:image:height" content="630">
+        @endunless
+        <meta property="og:image:alt" content="{{ $ogImageAlt }}">
         <meta name="twitter:card" content="summary_large_image">
         <meta name="twitter:title" content="@yield('title')">
         <meta name="twitter:description" content="@yield('description')">
         <meta name="twitter:image" content="{{ $ogImage }}">
+        <meta name="twitter:image:alt" content="{{ $ogImageAlt }}">
         <script>
             (function () {
                 try {

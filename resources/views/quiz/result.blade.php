@@ -7,6 +7,13 @@
 @section('title', __('quiz.result.title', ['code' => $type->code, 'name' => $type->name]))
 @section('description', __('quiz.result.description', ['code' => $type->code, 'name' => $type->name, 'summary' => $type->summary]))
 
+@if ($attempt->uniqueBunnyUrl())
+    @section('og_image', $attempt->uniqueBunnyUrl().'?og=1')
+@elseif ($type->bunnyImagePath())
+    @section('og_image', Vite::asset($type->bunnyImagePath()))
+@endif
+@section('og_image_alt', __('quiz.result.unique_bunny_alt', ['code' => $type->code, 'name' => $type->name]))
+
 @section('content')
     @php
         $isEnglish = app()->getLocale() === 'en';

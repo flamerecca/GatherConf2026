@@ -295,6 +295,36 @@ class UniqueBunnyTest extends TestCase
             ->assertDontSee('data-awaiting-unique-bunny', false);
     }
 
+    public function test_the_result_page_shares_the_unique_bunny_as_the_social_preview(): void
+    {
+        Storage::fake('public');
+        $attempt = $this->attempt();
+        $attempt->update(['unique_bunny_path' => 'unique-bunnies/'.$attempt->uuid.'.png']);
+        $card = route('quiz.result.bunny', $attempt->uuid).'?og=1';
+
+        $this->get(route('quiz.result', $attempt->uuid))
+            ->assertSee('<meta property="og:image" content="'.$card.'"', false)
+            ->assertSee('<meta name="twitter:image" content="'.$card.'"', false)
+            ->assertSee('<meta name="twitter:card" content="summary_large_image">', false)
+            ->assertDontSee('og-image.jpg', false);
+    }
+
+    public function test_the_social_card_is_a_1200_by_630_jpeg(): void
+    {
+        Storage::fake('public');
+        $attempt = $this->attempt();
+        $path = 'unique-bunnies/'.$attempt->uuid.'.png';
+        $source = imagecreatetruecolor(64, 64);
+        ob_start();
+        imagepng($source);
+        Storage::disk('public')->put($path, (string) ob_get_clean());
+        $attempt->update(['unique_bunny_path' => $path]);
+
+        $response = $this->get(route('quiz.result.bunny', $attempt->uuid).'?og=1')->assertOk()->assertHeader('Content-Type', 'image/jpeg');
+
+        $this->assertSame([1200, 630], array_slice(getimagesizefromstring($response->getContent()), 0, 2));
+    }
+
     public function test_the_unique_bunny_is_the_large_picture_and_the_type_bunny_a_small_note_beside_the_type(): void
     {
         Storage::fake('public');
