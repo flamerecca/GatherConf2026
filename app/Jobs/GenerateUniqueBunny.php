@@ -32,6 +32,10 @@ class GenerateUniqueBunny implements ShouldQueue
 
     /**
      * Draw a bunny for this attempt with Gemini, based on the illustration of its type.
+     *
+     * Every Gemini call costs tokens, so each attempt is drawn once and never redrawn. There is
+     * deliberately no redraw button, command or route: an attempt that ends up without an image
+     * (all retries failed) keeps showing the type bunny, and a new image only comes from a new attempt.
      */
     public function handle(BuildUniqueBunnyTraits $buildTraits): void
     {

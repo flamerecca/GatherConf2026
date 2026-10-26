@@ -58,6 +58,9 @@ class QuizAttempt extends Model
 
     /**
      * Whether a unique bunny is still expected to arrive for this attempt.
+     *
+     * The window is short on purpose: users cannot ask for a redraw, so an attempt without an
+     * image after it closes stays that way and falls back to the type bunny.
      */
     public function isAwaitingUniqueBunny(): bool
     {
