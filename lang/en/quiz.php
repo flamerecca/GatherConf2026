@@ -48,6 +48,7 @@ return [
         'unique_bunny_alt' => 'One-of-a-kind bunny for :code :name',
         'unique_bunny_drawing' => 'Your own bunny is being drawn. It will replace this one here when it is ready.',
         'guest_notice' => 'Results from visitors who are not logged in are cleared regularly. Log in as a member to keep yours.',
+        'guest_register' => 'Sign up and keep this report',
         'guest_login' => 'Log in',
         'your_type' => 'Your bunny type',
         'axes' => 'Your leaning on four axes',

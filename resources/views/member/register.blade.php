@@ -10,6 +10,9 @@
     <form method="POST" action="{{ route('member.register.store'.(app()->getLocale() === 'en' ? '.en' : '')) }}"
           class="mt-8 space-y-6 rounded-2xl border-4 border-moss/60 bg-parchment-dark p-6">
         @csrf
+        @if (filled($attempt ?? old('attempt')))
+            <input type="hidden" name="attempt" value="{{ old('attempt', $attempt) }}">
+        @endif
         <x-member-field name="name" :label="__('member.fields.name')" autocomplete="name" required />
         <x-member-field name="email" type="email" :label="__('member.fields.email')" autocomplete="email" required />
         <x-member-field name="organization" :label="__('member.fields.organization')" autocomplete="organization" />

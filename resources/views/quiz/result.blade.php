@@ -34,6 +34,7 @@
             <p data-guest-notice class="mb-8 rounded-2xl border border-copper/60 bg-parchment-dark p-4 text-sm leading-relaxed">
                 {{ __('quiz.result.guest_notice') }}
                 <a href="{{ $isEnglish ? route('member.login.en') : route('member.login') }}" class="font-semibold text-moss underline underline-offset-4">{{ __('quiz.result.guest_login') }}</a>
+                <a href="{{ route('member.register'.($isEnglish ? '.en' : ''), ['attempt' => $attempt->uuid]) }}" data-guest-register class="mt-3 inline-block rounded-full bg-moss px-5 py-2 font-semibold text-on-accent transition hover:bg-ink">{{ __('quiz.result.guest_register') }}</a>
             </p>
         @endguest
         <div data-result-frame @if ($awaitingBunny) data-awaiting-unique-bunny @endif>
