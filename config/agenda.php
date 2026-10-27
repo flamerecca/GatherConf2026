@@ -45,7 +45,26 @@ return [
     ]],
     ['id' => 'b', 'sessions' => [
         $session('b1', '10:00 - 10:45'),
-        $session('b2', '10:45 - 11:30'),
+        array_replace($session('b2', '10:45 - 11:30'), [
+            'speaker_name' => 'Maple Kuo',
+            'speaker_photo' => 'Maple.jpeg',
+            'speaker_bio' => [
+                'zh_TW' => '曾任《2026 Hello World Dev Conference》講者，從 GPT-3.5 時代開始 vibe coding，一去不返從英文系轉職到軟體業，在 AI 時代出身的軟體工程師。',
+                'en' => 'A former speaker at the 2026 Hello World Dev Conference. Started vibe coding in the GPT-3.5 era and never looked back, switching from an English major to the software industry. A software engineer who came up in the age of AI.',
+            ],
+            'title' => [
+                'zh_TW' => '那些跟 Claude Code 有關的兩三事',
+                'en' => 'A Few Things About Claude Code',
+            ],
+            'outline' => [
+                'zh_TW' => '2026 年，軟體工程師早就被 AI「取代」無數次了。身為一個 AI 時代出身的軟體工程師，從踏入這個產業的第一天起，AI Coding 就是我的日常。照理來說，我應該比誰都更相信 AI 終將取代工程師這件事，但實際踏入火場，日子其實沒那麼悲壯，我反而認為有經驗的工程師，會用 AI 的話是最如魚得水的那群人。
+
+既然 AI Coding 是趨勢和未來，那如何與 Agent 協作，就是留下來的人最重要的課題。這場分享會聊聊 Claude Code 的一些機制，以及我在 Claude Code 每天使用的工作流和如何設計。',
+                'en' => 'In 2026, software engineers have already been "replaced" by AI countless times. As an engineer who came up in the age of AI, AI coding has been part of my daily life since my first day in the industry. By rights, I should believe more than anyone that AI will eventually replace engineers, but once in the thick of it, life is not nearly that grim. I actually think experienced engineers who know how to use AI are the ones who thrive most.
+
+Since AI coding is the trend and the future, how to collaborate with agents is the most important question for those who stay. This talk covers some of the mechanisms behind Claude Code, plus the workflow I use in Claude Code every day and how I design it.',
+            ],
+        ]),
         array_replace($session('b3', '13:00 - 13:45'), [
             'speaker_name' => 'Sasha Denisov',
             'speaker_photo' => 'Sasha.jpg',

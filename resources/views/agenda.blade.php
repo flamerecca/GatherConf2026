@@ -58,7 +58,7 @@
                             <h3 @class(['text-xl font-bold', 'text-ink/70' => ! $title])>{{ $title ?? __('agenda.title_tbd') }}</h3>
                             <div>
                                 <p class="text-sm font-semibold">{{ __('agenda.outline_label') }}</p>
-                                <p @class(['mt-1 text-sm leading-relaxed', 'text-ink/80' => $outline, 'text-ink/70' => ! $outline])>{{ $outline ?? __('agenda.outline_tbd') }}</p>
+                                <p @class(['mt-1 whitespace-pre-line text-sm leading-relaxed', 'text-ink/80' => $outline, 'text-ink/70' => ! $outline])>{{ $outline ?? __('agenda.outline_tbd') }}</p>
                             </div>
                         </li>
                     @endforeach
