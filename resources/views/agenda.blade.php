@@ -37,19 +37,7 @@
                                 <time>{{ $session['date'] }} {{ $session['time'] }}</time>
                             </p>
                             <div class="flex items-center gap-4">
-                                @if ($session['speaker_photo'])
-                                    <img src="{{ Vite::asset('resources/images/speakers/'.$session['speaker_photo']) }}"
-                                         alt="{{ __('agenda.speaker_photo_alt', ['name' => $speaker ?? '']) }}"
-                                         class="size-20 shrink-0 rounded-full object-cover">
-                                @else
-                                    <div class="flex size-20 shrink-0 items-center justify-center rounded-full border-2 border-dashed border-ink/60 text-ink/70"
-                                         role="img" aria-label="{{ __('agenda.speaker_placeholder') }}">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="size-8" aria-hidden="true">
-                                            <circle cx="12" cy="8" r="4"/>
-                                            <path d="M4 21a8 8 0 0 1 16 0"/>
-                                        </svg>
-                                    </div>
-                                @endif
+                                <x-speaker-photo :photo="$session['speaker_photo']" :name="$speaker" />
                                 <p class="font-semibold">{{ $speaker ?? __('agenda.speaker_tbd') }}</p>
                             </div>
                             @if ($bio)

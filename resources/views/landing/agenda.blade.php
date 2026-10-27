@@ -23,7 +23,10 @@
                                 <time>{{ $session['time'] }}</time>
                             </p>
                             <p @class(['mt-1 font-semibold', 'text-ink/70' => ! $title])>{{ $title ?? __('agenda.title_tbd') }}</p>
-                            <p class="text-sm text-ink/80">{{ $session['speaker_name'] ?? __('agenda.speaker_tbd') }}</p>
+                            <div class="mt-2 flex items-center gap-3">
+                                <x-speaker-photo :photo="$session['speaker_photo']" :name="$session['speaker_name']" size="size-12" />
+                                <p class="text-sm text-ink/80">{{ $session['speaker_name'] ?? __('agenda.speaker_tbd') }}</p>
+                            </div>
                         </li>
                     @endforeach
                 </ol>
