@@ -242,3 +242,14 @@ flowchart TD
 ### 9.7 驗證方式（開發時，尚無 Livewire 介面）
 
 因為測驗作答的 Livewire 元件（`Quiz`／`QuizResult`）目前還沒開發，屆時可先用 `php artisan tinker` 手動建立一筆 `type_code = NSHG` 的 `QuizAttempt`（目前唯一有底圖的類型），跑 `php artisan queue:work --once` 讓佇列處理一次，確認 `storage/app/public/bunnies/{uuid}.png` 有產生、`bunny_generation_status` 變成 `ready`。由於每次呼叫都是真的打 Gemini API、會消耗額度，驗證跑 1–2 次確認管線通了即可，不要迴圈測試。
+
+---
+
+## 附錄：實作後的調整
+
+本附錄記錄實作後與前面各節不同之處，以此為準。
+
+- **每次抽 12 題**：每次測驗從啟用中的題庫，四個維度各隨機抽 3 題，不再出全部題目。抽出的題目 id 暫存在 session，驗證與計分只用這 12 題。規則見 `docs/filament-admin-guide.md` 第 3 節。
+- **`quiz_attempts.max_scores`**：新增欄位，記錄該次測驗各維度的滿分，結果頁的長條以此計算比例。舊紀錄沒有這個欄位時，改用題庫的題數計算。
+- **`personality_types` 新增兩個欄位**：`career_advice` 是一段職涯發展建議，`growth_directions` 是條列的強化方向。結果頁在「優勢與待成長」之後依序顯示，欄位為空時不顯示。
+- **會員 Google 登入**：登入頁與註冊頁有「使用 Google 登入」按鈕，使用 Laravel Socialite，路由為 `GET /login/google` 與 `GET /login/google/callback`，與第 6 節規劃的路徑不同。email 尚未註冊時自動建立會員並視為已驗證，成功後固定導向 `/member`。需要設定環境變數 `GOOGLE_CLIENT_ID`、`GOOGLE_CLIENT_SECRET`，建議同時設定 `GOOGLE_REDIRECT_URI`，並在 Google Cloud Console 的「已授權的重新導向 URI」填入相同的 `https://網域/login/google/callback`。沒有設定 `GOOGLE_CLIENT_ID` 時，按鈕不會顯示。

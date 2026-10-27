@@ -30,7 +30,7 @@ GatherConf 想給人的感覺是「開放、包容、充滿活力的森林聚會
 | **水彩插畫：打破隔閡**     | `resources/images/illustrations/community-silos-watercolor.png`     | 左半邊是被石牆與藤蔓隔開的安靜森林，右半邊是燈串下熱絡交流的聚會。約 2.4:1 的超寬構圖，用於「為什麼要舉辦」區塊。上方冷色、下方暖色的對比就是想傳達的訊息。                      |
 | **吉祥物 Bunny**           | `resources/images/bunny/`                             | 扁平插畫風格的兔子，共 16 個造型。官網只在贊助方案區塊使用一個，不與水彩插畫同區塊並用。                                                                                         |
 | **NPC 插畫**               | `resources/images/npc/`                               | 遊戲化內容專用，不用於官網 landing page。                                                                                                                                        |
-| **合作社群 Logo**          | `resources/images/community-logo/`                    | 各合作社群提供的 Logo，檔名為社群簡稱，如 `TKUG.png`。用於首頁合作社群區塊與合作社群頁。                                                                                         |
+| **合作社群 Logo**          | `resources/images/community-logo/`                    | 各合作社群提供的 Logo，每個社群一個以 slug 命名的資料夾，如 `taiwan-kotlin-user-group/`，內含 `logo.png` 與 `logo-200.webp`、`logo-400.webp`、`logo-500.webp`。用於首頁合作社群區塊與合作社群頁。                                                                                         |
 | **贊助商 Logo**            | `resources/images/sponsor-logo/`                      | 各贊助商提供的 Logo，檔名為公司或品牌的英文小寫連字號，如 `rabbit-gather.png`。用於首頁贊助商區塊。                                                                              |
 
 插畫的共通規則：
@@ -503,7 +503,8 @@ TKUG 的內容半徑超過 0.5，也就是原圖的內容本來就會被圓形�
 | :---- | :---- |
 | **修改文案** | 編輯 `lang/zh_TW/` 與 `lang/en/` 內對應的檔案。首頁在 `landing.php`，行為準則在 `conduct.php`，合作社群在 `communities.php`，贊助商區塊在 `sponsors.php`，成為贊助夥伴頁在 `cfs.php`，其方案金額與權益讀取 `landing.php` 的 `tiers`。 |
 | **修改贊助方案價格** | 編輯兩個 `landing.php` 的 `tiers` 內的 `amount`。同時調整測試中的斷言。 |
-| **新增合作社群** | 把 Logo 放進 `resources/images/community-logo/`，在 `config/communities.php` 加一筆 `name`，需有 `zh_TW` 與 `en`，以及 `logo`、`logo_fit`、可選的 `logo_padding` 與 `url`。首頁與合作社群頁會自動更新。 |
+| **新增合作社群** | 在 `resources/images/community-logo/` 建一個以 slug 命名的資料夾，放進 `logo.png` 與三個縮圖 `logo-200.webp`、`logo-400.webp`、`logo-500.webp`。在 `config/communities.php` 加一筆，需有 `slug`、`name` 與 `description`，兩者都要有 `zh_TW` 與 `en`，以及 `logo`，值為 `slug/logo.png`，還有 `logo_fit`、可選的 `logo_padding` 與 `url`。首頁與合作社群頁會自動更新。 |
+| **新增或更新講者** | 把照片放進 `resources/images/speakers/`，在 `config/agenda.php` 對應場次填入 `speaker_name`、`speaker_photo`、`speaker_bio`、`title` 與 `outline`，後三者需有 `zh_TW` 與 `en`。講者照片一律以圓角方形呈現，議程頁與首頁議程共用 `speaker-photo` 元件，尚未公布的場次會顯示同樣形狀的佔位圖示。 |
 | **新增贊助商** | 把 Logo 放進 `resources/images/sponsor-logo/`，在 `config/sponsors.php` 加一筆，`name` 需提供 `zh_TW` 與 `en`，`tier` 為 `gold`、`silver` 或 `bronze`，`logo_fit` 為 `cover` 或 `contain`，需要時設定 `logo_padding`，選擇方式見 7.8。 |
 | **更換圖片** | 直接覆蓋 `resources/images/` 內的同名檔案，若副檔名改變，需同步更新 view 的引用。 |
 | **修改檢舉信箱** | 行為準則頁的信箱定義在 `resources/views/code-of-conduct.blade.php` 的 `$contactEmail`，只需改一處。 |
