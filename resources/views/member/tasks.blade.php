@@ -7,6 +7,11 @@
 @section('heading', __('carrots.list.heading'))
 
 @section('member_body')
+    <a href="{{ route('member.center'.(app()->getLocale() === 'en' ? '.en' : '')) }}" data-member-center-link
+       class="mt-6 inline-block rounded-full border border-ink/40 px-6 py-2 text-sm font-semibold transition hover:bg-ink hover:text-parchment">
+        ← {{ __('carrots.list.member_page') }}
+    </a>
+
     <p data-carrots="{{ $member->carrots }}" @class(['mt-6 text-lg', 'font-semibold' => $member->carrots >= 0, 'text-red-700 dark:text-red-400 font-bold' => $member->carrots < 0])>
         🥕 {{ __('carrots.balance', ['count' => $member->carrots]) }}
     </p>

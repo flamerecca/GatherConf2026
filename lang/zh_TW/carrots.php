@@ -14,6 +14,7 @@ return [
         'done' => '已完成',
         'todo' => '未完成',
         'go' => '前往完成',
+        'member_page' => '會員頁面',
     ],
     'site' => [
         'verify_email' => ['name' => '驗證 Email', 'description' => '完成 Email 驗證。'],

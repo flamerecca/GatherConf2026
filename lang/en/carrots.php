@@ -14,6 +14,7 @@ return [
         'done' => 'Done',
         'todo' => 'To do',
         'go' => 'Go do it',
+        'member_page' => 'Member page',
     ],
     'site' => [
         'verify_email' => ['name' => 'Verify your email', 'description' => 'Complete the email verification.'],

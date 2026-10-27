@@ -191,4 +191,17 @@ class TaskListTest extends TestCase
         $this->asMember($member->fresh())->get(route('member.tasks'))
             ->assertDontSee('data-task-link="verify_email"', false);
     }
+
+    public function test_the_list_has_a_button_back_to_the_member_page(): void
+    {
+        $member = Member::factory()->create();
+
+        $this->asMember($member)->get(route('member.tasks'))
+            ->assertSee('href="'.route('member.center').'" data-member-center-link', false)
+            ->assertSee('會員頁面');
+
+        $this->asMember($member)->get(route('member.tasks.en'))
+            ->assertSee('href="'.route('member.center.en').'" data-member-center-link', false)
+            ->assertSee('Member page');
+    }
 }
