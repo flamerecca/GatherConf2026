@@ -72,6 +72,8 @@ return [
         ],
         'strengths' => 'Strengths',
         'weaknesses' => 'Room to grow',
+        'career' => 'Career development advice',
+        'growth' => 'Ways to strengthen yourself',
         'copy' => 'Copy share link',
         'copied' => 'Link copied',
         'retake' => 'Take it again',

@@ -40,6 +40,15 @@ class PersonalityTypeForm
                 ->label('待成長')
                 ->simple(TextInput::make('item')->required()->maxLength(255))
                 ->addActionLabel('新增一項'),
+            Textarea::make('career_advice')
+                ->label('職涯發展建議')
+                ->rows(4)
+                ->columnSpanFull(),
+            Repeater::make('growth_directions')
+                ->label('強化自己的方向')
+                ->simple(TextInput::make('item')->required()->maxLength(255))
+                ->addActionLabel('新增一項')
+                ->columnSpanFull(),
         ]);
     }
 }

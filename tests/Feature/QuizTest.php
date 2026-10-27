@@ -504,4 +504,47 @@ class QuizTest extends TestCase
 
         $this->assertSame(0, QuizAttempt::count());
     }
+
+    public function test_the_result_shows_career_advice_and_growth_directions(): void
+    {
+        $this->seedQuiz();
+        PersonalityType::query()->where('code', 'NVAD')->update([
+            'career_advice' => '適合生成式 AI 視覺工作',
+            'growth_directions' => json_encode(['整理風格指南', '邀請他人試用']),
+        ]);
+        $attempt = QuizAttempt::query()->create(['uuid' => (string) Str::uuid(), 'user_id' => null, 'scores' => [], 'type_code' => 'NVAD', 'completed_at' => now()]);
+
+        $this->get(route('quiz.result', $attempt->uuid))->assertOk()
+            ->assertSee('data-career', false)
+            ->assertSee('職涯發展建議')
+            ->assertSee('適合生成式 AI 視覺工作')
+            ->assertSee('強化自己的方向')
+            ->assertSee('整理風格指南');
+
+        $this->get(route('quiz.result.en', $attempt->uuid))->assertOk()
+            ->assertSee('Career development advice')
+            ->assertSee('Ways to strengthen yourself');
+    }
+
+    public function test_the_sections_are_hidden_when_a_type_has_no_guidance(): void
+    {
+        $this->seedQuiz();
+        $attempt = QuizAttempt::query()->create(['uuid' => (string) Str::uuid(), 'user_id' => null, 'scores' => [], 'type_code' => 'NVAD', 'completed_at' => now()]);
+
+        $this->get(route('quiz.result', $attempt->uuid))->assertOk()
+            ->assertDontSee('data-career', false)
+            ->assertDontSee('data-growth', false);
+    }
+
+    public function test_every_seeded_type_comes_with_career_advice_and_growth_directions(): void
+    {
+        $this->seed(PersonalityTypeSeeder::class);
+
+        $this->assertSame(16, PersonalityType::count());
+
+        foreach (PersonalityType::all() as $type) {
+            $this->assertNotEmpty($type->career_advice, $type->code);
+            $this->assertCount(3, $type->growth_directions, $type->code);
+        }
+    }
 }

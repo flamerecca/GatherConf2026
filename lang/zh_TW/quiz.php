@@ -72,6 +72,8 @@ return [
         ],
         'strengths' => '優勢',
         'weaknesses' => '待成長',
+        'career' => '職涯發展建議',
+        'growth' => '強化自己的方向',
         'copy' => '複製分享連結',
         'copied' => '已複製連結',
         'retake' => '重新測驗',

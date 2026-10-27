@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-#[Fillable(['code', 'name', 'summary', 'description', 'strengths', 'weaknesses'])]
+#[Fillable(['code', 'name', 'summary', 'description', 'strengths', 'weaknesses', 'career_advice', 'growth_directions'])]
 class PersonalityType extends Model
 {
     use SoftDeletes;
@@ -49,6 +49,7 @@ class PersonalityType extends Model
         return [
             'strengths' => 'array',
             'weaknesses' => 'array',
+            'growth_directions' => 'array',
         ];
     }
 }

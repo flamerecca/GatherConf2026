@@ -15,9 +15,91 @@ class PersonalityTypeSeeder extends Seeder
      */
     public function run(): void
     {
+        $guidance = self::guidance();
+
         foreach ($this->types() as $type) {
-            PersonalityType::withTrashed()->firstOrCreate(['code' => $type['code']], $type);
+            $record = PersonalityType::withTrashed()->firstOrCreate(['code' => $type['code']], $type + $guidance[$type['code']]);
+
+            $record->forceFill(array_filter([
+                'career_advice' => $record->career_advice ?? $guidance[$type['code']]['career_advice'],
+                'growth_directions' => $record->growth_directions ?? $guidance[$type['code']]['growth_directions'],
+            ]))->save();
         }
+    }
+
+    /**
+     * Career advice and growth directions of the 16 types, keyed by type code.
+     *
+     * @return array<string, array{career_advice: string, growth_directions: list<string>}>
+     */
+    public static function guidance(): array
+    {
+        return [
+            'NSHG' => [
+                'career_advice' => '適合新創早期團隊、技術研究與原型開發、開源專案維護者與技術佈道。可以往技術架構師、技術長或開發者關係方向發展，把動手做加上對外分享，累積成個人品牌。',
+                'growth_directions' => ['為每個實驗留下簡單的測試與文件，讓雛形能被別人接手', '定期挑一個既有系統深入維護，培養對穩定性的敏感度', '每週留一段不對外分享的時間，先沉澱再輸出'],
+            ],
+            'NSHD' => [
+                'career_advice' => '適合底層系統、基礎設施、效能與資安研究，以及需要長時間深度思考的架構設計職位。可以往資深後端工程師、系統架構師或研究型工程師發展。',
+                'growth_directions' => ['構想成形前就找一位信任的夥伴快速對談，及早取得回饋', '把設計決策寫成短文件，練習把想法清楚表達給別人', '每個月公開一次進度，就算還很粗糙也沒關係'],
+            ],
+            'NSAG' => [
+                'career_advice' => '適合 DevOps、平台工程、開發者工具與內部工具團隊，也適合擔任開發者體驗與自動化顧問，用工具放大整個團隊的產能。',
+                'growth_directions' => ['為每個腳本補上測試與使用說明，降低別人接手的成本', '導入新工具前，先列出汰換與長期維護的成本', '分享時先說清楚解決什麼問題，再展示工具本身'],
+            ],
+            'NSAD' => [
+                'career_advice' => '適合 SRE、自動化與基礎設施研究、資料工程，以及需要獨立設計探索流程的研究型職位。你把探索自動化的能力，在這些位置特別有價值。',
+                'growth_directions' => ['把成果整理成別人可以複製的範例與說明', '找一位真實使用者先試用，驗證工具是不是真的好用', '固定時間把實驗腳本整理成穩定工具，或乾脆淘汰'],
+            ],
+            'MSHG' => [
+                'career_advice' => '適合核心系統維護、金融與關鍵服務後端、技術主管與技術導師，也很適合帶新人、推動工程品質。可以往技術主管或首席工程師發展。',
+                'growth_directions' => ['每一季刻意試用一項新技術，保持對趨勢的視野', '把重複的手工步驟逐步自動化，釋放更多時間', '把經驗整理成講座或文章，擴大自己的影響力'],
+            ],
+            'MSHD' => [
+                'career_advice' => '適合資料庫、核心函式庫、穩定性與資安審查，以及長期維運的關鍵系統。可以往首席工程師或資深維護者發展。',
+                'growth_directions' => ['定期整理自己的貢獻紀錄，讓成果被看見', '找一位夥伴互相做 Code Review，保持與他人的交流', '遇到新技術先做小規模評估，而不是一律迴避'],
+            ],
+            'MSAG' => [
+                'career_advice' => '適合 DevOps 主管、工程效能、平台團隊負責人與技術專案管理，擅長把流程標準化並帶領團隊一起落實。',
+                'growth_directions' => ['自動化之前，先確認這個流程本身值得保留', '為自動化流程保留人工介入的出口', '先聆聽現場使用者的回饋，再決定下一個要自動化什麼'],
+            ],
+            'MSAD' => [
+                'career_advice' => '適合 SRE、維運與監控、批次排程系統與資料管線，這些需要穩定又低調的角色，正是你最能發揮的地方。',
+                'growth_directions' => ['定期寫簡短的穩定性報告，讓貢獻被看見', '為自動化流程準備手動降級的方案', '每一季參與一次團隊分享，讓大家知道你的能力在哪裡'],
+            ],
+            'NVHG' => [
+                'career_advice' => '適合前端創意開發、互動設計、設計工程師、新創產品設計與原型設計，也適合往設計佈道的方向發展。',
+                'growth_directions' => ['把視覺概念補上可用性與無障礙檢查', '與工程師討論可行性，避免作品只停留在畫面', '把常用的做法整理成元件與規範，讓下一次實驗更快'],
+            ],
+            'NVHD' => [
+                'career_advice' => '適合視覺實驗、動態與創意編碼、獨立設計師、品牌視覺，以及遊戲或藝術相關領域，獨特的風格是你最大的資產。',
+                'growth_directions' => ['把作品放上作品集，不要等到完美才公開', '每個作品完成後請一位使用者看過，聽聽真實反應', '練習把設計理由寫成簡短說明'],
+            ],
+            'NVAG' => [
+                'career_advice' => '適合 AI 創作流程、內容與行銷視覺、創意技術與生成式設計的產品負責人，擅長從大量產出中挑選與策展。',
+                'growth_directions' => ['為作品建立品質標準與篩選規則', '了解生成工具的版權與使用限制', '多練習手繪或手工調整，不要完全依賴生成'],
+            ],
+            'NVAD' => [
+                'career_advice' => '適合生成式 AI 視覺、創意研究、概念設計與獨立創作者，可以往 AI 藝術總監的方向發展。',
+                'growth_directions' => ['把風格探索整理成可以分享的風格指南', '邀請他人試用你的流程，取得回饋', '為作品補上情境，說明適合用在哪裡'],
+            ],
+            'MVHG' => [
+                'career_advice' => '適合 UI 設計師、前端工程師、設計教育與工作坊講師，以及產品設計主管，擅長細節與教學。',
+                'growth_directions' => ['把重複的調整做成元件或規範', '練習用資料驗證設計，而不只憑直覺', '嘗試新工具與新風格，避免固守同一種質感'],
+            ],
+            'MVHD' => [
+                'career_advice' => '適合高階視覺設計、品牌識別、插畫與設計系統的視覺基礎，這些需要精工細作的職位很能發揮你的專注。',
+                'growth_directions' => ['設定完成期限，避免無止境地推敲', '定期請人給回饋，修正自己看不到的盲點', '把工作過程與部分作品公開，讓人看見你的功力'],
+            ],
+            'MVAG' => [
+                'career_advice' => '適合設計系統負責人、前端平台與設計營運，擔任設計與工程之間的橋樑，用規範讓大家一致地做出好作品。',
+                'growth_directions' => ['規範要保留例外與演進的機制', '多聽使用團隊的需求，而不是只推規範', '用採用率與一致性的數據，向主管說明系統的價值'],
+            ],
+            'MVAD' => [
+                'career_advice' => '適合美術總監、品牌設計系統維護與大型產品的視覺治理，可以往設計主管的方向發展，讓美學成為產品的基礎。',
+                'growth_directions' => ['主動讓團隊理解規範背後的原因', '在系統中保留可以彈性調整的空間', '定期對外分享設計原則，讓影響力被看見'],
+            ],
+        ];
     }
 
     /**

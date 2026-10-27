@@ -109,6 +109,24 @@
             @endforeach
         </div>
 
+        @if (filled($type->career_advice))
+            <section class="mt-10" aria-labelledby="career-heading" data-career>
+                <h2 id="career-heading" class="text-xl font-bold text-moss">{{ __('quiz.result.career') }}</h2>
+                <p class="mt-3 leading-relaxed">{{ $type->career_advice }}</p>
+            </section>
+        @endif
+
+        @if (! empty($type->growth_directions))
+            <section class="mt-10" aria-labelledby="growth-heading" data-growth>
+                <h2 id="growth-heading" class="text-xl font-bold text-moss">{{ __('quiz.result.growth') }}</h2>
+                <ul class="mt-3 list-disc space-y-2 pl-5">
+                    @foreach ($type->growth_directions as $item)
+                        <li>{{ $item }}</li>
+                    @endforeach
+                </ul>
+            </section>
+        @endif
+
         <div class="mt-12 flex flex-wrap items-center gap-4">
             <button type="button" data-copy-link="{{ __('quiz.result.share_text') }}&#10;{{ url()->current() }}" data-copied-label="{{ __('quiz.result.copied') }}"
                     class="rounded-full bg-moss px-8 py-3 font-semibold text-on-accent shadow transition hover:bg-ink">
