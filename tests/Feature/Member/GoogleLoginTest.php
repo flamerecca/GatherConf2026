@@ -156,4 +156,13 @@ class GoogleLoginTest extends TestCase
         $this->get(route('member.google.redirect.en'));
         $this->get(route('member.google.callback'))->assertRedirect(route('member.center.en'));
     }
+
+    public function test_google_login_always_lands_on_the_member_page_even_with_a_saved_destination(): void
+    {
+        $this->googleReturns('gina@example.com');
+
+        $this->withSession(['url.intended' => route('member.bottles')])
+            ->get(route('member.google.callback'))
+            ->assertRedirect(route('member.center'));
+    }
 }

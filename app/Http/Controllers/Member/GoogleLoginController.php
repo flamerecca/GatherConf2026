@@ -28,7 +28,7 @@ class GoogleLoginController extends MemberController
             'attempt' => is_string($attempt) && Str::isUuid($attempt) ? $attempt : null,
         ]);
 
-        return Socialite::driver('google')->redirectUrl(route('member.google.callback'))->redirect();
+        return Socialite::driver('google')->redirectUrl($this->callbackUrl())->redirect();
     }
 
     public function callback(Request $request, TrackResultReferral $referral): RedirectResponse
@@ -38,7 +38,7 @@ class GoogleLoginController extends MemberController
         app()->setLocale($context['locale'] ?? 'zh_TW');
 
         try {
-            $google = Socialite::driver('google')->redirectUrl(route('member.google.callback'))->user();
+            $google = Socialite::driver('google')->redirectUrl($this->callbackUrl())->user();
         } catch (Throwable) {
             return $this->failed('member.errors.google_failed');
         }
@@ -79,7 +79,17 @@ class GoogleLoginController extends MemberController
         $request->session()->regenerate();
         $request->session()->put('member_link_login', ['member_id' => $member->getKey(), 'at' => now()->timestamp]);
 
-        return redirect()->intended($this->localizedRoute('member.center'));
+        $request->session()->forget('url.intended');
+
+        return redirect($this->localizedRoute('member.center'));
+    }
+
+    /**
+     * The redirect URI registered in Google Cloud Console. Set GOOGLE_REDIRECT_URI to pin it, otherwise it follows the request URL.
+     */
+    private function callbackUrl(): string
+    {
+        return config('services.google.redirect') ?: route('member.google.callback');
     }
 
     private function failed(string $messageKey): RedirectResponse
