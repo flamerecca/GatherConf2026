@@ -23,7 +23,22 @@ $session = fn (string $id, string $time): array => [
 
 return [
     ['id' => 'a', 'sessions' => [
-        $session('a1', '10:00 - 10:45'),
+        array_replace($session('a1', '10:00 - 10:45'), [
+            'speaker_name' => 'Zona Wang',
+            'speaker_photo' => 'zona.jpg',
+            'speaker_bio' => [
+                'zh_TW' => 'Hi，我是 Zona，來自 LINE Taiwan DevRel 團隊。負責規劃與推廣開發者關係相關活動，包含技術社群合作、品牌推廣與內容策展，持續推動 LINE 與開發者社群的連結與交流。',
+                'en' => 'Hi, I am Zona from the LINE Taiwan DevRel team. I plan and promote developer relations activities, including technical community partnerships, brand promotion and content curation, and keep strengthening the connection and exchange between LINE and developer communities.',
+            ],
+            'title' => [
+                'zh_TW' => '當 AI 開始開發 AI：AIDD × Google ADK 的 LINE Bot 實戰',
+                'en' => 'When AI Starts Building AI: A Hands-on LINE Bot with AIDD × Google ADK',
+            ],
+            'outline' => [
+                'zh_TW' => '當 AI 開始開發 AI，會擦出什麼火花？本次分享將結合 AIDD 與 Google ADK，從零打造 LINE Bot。透過實際開發案例，分享 AI 如何參與完整開發流程、Agent 的設計與實作，以及過程中的挑戰與踩坑經驗，帶你探索 AI 驅動開發的新可能！',
+                'en' => 'What sparks fly when AI starts building AI? This talk combines AIDD and Google ADK to build a LINE Bot from scratch. Through a real development case, it shares how AI takes part in the whole development process, how to design and implement an agent, and the challenges and pitfalls along the way, exploring new possibilities of AI-driven development.',
+            ],
+        ]),
         array_replace($session('a2', '10:45 - 11:30'), [
             'speaker_name' => 'Matthias Geisler',
             'speaker_photo' => 'Matthias.jpg',
