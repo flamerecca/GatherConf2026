@@ -13,6 +13,7 @@ return [
         'field_empty' => '目前沒有開放的現場任務。',
         'done' => '已完成',
         'todo' => '未完成',
+        'go' => '前往完成',
     ],
     'site' => [
         'verify_email' => ['name' => '驗證 Email', 'description' => '完成 Email 驗證。'],

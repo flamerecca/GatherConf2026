@@ -16,6 +16,13 @@
             'account' => ['verify_email', 'set_password'],
             'social' => ['complete_quiz', 'first_friend', 'first_message'],
         ];
+        $s = app()->getLocale() === 'en' ? '.en' : '';
+        $siteTaskRoutes = [
+            'set_password' => 'member.password.edit',
+            'complete_quiz' => 'quiz',
+            'first_friend' => 'member.friends',
+            'first_message' => 'member.friends',
+        ];
     @endphp
     <details open class="mt-8" data-collapsible="site">
         <summary class="cursor-pointer text-xl font-bold text-moss">{{ __('carrots.list.site_heading') }}</summary>
@@ -35,6 +42,12 @@
                             🥕 × {{ $row['reward'] }} ·
                             <span @class(['font-semibold', 'text-moss' => $row['done'], 'text-copper' => ! $row['done']])>{{ $row['done'] ? '✓ '.__('carrots.list.done') : __('carrots.list.todo') }}</span>
                         </p>
+                        @if (! $row['done'] && isset($siteTaskRoutes[$row['code']]))
+                            <a href="{{ route($siteTaskRoutes[$row['code']].$s) }}" data-task-link="{{ $row['code'] }}"
+                               class="mt-3 inline-block rounded-full bg-moss px-6 py-2 text-sm font-semibold text-on-accent shadow transition hover:bg-ink">
+                                {{ __('carrots.list.go') }}
+                            </a>
+                        @endif
                     </div>
                 @endforeach
             </details>

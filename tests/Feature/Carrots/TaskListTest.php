@@ -165,4 +165,30 @@ class TaskListTest extends TestCase
         }
         $this->assertStringNotContainsString('data-site-task="verify_email"', $social);
     }
+
+    public function test_open_site_tasks_link_to_the_page_where_they_are_done(): void
+    {
+        $member = Member::factory()->create();
+
+        $this->asMember($member)->get(route('member.tasks'))
+            ->assertSee('data-task-link="set_password"', false)
+            ->assertSee('href="'.route('member.password.edit').'" data-task-link="set_password"', false)
+            ->assertSee('href="'.route('quiz').'" data-task-link="complete_quiz"', false)
+            ->assertSee('href="'.route('member.friends').'" data-task-link="first_friend"', false)
+            ->assertSee('href="'.route('member.friends').'" data-task-link="first_message"', false)
+            ->assertDontSee('data-task-link="verify_email"', false);
+
+        $this->asMember($member)->get(route('member.tasks.en'))
+            ->assertSee('href="'.route('quiz.en').'" data-task-link="complete_quiz"', false)
+            ->assertSee('Go do it');
+    }
+
+    public function test_finished_site_tasks_have_no_link(): void
+    {
+        $member = Member::factory()->unverified()->create();
+        $member->markEmailAsVerified();
+
+        $this->asMember($member->fresh())->get(route('member.tasks'))
+            ->assertDontSee('data-task-link="verify_email"', false);
+    }
 }

@@ -13,6 +13,7 @@ return [
         'field_empty' => 'No on-site tasks are open right now.',
         'done' => 'Done',
         'todo' => 'To do',
+        'go' => 'Go do it',
     ],
     'site' => [
         'verify_email' => ['name' => 'Verify your email', 'description' => 'Complete the email verification.'],
