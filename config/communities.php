@@ -235,4 +235,19 @@ return [
         'logo_padding' => 0,
         'url' => 'https://www.linkedin.com/company/hrrr/?viewAsMember=true',
     ],
+    [
+        'slug' => 'freetwai',
+        'name' => [
+            'zh_TW' => '自由工坊',
+            'en' => 'FreeTWAI',
+        ],
+        'description' => [
+            'zh_TW' => '自由工坊，freetwai，陪伴夥伴找到自己的定位，一起把想做的事實現。',
+            'en' => 'FreeTWAI, a community that helps people find their place and make the things they want to do happen, together.',
+        ],
+        'logo' => 'freetwai/logo.png',
+        'logo_fit' => 'contain',
+        'logo_padding' => 0,
+        'url' => 'https://freetwai.com/',
+    ],
 ];
