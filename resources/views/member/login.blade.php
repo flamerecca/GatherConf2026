@@ -15,6 +15,9 @@
             {{ __('member.login.register_link') }}
         </a>
     </div>
+    <div class="mt-6">
+        <x-google-button :label="__('member.google.login')" />
+    </div>
     <form method="POST" action="{{ route('member.login.store'.$s) }}"
           class="mt-6 space-y-6 rounded-2xl border-4 border-moss/60 bg-parchment-dark p-6">
         @csrf

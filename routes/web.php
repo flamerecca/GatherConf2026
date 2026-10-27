@@ -9,6 +9,7 @@ use App\Http\Controllers\Member\CommunityMessageController;
 use App\Http\Controllers\Member\EmailVerificationController;
 use App\Http\Controllers\Member\FriendController;
 use App\Http\Controllers\Member\FriendInvitationController;
+use App\Http\Controllers\Member\GoogleLoginController;
 use App\Http\Controllers\Member\LoginController;
 use App\Http\Controllers\Member\LoginLinkController;
 use App\Http\Controllers\Member\MessageController;
@@ -84,6 +85,8 @@ Route::get('/en/call-for-sponsor', function () {
     return view('call-for-sponsor');
 })->name('call-for-sponsor.en');
 
+Route::get('/login/google/callback', [GoogleLoginController::class, 'callback'])->middleware(['guest:member', 'throttle:member-guest'])->name('member.google.callback');
+
 foreach (['' => 'zh_TW', 'en' => 'en'] as $prefix => $locale) {
     $s = $locale === 'en' ? '.en' : '';
 
@@ -93,6 +96,7 @@ foreach (['' => 'zh_TW', 'en' => 'en'] as $prefix => $locale) {
             Route::post('/register', [RegisterController::class, 'store'])->middleware('throttle:member-guest')->name('member.register.store'.$s);
             Route::get('/register/sent', [RegisterController::class, 'sent'])->name('member.register.sent'.$s);
             Route::get('/login', [LoginController::class, 'create'])->name('member.login'.$s);
+            Route::get('/login/google', [GoogleLoginController::class, 'redirect'])->middleware('throttle:member-guest')->name('member.google.redirect'.$s);
             Route::post('/login', [LoginController::class, 'store'])->middleware('throttle:member-login')->name('member.login.store'.$s);
             Route::post('/login/link', [LoginLinkController::class, 'request'])->middleware('throttle:member-guest')->name('member.login.link.request'.$s);
             Route::get('/login/link/{token}', [LoginLinkController::class, 'consume'])->middleware('throttle:20,1')->name('member.login.link.consume'.$s);

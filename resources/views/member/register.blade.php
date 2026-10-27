@@ -7,8 +7,11 @@
 @section('heading', __('member.register.heading'))
 
 @section('member_body')
+    <div class="mt-8">
+        <x-google-button :label="__('member.google.register')" :attempt="$attempt ?? old('attempt')" />
+    </div>
     <form method="POST" action="{{ route('member.register.store'.(app()->getLocale() === 'en' ? '.en' : '')) }}"
-          class="mt-8 space-y-6 rounded-2xl border-4 border-moss/60 bg-parchment-dark p-6">
+          class="mt-6 space-y-6 rounded-2xl border-4 border-moss/60 bg-parchment-dark p-6">
         @csrf
         @if (filled($attempt ?? old('attempt')))
             <input type="hidden" name="attempt" value="{{ old('attempt', $attempt) }}">

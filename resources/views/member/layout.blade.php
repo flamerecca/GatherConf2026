@@ -19,6 +19,9 @@
                 {{ session('status') ?? session('link_status') }}
             </p>
         @endif
+        @if ($errors->has('google'))
+            <p class="mt-6 rounded-2xl border border-copper p-4 text-sm text-copper" role="alert">{{ $errors->first('google') }}</p>
+        @endif
         @if ($errors->has('link'))
             <p class="mt-6 rounded-2xl border border-copper p-4 text-sm text-copper" role="alert">{{ $errors->first('link') }}</p>
         @endif

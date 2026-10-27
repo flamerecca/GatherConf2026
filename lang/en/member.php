@@ -158,6 +158,11 @@ return [
         'failed' => 'The email or password is incorrect.',
         'inactive' => 'This account has been deactivated. Please contact us if you have questions.',
         'link_invalid' => 'This login link is no longer valid. Please request a new one.',
+        'google_failed' => 'Google sign-in failed. Please try again, or log in with your email instead.',
+    ],
+    'google' => [
+        'login' => 'Continue with Google',
+        'register' => 'Sign up with Google',
     ],
     'mail' => [
         'message' => [

@@ -158,6 +158,11 @@ return [
         'failed' => 'Email 或密碼不正確。',
         'inactive' => '此帳號已被停用，如有疑問請聯絡我們。',
         'link_invalid' => '這個登入連結已失效，請重新要求一個。',
+        'google_failed' => 'Google 登入失敗，請再試一次，或改用 Email 登入。',
+    ],
+    'google' => [
+        'login' => '使用 Google 登入',
+        'register' => '使用 Google 註冊',
     ],
     'mail' => [
         'message' => [
