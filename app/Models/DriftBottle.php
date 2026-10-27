@@ -14,7 +14,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\RateLimiter;
 
-#[Fillable(['sender_id', 'recipient_id', 'body'])]
+#[Fillable(['sender_id', 'npc_character_id', 'recipient_id', 'body'])]
 class DriftBottle extends Model
 {
     /** @use HasFactory<DriftBottleFactory> */
@@ -66,6 +66,11 @@ class DriftBottle extends Model
         return $this->belongsTo(Member::class, 'sender_id');
     }
 
+    public function npc(): BelongsTo
+    {
+        return $this->belongsTo(NpcCharacter::class, 'npc_character_id');
+    }
+
     public function recipient(): BelongsTo
     {
         return $this->belongsTo(Member::class, 'recipient_id');
@@ -74,6 +79,11 @@ class DriftBottle extends Model
     public function reports(): HasMany
     {
         return $this->hasMany(DriftBottleReport::class, 'bottle_id');
+    }
+
+    public function isFromSystem(): bool
+    {
+        return $this->npc_character_id !== null || $this->sender_id === null;
     }
 
     public function status(): string
@@ -167,6 +177,35 @@ class DriftBottle extends Model
     }
 
     /**
+     * Deliver a bottle written by the system, optionally in the name of an NPC, straight to one random eligible
+     * member, or null when nobody qualifies.
+     */
+    public static function throwFromSystem(string $body, ?NpcCharacter $npc = null): ?self
+    {
+        $bottle = static::query()->create([
+            'body' => $body,
+            'sender_id' => $npc?->member_id,
+            'npc_character_id' => $npc?->getKey(),
+        ]);
+
+        for ($attempt = 0; $attempt < 3; $attempt++) {
+            $recipient = $bottle->eligibleRecipients()->inRandomOrder()->first();
+
+            if ($recipient === null) {
+                break;
+            }
+
+            if ($bottle->claimFor($recipient)) {
+                return $bottle->fresh();
+            }
+        }
+
+        $bottle->delete();
+
+        return null;
+    }
+
+    /**
      * Take one bottle out of the sea for the member, or null when none is available.
      */
     public static function pick(Member $member): ?self
@@ -176,6 +215,7 @@ class DriftBottle extends Model
         for ($attempt = 0; $attempt < 3; $attempt++) {
             $bottle = static::query()
                 ->inSea()
+                ->whereNotNull('sender_id')
                 ->where('sender_id', '!=', $member->getKey())
                 ->whereNotIn('sender_id', $excluded)
                 ->whereHas('sender', fn (Builder $query) => $query->where('is_active', true))
@@ -203,8 +243,9 @@ class DriftBottle extends Model
     public function eligibleRecipients(): Builder
     {
         $sender = $this->sender;
-        $excluded = self::strangerExclusions($sender)
-            ->push($sender->getKey())
+        $excluded = ($sender === null
+            ? collect()
+            : self::strangerExclusions($sender)->push($sender->getKey()))
             ->merge($this->released_recipient_ids ?? []);
 
         $saturated = static::query()

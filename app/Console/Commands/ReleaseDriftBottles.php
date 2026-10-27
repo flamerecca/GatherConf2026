@@ -19,6 +19,8 @@ class ReleaseDriftBottles extends Command
         $released = 0;
 
         DriftBottle::query()
+            ->whereNotNull('sender_id')
+            ->whereNull('npc_character_id')
             ->whereNotNull('recipient_id')
             ->whereNull('opened_at')
             ->whereNull('removed_at')

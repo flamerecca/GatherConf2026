@@ -6,12 +6,16 @@ use App\Filament\Resources\DriftBottles\DriftBottleResource;
 use App\Filament\Resources\DriftBottles\Pages\ListDriftBottles;
 use App\Filament\Resources\DriftBottles\Pages\ViewDriftBottle;
 use App\Filament\Resources\DriftBottles\RelationManagers\ReportsRelationManager;
+use App\Filament\Resources\NpcCharacters\Pages\CreateNpcCharacter;
 use App\Models\DriftBottle;
 use App\Models\DriftBottleReport;
 use App\Models\Member;
+use App\Models\NpcCharacter;
 use App\Models\User;
+use App\Notifications\DriftBottleReceivedNotification;
 use Filament\Actions\Testing\TestAction;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Notification;
 use Livewire\Livewire;
 use Tests\TestCase;
 
@@ -121,5 +125,96 @@ class DriftBottleAdminTest extends TestCase
         $bottle = DriftBottle::factory()->create();
         $this->assertFalse(DriftBottleResource::canEdit($bottle));
         $this->assertFalse(DriftBottleResource::canDelete($bottle));
+    }
+
+    public function test_admin_can_throw_a_system_bottle_to_a_random_member(): void
+    {
+        Notification::fake();
+        $member = Member::factory()->create();
+
+        Livewire::test(ListDriftBottles::class)
+            ->callAction('throwSystemBottle', ['body' => '歡迎來到 Gather'])
+            ->assertNotified();
+
+        $bottle = DriftBottle::query()->sole();
+        $this->assertNull($bottle->sender_id);
+        $this->assertSame($member->getKey(), $bottle->recipient_id);
+        $this->assertTrue($bottle->isFromSystem());
+        Notification::assertSentTo($member, DriftBottleReceivedNotification::class);
+    }
+
+    public function test_system_bottle_is_not_kept_when_nobody_is_eligible(): void
+    {
+        Notification::fake();
+
+        Livewire::test(ListDriftBottles::class)
+            ->callAction('throwSystemBottle', ['body' => '沒有人收得到'])
+            ->assertNotified();
+
+        $this->assertSame(0, DriftBottle::query()->count());
+        Notification::assertNothingSent();
+    }
+
+    public function test_system_bottle_is_never_released_or_picked_and_reply_does_not_notify(): void
+    {
+        Notification::fake();
+        $member = Member::factory()->create();
+        $bottle = DriftBottle::throwFromSystem('hi');
+        $bottle->forceFill(['assigned_at' => now()->subDays(2)])->save();
+
+        $this->artisan('drift-bottles:release')->assertSuccessful();
+        $this->assertSame($member->getKey(), $bottle->fresh()->recipient_id);
+
+        $bottle->open($member);
+        $this->assertTrue($bottle->fresh()->replyFrom($member, '謝謝'));
+    }
+
+    public function test_system_bottle_sent_as_npc_uses_the_bound_member_as_sender(): void
+    {
+        Notification::fake();
+        $recipient = Member::factory()->create();
+        $npc = NpcCharacter::factory()->create(['name' => '森林長老']);
+
+        Livewire::test(ListDriftBottles::class)
+            ->callAction('throwSystemBottle', ['npc_character_id' => $npc->getKey(), 'body' => '孩子，歡迎'])
+            ->assertNotified();
+
+        $bottle = DriftBottle::query()->sole();
+        $this->assertSame($npc->member_id, $bottle->sender_id);
+        $this->assertSame($npc->getKey(), $bottle->npc_character_id);
+        $this->assertSame($recipient->getKey(), $bottle->recipient_id);
+        $this->assertTrue($bottle->isFromSystem());
+
+        $this->actingAs($recipient, 'member')
+            ->get(route('member.bottles.show', $bottle))
+            ->assertOk()
+            ->assertSee('森林長老');
+    }
+
+    public function test_npc_bottle_is_never_released_and_never_sent_to_its_own_member(): void
+    {
+        Notification::fake();
+        $npc = NpcCharacter::factory()->create();
+        $bottle = DriftBottle::throwFromSystem('hi', $npc);
+        $this->assertNull($bottle);
+
+        $member = Member::factory()->create();
+        $bottle = DriftBottle::throwFromSystem('hi', $npc);
+        $bottle->forceFill(['assigned_at' => now()->subDays(2)])->save();
+
+        $this->artisan('drift-bottles:release')->assertSuccessful();
+        $this->assertSame($member->getKey(), $bottle->fresh()->recipient_id);
+    }
+
+    public function test_npc_character_resource_can_be_created(): void
+    {
+        $member = Member::factory()->create();
+
+        Livewire::test(CreateNpcCharacter::class)
+            ->fillForm(['name' => '森林長老', 'member_id' => $member->getKey()])
+            ->call('create')
+            ->assertHasNoFormErrors();
+
+        $this->assertDatabaseHas('npc_characters', ['name' => '森林長老', 'member_id' => $member->getKey()]);
     }
 }

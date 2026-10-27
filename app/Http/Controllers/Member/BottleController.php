@@ -130,11 +130,13 @@ class BottleController extends MemberController
             throw ValidationException::withMessages(['body' => __('bottles.errors.cannot_reply')]);
         }
 
-        $this->sendQuietly(function () use ($bottle): void {
-            $bottle->sender->notify(
-                (new DriftBottleRepliedNotification(route('member.bottles.show', $bottle)))->locale('zh_TW'),
-            );
-        });
+        if ($bottle->sender !== null) {
+            $this->sendQuietly(function () use ($bottle): void {
+                $bottle->sender->notify(
+                    (new DriftBottleRepliedNotification(route('member.bottles.show', $bottle)))->locale('zh_TW'),
+                );
+            });
+        }
 
         return redirect($this->localizedRoute('member.bottles.show', ['bottle' => $bottle]));
     }

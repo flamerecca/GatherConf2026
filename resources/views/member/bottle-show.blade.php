@@ -11,7 +11,7 @@
 
     <div class="mt-8 space-y-4 rounded-2xl border-4 border-moss/60 bg-parchment-dark p-6" data-bottle-status="{{ $bottle->status() }}">
         @if ($isRecipient)
-            <p class="text-sm font-semibold text-moss">{{ __('bottles.show.received_label') }}</p>
+            <p class="text-sm font-semibold text-moss">{{ $bottle->npc ? __('bottles.show.received_label_npc', ['name' => $bottle->npc->name]) : __('bottles.show.received_label') }}</p>
             <p class="whitespace-pre-line leading-relaxed">{{ $bottle->body }}</p>
 
             @if ($bottle->replied_at)

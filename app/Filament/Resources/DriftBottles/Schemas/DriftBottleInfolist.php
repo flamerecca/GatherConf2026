@@ -11,8 +11,9 @@ class DriftBottleInfolist
     public static function configure(Schema $schema): Schema
     {
         return $schema->components([
-            TextEntry::make('sender.name')->label('寄件者'),
-            TextEntry::make('sender.email')->label('寄件者 Email'),
+            TextEntry::make('sender.name')->label('寄件者')->placeholder('系統'),
+            TextEntry::make('sender.email')->label('寄件者 Email')->placeholder('系統'),
+            TextEntry::make('npc.name')->label('NPC 角色')->placeholder('無'),
             TextEntry::make('recipient.name')->label('收件者')->placeholder('漂流中'),
             TextEntry::make('recipient.email')->label('收件者 Email')->placeholder('漂流中'),
             TextEntry::make('status')

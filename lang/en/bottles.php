@@ -35,6 +35,7 @@ return [
         'title' => 'Drift bottle | GatherConf 2026',
         'heading' => 'Drift bottle',
         'received_label' => 'A bottle from a stranger',
+        'received_label_npc' => 'A bottle from :name',
         'sent_label' => 'The bottle you threw',
         'reply_heading' => 'Reply anonymously, once',
         'reply_submit' => 'Reply',

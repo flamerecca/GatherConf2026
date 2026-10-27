@@ -35,6 +35,7 @@ return [
         'title' => '漂流瓶 | 共聚年會 GatherConf 2026',
         'heading' => '漂流瓶',
         'received_label' => '來自陌生人的瓶子',
+        'received_label_npc' => '來自 :name 的瓶子',
         'sent_label' => '你丟出的瓶子',
         'reply_heading' => '匿名回覆一次',
         'reply_submit' => '回覆',

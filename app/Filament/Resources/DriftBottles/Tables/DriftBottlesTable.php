@@ -34,7 +34,11 @@ class DriftBottlesTable
             ->columns([
                 TextColumn::make('sender.name')
                     ->label('寄件者')
+                    ->placeholder('系統')
                     ->searchable(query: $memberSearch('sender')),
+                TextColumn::make('npc.name')
+                    ->label('NPC 角色')
+                    ->placeholder('無'),
                 TextColumn::make('recipient.name')
                     ->label('收件者')
                     ->placeholder('漂流中')
