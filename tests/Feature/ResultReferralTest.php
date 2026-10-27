@@ -79,7 +79,8 @@ class ResultReferralTest extends TestCase
         $this->withHeader('User-Agent', 'facebookexternalhit/1.1')->get(route('quiz.result', $attempt->uuid));
         $this->assertSame(0, ResultReferral::count());
 
-        $taken = $this->post(route('quiz.store'), ['answers' => $this->answers()]);
+        $answers = $this->answers();
+        $taken = $this->withSession([QuizQuestion::SESSION_KEY => QuizQuestion::query()->pluck('id')->all()])->post(route('quiz.store'), ['answers' => $answers]);
         $mine = QuizAttempt::query()->latest('id')->first();
         $this->keepCookies($taken)->get(route('quiz.result', $mine->uuid));
         $this->assertSame(0, ResultReferral::count());
@@ -90,7 +91,8 @@ class ResultReferralTest extends TestCase
         $attempt = $this->attemptOf(Member::factory()->create());
 
         $visit = $this->get(route('quiz.result', $attempt->uuid));
-        $taken = $this->keepCookies($visit)->post(route('quiz.store'), ['answers' => $this->answers()]);
+        $answers = $this->answers();
+        $taken = $this->keepCookies($visit)->withSession([QuizQuestion::SESSION_KEY => QuizQuestion::query()->pluck('id')->all()])->post(route('quiz.store'), ['answers' => $answers]);
 
         $referral = ResultReferral::query()->sole();
         $this->assertNotNull($referral->completed_at);

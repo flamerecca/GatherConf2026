@@ -184,7 +184,7 @@ Route::get('/llms.txt', function () {
 - [Code of conduct]({$url['conduct']}): behaviour expected of everyone at the event
 - [Communities]({$url['communities']}): partner communities
 - [Call for sponsors]({$url['call-for-sponsor']}): sponsorship tiers and how to join
-- [BBTI quiz]({$url['bbti']}): a playful 40-question maker personality quiz with 16 bunny types
+- [BBTI quiz]({$url['bbti']}): a playful 12-question maker personality quiz with 16 bunny types
 
 ## Partner communities
 

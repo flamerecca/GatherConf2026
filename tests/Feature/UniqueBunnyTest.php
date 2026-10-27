@@ -272,11 +272,11 @@ class UniqueBunnyTest extends TestCase
 
         $member = Member::factory()->create();
 
-        $this->actingAs($member, 'member')->post(route('quiz.store'), ['answers' => $answers])->assertRedirect();
+        $this->actingAs($member, 'member')->withSession([QuizQuestion::SESSION_KEY => QuizQuestion::query()->pluck('id')->all()])->post(route('quiz.store'), ['answers' => $answers])->assertRedirect();
         Queue::assertNothingPushed();
 
         config(['services.gemini.key' => 'secret-key']);
-        $this->actingAs($member, 'member')->post(route('quiz.store'), ['answers' => $answers])->assertRedirect();
+        $this->actingAs($member, 'member')->withSession([QuizQuestion::SESSION_KEY => QuizQuestion::query()->pluck('id')->all()])->post(route('quiz.store'), ['answers' => $answers])->assertRedirect();
         Queue::assertPushed(GenerateUniqueBunny::class, 1);
     }
 

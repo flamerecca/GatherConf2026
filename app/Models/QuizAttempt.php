@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-#[Fillable(['uuid', 'user_id', 'scores', 'type_code', 'unique_bunny_path', 'unique_bunny_traits', 'completed_at'])]
+#[Fillable(['uuid', 'user_id', 'scores', 'max_scores', 'type_code', 'unique_bunny_path', 'unique_bunny_traits', 'completed_at'])]
 class QuizAttempt extends Model
 {
     use SoftDeletes;
@@ -43,6 +43,7 @@ class QuizAttempt extends Model
     {
         return [
             'scores' => 'array',
+            'max_scores' => 'array',
             'unique_bunny_traits' => 'array',
             'completed_at' => 'datetime',
         ];

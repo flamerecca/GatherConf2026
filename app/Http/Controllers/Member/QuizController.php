@@ -20,7 +20,7 @@ class QuizController extends MemberController
 {
     public function intro(): View
     {
-        $count = $this->activeQuestions()->count();
+        $count = min(QuizQuestion::PER_QUIZ, $this->activeQuestions()->count());
 
         return view('quiz.intro', [
             'count' => $count,
@@ -29,16 +29,28 @@ class QuizController extends MemberController
         ]);
     }
 
-    public function show(): View
+    public function show(Request $request): View
     {
-        return view('quiz.show', ['questions' => $this->activeQuestions()]);
+        $questions = $this->drawnQuestions($request);
+
+        if ($questions === null) {
+            $questions = QuizQuestion::draw();
+
+            $request->session()->put(QuizQuestion::SESSION_KEY, $questions->pluck('id')->all());
+        }
+
+        return view('quiz.show', ['questions' => $questions]);
     }
 
     public function store(Request $request, ComputePersonalityType $compute, TrackResultReferral $referral): RedirectResponse
     {
-        $questions = $this->activeQuestions();
+        $questions = $this->drawnQuestions($request);
 
-        abort_if($questions->isEmpty(), 404);
+        if ($questions === null) {
+            abort_if($this->activeQuestions()->isEmpty(), 404);
+
+            return redirect($this->localizedRoute('quiz'));
+        }
 
         $rules = ['answers' => ['required', 'array']];
 
@@ -58,9 +70,15 @@ class QuizController extends MemberController
             'uuid' => (string) Str::uuid7(),
             'user_id' => $member?->email_verified_at === null ? null : $member->id,
             'scores' => $result['scores'],
+            'max_scores' => array_map(
+                fn (int $count): int => 2 * $count,
+                array_replace(array_fill_keys(array_keys(ComputePersonalityType::AXES), 0), $questions->countBy('axis')->all()),
+            ),
             'type_code' => $result['code'],
             'completed_at' => now(),
         ]);
+
+        $request->session()->forget(QuizQuestion::SESSION_KEY);
 
         $referral->completed($request, $attempt);
 
@@ -83,7 +101,8 @@ class QuizController extends MemberController
 
         $bars = collect(ComputePersonalityType::AXES)->map(function (array $poles, string $axis) use ($attempt, $totals): array {
             $score = (int) ($attempt->scores[$axis] ?? 0);
-            $max = max(2, 2 * ($totals[$axis] ?? 0), abs($score));
+            $axisMax = $attempt->max_scores[$axis] ?? 2 * ($totals[$axis] ?? 0);
+            $max = max(2, $axisMax, abs($score));
 
             return [
                 'axis' => $axis,
@@ -141,6 +160,24 @@ class QuizController extends MemberController
             'Content-Type' => 'image/jpeg',
             'Cache-Control' => 'public, max-age=31536000, immutable',
         ]);
+    }
+
+    /**
+     * The questions drawn for this visitor's current quiz, or null when none was drawn or one of them is gone.
+     *
+     * @return Collection<int, QuizQuestion>|null
+     */
+    private function drawnQuestions(Request $request): ?Collection
+    {
+        $ids = $request->session()->get(QuizQuestion::SESSION_KEY);
+
+        if (! is_array($ids) || $ids === []) {
+            return null;
+        }
+
+        $questions = $this->activeQuestions()->whereIn('id', $ids)->values();
+
+        return $questions->count() === count($ids) ? $questions : null;
     }
 
     /**

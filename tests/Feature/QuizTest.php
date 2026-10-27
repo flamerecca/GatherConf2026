@@ -86,7 +86,7 @@ class QuizTest extends TestCase
         $this->seedQuiz();
 
         $this->get(route('quiz'))->assertOk();
-        $response = $this->post(route('quiz.store'), ['answers' => $this->answersOf(5)]);
+        $response = $this->withSession([QuizQuestion::SESSION_KEY => QuizQuestion::query()->pluck('id')->all()])->post(route('quiz.store'), ['answers' => $this->answersOf(5)]);
 
         $attempt = QuizAttempt::query()->sole();
         $this->assertNull($attempt->user_id);
@@ -97,7 +97,7 @@ class QuizTest extends TestCase
     {
         $this->seedQuiz();
 
-        $this->asMember(Member::factory()->unverified()->create())->post(route('quiz.store'), ['answers' => $this->answersOf(5)]);
+        $this->asMember(Member::factory()->unverified()->create())->withSession([QuizQuestion::SESSION_KEY => QuizQuestion::query()->pluck('id')->all()])->post(route('quiz.store'), ['answers' => $this->answersOf(5)]);
 
         $this->assertNull(QuizAttempt::query()->sole()->user_id);
     }
@@ -125,7 +125,7 @@ class QuizTest extends TestCase
         $this->seedQuiz();
         $member = Member::factory()->create();
 
-        $response = $this->asMember($member)->post(route('quiz.store'), ['answers' => $this->answersOf(3)]);
+        $response = $this->asMember($member)->withSession([QuizQuestion::SESSION_KEY => QuizQuestion::query()->pluck('id')->all()])->post(route('quiz.store'), ['answers' => $this->answersOf(3)]);
 
         $attempt = QuizAttempt::query()->sole();
         $response->assertRedirect(route('quiz.result', $attempt->uuid));
@@ -139,7 +139,7 @@ class QuizTest extends TestCase
     {
         $this->seedQuiz();
 
-        $response = $this->asMember(Member::factory()->create())->post(route('quiz.store.en'), ['answers' => $this->answersOf(3)]);
+        $response = $this->asMember(Member::factory()->create())->withSession([QuizQuestion::SESSION_KEY => QuizQuestion::query()->pluck('id')->all()])->post(route('quiz.store.en'), ['answers' => $this->answersOf(3)]);
 
         $response->assertRedirect(route('quiz.result.en', QuizAttempt::query()->sole()->uuid));
     }
@@ -149,8 +149,8 @@ class QuizTest extends TestCase
         $this->seedQuiz();
         $member = Member::factory()->create();
 
-        $this->asMember($member)->post(route('quiz.store'), ['answers' => $this->answersOf(3)]);
-        $this->asMember($member)->post(route('quiz.store'), ['answers' => $this->answersOf(3)]);
+        $this->asMember($member)->withSession([QuizQuestion::SESSION_KEY => QuizQuestion::query()->pluck('id')->all()])->post(route('quiz.store'), ['answers' => $this->answersOf(3)]);
+        $this->asMember($member)->withSession([QuizQuestion::SESSION_KEY => QuizQuestion::query()->pluck('id')->all()])->post(route('quiz.store'), ['answers' => $this->answersOf(3)]);
 
         $this->assertSame(2, QuizAttempt::count());
         $this->assertSame(config('carrots.site.complete_quiz'), $member->fresh()->carrots);
@@ -161,7 +161,7 @@ class QuizTest extends TestCase
         $this->seedQuiz();
         PersonalityType::query()->delete();
 
-        $this->asMember(Member::factory()->create())->post(route('quiz.store'), ['answers' => $this->answersOf(3)])->assertStatus(503);
+        $this->asMember(Member::factory()->create())->withSession([QuizQuestion::SESSION_KEY => QuizQuestion::query()->pluck('id')->all()])->post(route('quiz.store'), ['answers' => $this->answersOf(3)])->assertStatus(503);
 
         $this->assertSame(0, QuizAttempt::count());
     }
@@ -314,7 +314,7 @@ class QuizTest extends TestCase
         $member = Member::factory()->create();
         $this->attemptFor($member, 'NSHG', now()->subDay()->toDateTimeString());
 
-        $this->asMember($member)->post(route('quiz.store'), ['answers' => $this->answersOf(3)]);
+        $this->asMember($member)->withSession([QuizQuestion::SESSION_KEY => QuizQuestion::query()->pluck('id')->all()])->post(route('quiz.store'), ['answers' => $this->answersOf(3)]);
 
         $this->assertSame('NVAD', $member->fresh()->latestQuizAttempt->type_code);
         $this->assertSame(2, $member->quizAttempts()->count());
@@ -327,16 +327,16 @@ class QuizTest extends TestCase
         $partial = $this->answersOf(3);
         array_shift($partial);
 
-        $this->asMember($member)->post(route('quiz.store'), ['answers' => $partial])->assertSessionHasErrors();
-        $this->asMember($member)->post(route('quiz.store'), ['answers' => array_map(fn () => 6, $this->answersOf(3))])->assertSessionHasErrors();
-        $this->asMember($member)->post(route('quiz.store'), [])->assertSessionHasErrors('answers');
+        $this->asMember($member)->withSession([QuizQuestion::SESSION_KEY => QuizQuestion::query()->pluck('id')->all()])->post(route('quiz.store'), ['answers' => $partial])->assertSessionHasErrors();
+        $this->asMember($member)->withSession([QuizQuestion::SESSION_KEY => QuizQuestion::query()->pluck('id')->all()])->post(route('quiz.store'), ['answers' => array_map(fn () => 6, $this->answersOf(3))])->assertSessionHasErrors();
+        $this->asMember($member)->withSession([QuizQuestion::SESSION_KEY => QuizQuestion::query()->pluck('id')->all()])->post(route('quiz.store'), [])->assertSessionHasErrors('answers');
 
         $this->assertSame(0, QuizAttempt::count());
     }
 
     public function test_submitting_without_questions_is_a_404(): void
     {
-        $this->asMember(Member::factory()->create())->post(route('quiz.store'), ['answers' => [1 => 3]])->assertNotFound();
+        $this->asMember(Member::factory()->create())->withSession([QuizQuestion::SESSION_KEY => QuizQuestion::query()->pluck('id')->all()])->post(route('quiz.store'), ['answers' => [1 => 3]])->assertNotFound();
     }
 
     public function test_the_result_page_is_public_and_shows_the_type(): void
@@ -424,5 +424,84 @@ class QuizTest extends TestCase
     {
         $this->get(route('sitemap'))->assertSee(route('bbti'), false);
         $this->get(route('robots'))->assertSee('Disallow: /quiz');
+    }
+
+    private function seedPool(int $perPole): void
+    {
+        foreach (['NM' => ['N', 'M'], 'SV' => ['S', 'V'], 'HA' => ['H', 'A'], 'GD' => ['G', 'D']] as $axis => $poles) {
+            foreach ($poles as $pole) {
+                for ($i = 1; $i <= $perPole; $i++) {
+                    QuizQuestion::query()->create(['axis' => $axis, 'positive_pole' => $pole, 'text' => "題目 $axis $pole $i", 'order' => QuizQuestion::count() + 1, 'is_active' => true]);
+                }
+            }
+        }
+    }
+
+    public function test_the_quiz_draws_twelve_questions_spread_across_the_axes_from_a_larger_pool(): void
+    {
+        $this->seedPool(5);
+
+        for ($round = 0; $round < 10; $round++) {
+            $drawn = QuizQuestion::draw();
+
+            $this->assertCount(12, $drawn);
+            $this->assertCount(12, $drawn->pluck('id')->unique());
+            $this->assertSame(['GD' => 3, 'HA' => 3, 'NM' => 3, 'SV' => 3], $drawn->countBy('axis')->sortKeys()->all());
+        }
+
+        $this->assertGreaterThan(1, collect(range(1, 8))->map(fn () => QuizQuestion::draw()->pluck('id')->implode(','))->unique()->count());
+    }
+
+    public function test_a_small_pool_is_used_in_full_and_inactive_questions_are_never_drawn(): void
+    {
+        $this->seedPool(1);
+        QuizQuestion::query()->where('axis', 'NM')->update(['is_active' => false]);
+
+        $drawn = QuizQuestion::draw();
+
+        $this->assertCount(6, $drawn);
+        $this->assertSame(0, $drawn->where('axis', 'NM')->count());
+    }
+
+    public function test_the_quiz_page_shows_twelve_questions_and_keeps_them_on_reload(): void
+    {
+        $this->seedPool(5);
+        $this->seed(PersonalityTypeSeeder::class);
+        $member = Member::factory()->create();
+
+        $first = $this->asMember($member)->get(route('quiz'))->assertOk()->getContent();
+        $second = $this->asMember($member)->get(route('quiz'))->assertOk()->getContent();
+
+        $this->assertSame(12, preg_match_all('/<fieldset data-quiz-step/', $first));
+        $this->assertSame($first, $second);
+    }
+
+    public function test_only_the_drawn_questions_are_required_and_the_next_quiz_draws_again(): void
+    {
+        $this->seedPool(5);
+        $this->seed(PersonalityTypeSeeder::class);
+        $member = Member::factory()->create();
+
+        $this->asMember($member)->get(route('quiz'))->assertOk();
+        $ids = session(QuizQuestion::SESSION_KEY);
+        $this->assertCount(12, $ids);
+
+        $this->asMember($member)->post(route('quiz.store'), ['answers' => collect($ids)->mapWithKeys(fn (int $id) => [$id => 3])->all()])
+            ->assertRedirect();
+
+        $attempt = QuizAttempt::query()->sole();
+        $this->assertSame(['NM' => 6, 'SV' => 6, 'HA' => 6, 'GD' => 6], $attempt->max_scores);
+        $this->assertNull(session(QuizQuestion::SESSION_KEY));
+    }
+
+    public function test_submitting_without_a_drawn_quiz_sends_the_visitor_to_the_quiz(): void
+    {
+        $this->seedPool(5);
+
+        $this->asMember(Member::factory()->create())
+            ->post(route('quiz.store'), ['answers' => QuizQuestion::query()->pluck('id')->mapWithKeys(fn (int $id) => [$id => 3])->all()])
+            ->assertRedirect(route('quiz'));
+
+        $this->assertSame(0, QuizAttempt::count());
     }
 }
