@@ -31,12 +31,12 @@ return [
                 'en' => 'Hi, I am Zona from the LINE Taiwan DevRel team. I plan and promote developer relations activities, including technical community partnerships, brand promotion and content curation, and keep strengthening the connection and exchange between LINE and developer communities.',
             ],
             'title' => [
-                'zh_TW' => '當 AI 開始開發 AI：AIDD × Google ADK 的 LINE Bot 實戰',
-                'en' => 'When AI Starts Building AI: A Hands-on LINE Bot with AIDD × Google ADK',
+                'zh_TW' => 'Agent 一定要用框架嗎？從 LINE Bot 實戰看 Google ADK 的價值',
+                'en' => 'Do Agents Really Need a Framework? The Value of Google ADK Through a Hands-on LINE Bot',
             ],
             'outline' => [
-                'zh_TW' => '當 AI 開始開發 AI，會擦出什麼火花？本次分享將結合 AIDD 與 Google ADK，從零打造 LINE Bot。透過實際開發案例，分享 AI 如何參與完整開發流程、Agent 的設計與實作，以及過程中的挑戰與踩坑經驗，帶你探索 AI 驅動開發的新可能！',
-                'en' => 'What sparks fly when AI starts building AI? This talk combines AIDD and Google ADK to build a LINE Bot from scratch. Through a real development case, it shares how AI takes part in the whole development process, how to design and implement an agent, and the challenges and pitfalls along the way, exploring new possibilities of AI-driven development.',
+                'zh_TW' => '不用框架也能開發 AI Agent，為什麼還需要 Google ADK？本次分享將從一個已完成的 LINE Bot 出發，實際改造成 Google ADK 架構，比較兩種開發方式在工具調用、流程控制、測試與維護上的差異。透過改造過程中的架構選擇與實作經驗，帶你了解 Google ADK 能解決哪些問題、帶來哪些成本，以及什麼時候值得導入 Agent Framework。',
+                'en' => 'You can build an AI agent without a framework, so why do you still need Google ADK? This talk starts from a finished LINE Bot and rebuilds it on Google ADK, comparing the two approaches in tool calling, flow control, testing and maintenance. Through the architecture choices and hands-on experience along the way, it explains what problems Google ADK solves, what costs it brings, and when it is worth adopting an agent framework.',
             ],
         ]),
         array_replace($session('a2', '10:45 - 11:30'), [
