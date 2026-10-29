@@ -55,7 +55,22 @@ return [
                 'en' => 'As AI accelerates code generation, the technical barrier drops—yet the human element matters more than ever. Code can be synthesized, but trust, mentorship, and collective wisdom cannot. This talk explores how developer communities must evolve alongside AI, ensuring we leverage automated intelligence while cultivating the human connection that truly drives innovation forward.',
             ],
         ]),
-        $session('a3', '13:00 - 13:45'),
+        array_replace($session('a3', '13:00 - 13:45'), [
+            'speaker_name' => 'Eva Chu',
+            'speaker_photo' => 'EvAChU.jpg',
+            'speaker_bio' => [
+                'zh_TW' => '擁有超過 16 年的 UX 策略與產品設計經驗，現為 Women Techmakers (WTM) Taipei Ambassador 與人本與科技共融發展協會理事長。自 2020 年起累計主辦 112 場跨領域技術活動、串聯 1,100+ 位講者，並投入 26 場公開演講與 240 小時的職涯導師輔導，影響超過 6,800+ 名科技人才。擅長將十餘年的 UX 設計洞察與商業策略結合，轉化為與業界夥伴交流的實戰養分，透過社群將真實問題帶入討論、與大家一同探索並解決問題。',
+                'en' => 'Eva has more than 16 years of experience in UX strategy and product design, and is currently the Women Techmakers (WTM) Taipei Ambassador and the Chairperson of the Human-Centered Technology Inclusion Development Association. Since 2020 she has organized 112 cross-disciplinary tech events and connected 1,100+ speakers, and has given 26 public talks and 240 hours of career mentoring, reaching more than 6,800 tech professionals. She combines over a decade of UX design insight with business strategy into practical lessons shared with industry peers, bringing real problems into community discussions to explore and solve them together.',
+            ],
+            'title' => [
+                'zh_TW' => '從 Vibe Coding 踩坑到培養共創默契：我用 Antigravity 打造產品的 UX、Agentic UX 與 AX 實戰',
+                'en' => 'From Vibe Coding Pitfalls to Building Co-Creation Rapport: Hands-on UX, Agentic UX and AX in Building a Product with Antigravity',
+            ],
+            'outline' => [
+                'zh_TW' => '純靠「憑感覺許願」的 Vibe Coding，往往在第 4 天就會變成改不動的違章建築。 在這場 45 分鐘的分享中，我想聊聊自己用 Google Antigravity 開發 Side Project 時踩過的真實大坑，以及我如何結合矽谷最新的 AX（Agent Experience，代理體驗）、Context Engineering（脈絡工程） 與 Agentic UX（人機協作體驗），一步步建立起 AGENTS.md 協作指南與自動化防呆護欄（Guardrails），讓我和 AI 從一開始的「雞同鴨講、各自猜謎」，慢慢對齊頻率、培養出默契，成為一起守護產品 UX 的共創夥伴。',
+                'en' => 'Vibe coding on nothing but "wishing by feel" often turns into an unfixable shanty by day four. In this 45-minute talk, I share the real pitfalls I hit building a side project with Google Antigravity, and how I combined the latest Silicon Valley thinking on AX (Agent Experience), Context Engineering and Agentic UX (human-agent collaboration experience) to build an AGENTS.md collaboration guide and automated guardrails step by step, so that the AI and I went from talking past each other and guessing blindly to aligning, building rapport, and becoming co-creators who protect the product UX together.',
+            ],
+        ]),
         $session('a4', '13:45 - 14:30'),
     ]],
     ['id' => 'b', 'sessions' => [
