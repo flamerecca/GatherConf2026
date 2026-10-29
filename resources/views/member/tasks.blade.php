@@ -16,6 +16,15 @@
         🥕 {{ __('carrots.balance', ['count' => $member->carrots]) }}
     </p>
 
+    <form method="POST" action="{{ route('member.tasks.redeem'.(app()->getLocale() === 'en' ? '.en' : '')) }}" data-code-form
+          class="mt-8 space-y-4 rounded-2xl border-4 border-moss/60 bg-parchment-dark p-6">
+        @csrf
+        <h2 class="text-xl font-bold text-moss">{{ __('carrots.code.heading') }}</h2>
+        <p class="text-sm text-ink/70">{{ __('carrots.code.intro') }}</p>
+        <x-member-field name="code" :label="__('carrots.code.label')" autocomplete="off" required />
+        <x-member-submit>{{ __('carrots.code.submit') }}</x-member-submit>
+    </form>
+
     @php
         $groups = [
             'account' => ['verify_email', 'set_password'],

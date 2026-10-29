@@ -21,6 +21,7 @@ class CarrotTasksTable
             ->columns([
                 TextColumn::make('name')->label('任務名稱')->searchable()->sortable(),
                 TextColumn::make('reward')->label('獎勵')->sortable(),
+                TextColumn::make('short_code')->label('短碼')->copyable()->fontFamily('mono'),
                 IconColumn::make('is_active')->label('啟用')->boolean(),
                 TextColumn::make('starts_at')->label('開始時間')->dateTime()->placeholder('不限'),
                 TextColumn::make('ends_at')->label('結束時間')->dateTime()->placeholder('不限'),

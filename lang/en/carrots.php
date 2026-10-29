@@ -16,6 +16,18 @@ return [
         'go' => 'Go do it',
         'member_page' => 'Member page',
     ],
+    'code' => [
+        'heading' => 'Enter an access code',
+        'intro' => 'Got an event access code? Enter it to exchange it for carrots.',
+        'label' => 'Access code',
+        'submit' => 'Redeem',
+        'earned' => 'Redeemed! You earned :count carrots.',
+        'invalid' => 'We could not find this access code. Please check it and try again.',
+        'done' => 'You have already used this access code.',
+        'closed' => 'This access code cannot be used right now.',
+        'exhausted' => 'This access code has been fully redeemed.',
+        'locked' => 'Too many wrong codes. Please try again in :minutes minutes.',
+    ],
     'site' => [
         'verify_email' => ['name' => 'Verify your email', 'description' => 'Complete the email verification.'],
         'set_password' => ['name' => 'Set a password', 'description' => 'Set a password for your account for the first time.'],

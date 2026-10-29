@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable(['member_id', 'amount', 'reason', 'note', 'task_id', 'created_by', 'dedupe_key'])]
+#[Fillable(['member_id', 'amount', 'reason', 'note', 'task_id', 'authorization_code_id', 'created_by', 'dedupe_key'])]
 class CarrotTransaction extends Model
 {
     /** @use HasFactory<CarrotTransactionFactory> */

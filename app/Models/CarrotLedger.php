@@ -17,6 +17,8 @@ final class CarrotLedger
 
     public const REASON_TASK_REVOKED = 'task_revoked';
 
+    public const REASON_CODE = 'code';
+
     /**
      * The balance range the signed members.carrots column can hold. A balance may be negative.
      */
@@ -40,14 +42,14 @@ final class CarrotLedger
     /**
      * Grant carrots once per dedupe key. Returns false when this key was already granted.
      */
-    public static function award(Member $member, string $reason, int $amount, string $dedupeKey, ?CarrotTask $task = null): bool
+    public static function award(Member $member, string $reason, int $amount, string $dedupeKey, ?CarrotTask $task = null, ?AuthorizationCode $code = null): bool
     {
         if ($amount <= 0) {
             throw new InvalidArgumentException('An award must be a positive amount.');
         }
 
         try {
-            return self::record($member, $amount, $reason, $dedupeKey, $task?->getKey(), null, null) !== null;
+            return self::record($member, $amount, $reason, $dedupeKey, $task?->getKey(), null, null, $code?->getKey()) !== null;
         } catch (UniqueConstraintViolationException) {
             return false;
         }
@@ -144,8 +146,9 @@ final class CarrotLedger
         ?string $taskId,
         ?string $note,
         ?int $createdBy,
+        ?string $codeId = null,
     ): ?CarrotTransaction {
-        return DB::transaction(function () use ($member, $amount, $reason, $dedupeKey, $taskId, $note, $createdBy): ?CarrotTransaction {
+        return DB::transaction(function () use ($member, $amount, $reason, $dedupeKey, $taskId, $note, $createdBy, $codeId): ?CarrotTransaction {
             $locked = Member::query()->whereKey($member->getKey())->lockForUpdate()->firstOrFail();
 
             if (CarrotTransaction::query()->where('dedupe_key', $dedupeKey)->exists()) {
@@ -164,6 +167,7 @@ final class CarrotLedger
                 'reason' => $reason,
                 'note' => $note,
                 'task_id' => $taskId,
+                'authorization_code_id' => $codeId,
                 'created_by' => $createdBy,
                 'dedupe_key' => $dedupeKey,
             ]);

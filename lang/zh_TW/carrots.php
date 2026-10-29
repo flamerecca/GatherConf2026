@@ -16,6 +16,18 @@ return [
         'go' => '前往完成',
         'member_page' => '會員頁面',
     ],
+    'code' => [
+        'heading' => '輸入授權碼',
+        'intro' => '拿到活動授權碼了嗎？輸入後就能換取胡蘿蔔。',
+        'label' => '授權碼',
+        'submit' => '兌換',
+        'earned' => '兌換成功，獲得 :count 根胡蘿蔔！',
+        'invalid' => '找不到這組授權碼，請確認後再試一次。',
+        'done' => '你已經使用過這組授權碼了。',
+        'closed' => '這組授權碼目前不在可使用的期間內。',
+        'exhausted' => '這組授權碼已經被兌換完了。',
+        'locked' => '輸入錯誤的次數太多，請 :minutes 分鐘後再試。',
+    ],
     'site' => [
         'verify_email' => ['name' => '驗證 Email', 'description' => '完成 Email 驗證。'],
         'set_password' => ['name' => '設定密碼', 'description' => '第一次為帳號設定密碼。'],

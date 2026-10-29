@@ -41,6 +41,9 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for('member-task', fn (Request $request) => Limit::perMinute(20)
             ->by('member-task|'.($request->user('member')?->getKey() ?? $request->ip())));
 
+        RateLimiter::for('member-code', fn (Request $request) => Limit::perMinute(10)
+            ->by('member-code|'.($request->user('member')?->getKey() ?? $request->ip())));
+
         RateLimiter::for('quiz-store', fn (Request $request) => [
             Limit::perMinute(10)->by('quiz-store|'.($request->user('member')?->getKey() ?? $request->ip())),
             Limit::perHour(60)->by('quiz-store-hour|'.($request->user('member')?->getKey() ?? $request->ip())),

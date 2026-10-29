@@ -17,6 +17,7 @@ class CarrotTaskInfolist
             TextEntry::make('name')->label('任務名稱'),
             TextEntry::make('description')->label('說明')->placeholder('未填寫'),
             TextEntry::make('reward')->label('獎勵胡蘿蔔數量'),
+            TextEntry::make('short_code')->label('短碼')->helperText('會員也可以在任務頁輸入這組短碼來完成任務。')->copyable()->fontFamily('mono'),
             IconEntry::make('is_active')->label('啟用')->boolean(),
             TextEntry::make('starts_at')->label('開始時間')->dateTime()->placeholder('不限'),
             TextEntry::make('ends_at')->label('結束時間')->dateTime()->placeholder('不限'),

@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
-#[Fillable(['name', 'description', 'reward', 'is_active', 'starts_at', 'ends_at'])]
+#[Fillable(['name', 'description', 'reward', 'short_code', 'is_active', 'starts_at', 'ends_at'])]
 class CarrotTask extends Model
 {
     /** @use HasFactory<CarrotTaskFactory> */
@@ -23,7 +23,20 @@ class CarrotTask extends Model
             if (empty($task->code)) {
                 $task->code = Str::lower(Str::random(32));
             }
+
+            if (empty($task->short_code)) {
+                $task->short_code = self::newShortCode();
+            }
         });
+    }
+
+    public static function newShortCode(): string
+    {
+        do {
+            $code = AuthorizationCode::randomCode();
+        } while (static::query()->where('short_code', $code)->exists() || AuthorizationCode::query()->where('code', $code)->exists());
+
+        return $code;
     }
 
     /**
