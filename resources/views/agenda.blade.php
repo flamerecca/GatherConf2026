@@ -24,30 +24,40 @@
                 <ol class="mt-6 grid gap-6">
                     @foreach ($track['sessions'] as $index => $session)
                         @php
-                            $title = $session['title'][$locale] ?? null;
-                            $outline = $session['outline'][$locale] ?? null;
-                            $speaker = $session['speaker_name'];
-                            $bio = $session['speaker_bio'][$locale] ?? null;
+                            $talks = $session['talks'] ?? [$session];
                         @endphp
                         <li id="session-{{ $session['id'] }}" data-session="{{ $session['id'] }}"
-                            @class(['flex h-full flex-col gap-4 rounded-2xl border-4 bg-parchment-dark p-6', 'border-moss/60' => ! $isTrackB, 'border-copper/60' => $isTrackB])>
+                            @class(['flex h-full flex-col gap-6 rounded-2xl border-4 bg-parchment-dark p-6', 'border-moss/60' => ! $isTrackB, 'border-copper/60' => $isTrackB])>
                             <p class="text-sm font-semibold tracking-widest text-copper uppercase">
                                 {{ __('agenda.session', ['number' => $index + 1]) }}
                                 <span aria-hidden="true">·</span>
                                 <time>{{ $session['date'] }} {{ $session['time'] }}</time>
                             </p>
-                            <div class="flex items-center gap-4">
-                                <x-speaker-photo :photo="$session['speaker_photo']" :name="$speaker" />
-                                <p class="font-semibold">{{ $speaker ?? __('agenda.speaker_tbd') }}</p>
-                            </div>
-                            @if ($bio)
-                                <p class="text-sm leading-relaxed text-ink/80">{{ $bio }}</p>
-                            @endif
-                            <h3 @class(['text-xl font-bold', 'text-ink/70' => ! $title])>{{ $title ?? __('agenda.title_tbd') }}</h3>
-                            <div>
-                                <p class="text-sm font-semibold">{{ __('agenda.outline_label') }}</p>
-                                <p @class(['mt-1 whitespace-pre-line text-sm leading-relaxed', 'text-ink/80' => $outline, 'text-ink/70' => ! $outline])>{{ $outline ?? __('agenda.outline_tbd') }}</p>
-                            </div>
+                            @foreach ($talks as $talkIndex => $talk)
+                                @php
+                                    $title = $talk['title'][$locale] ?? null;
+                                    $outline = $talk['outline'][$locale] ?? null;
+                                    $speaker = $talk['speaker_name'];
+                                    $bio = $talk['speaker_bio'][$locale] ?? null;
+                                @endphp
+                                <div data-talk="{{ $talkIndex + 1 }}" @class(['flex flex-col gap-4', 'border-t border-ink/15 pt-6' => $talkIndex > 0])>
+                                    @if (count($talks) > 1)
+                                        <p class="text-sm font-semibold text-ink/70">{{ __('agenda.talk', ['number' => $talkIndex + 1]) }}</p>
+                                    @endif
+                                    <div class="flex items-center gap-4">
+                                        <x-speaker-photo :photo="$talk['speaker_photo']" :name="$speaker" />
+                                        <p class="font-semibold">{{ $speaker ?? __('agenda.speaker_tbd') }}</p>
+                                    </div>
+                                    @if ($bio)
+                                        <p class="text-sm leading-relaxed text-ink/80">{{ $bio }}</p>
+                                    @endif
+                                    <h3 @class(['text-xl font-bold', 'text-ink/70' => ! $title])>{{ $title ?? __('agenda.title_tbd') }}</h3>
+                                    <div>
+                                        <p class="text-sm font-semibold">{{ __('agenda.outline_label') }}</p>
+                                        <x-agenda-outline :text="$outline ?? __('agenda.outline_tbd')" @class(['mt-1 text-sm leading-relaxed', 'text-ink/80' => $outline, 'text-ink/70' => ! $outline]) />
+                                    </div>
+                                </div>
+                            @endforeach
                         </li>
                     @endforeach
                 </ol>

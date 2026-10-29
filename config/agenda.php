@@ -21,6 +21,18 @@ $session = fn (string $id, string $time): array => [
     'outline' => ['zh_TW' => null, 'en' => null],
 ];
 
+/**
+ * 一個場次有兩位講者、兩個講題時，在場次內加入 talks，內容為兩筆講題，欄位與單講者相同，順序即為頁面顯示順序。
+ * 有 talks 時，頁面只讀取 talks 內的講者與講題欄位，場次本身的 speaker_name、title 等欄位不再使用。
+ */
+$talk = fn (): array => [
+    'speaker_name' => null,
+    'speaker_photo' => null,
+    'speaker_bio' => ['zh_TW' => null, 'en' => null],
+    'title' => ['zh_TW' => null, 'en' => null],
+    'outline' => ['zh_TW' => null, 'en' => null],
+];
+
 return [
     ['id' => 'a', 'sessions' => [
         array_replace($session('a1', '10:00 - 10:45'), [
@@ -111,6 +123,87 @@ Since AI coding is the trend and the future, how to collaborate with agents is t
                 'en' => 'Running intelligence on device once felt like a distant promise, constrained by compute, power, and tooling. Today, lightweight models and specialized hardware have reshaped the landscape. This talk cuts through the hype to examine how far Edge AI has truly come, evaluating real-world capabilities, persistent trade-offs, and where the boundaries of edge deployment lie today.',
             ],
         ]),
-        $session('b4', '13:45 - 14:30'),
+        array_replace($session('b4', '13:45 - 14:30'), [
+            'talks' => [
+                array_replace($talk(), [
+                    'speaker_name' => '邱伊嫻 Vivian',
+                    'speaker_photo' => 'vivian.jpg',
+                    'speaker_bio' => [
+                        'zh_TW' => '菩語國際設計負責人| 界構國際空間設計師協會 理事長
+室內設計從業20年、服務超過300個家庭，中原大學室內設計碩士。自認3C白癡、不會寫程式，卻用 AI把整套設計流程做成工具，一個人做出比過去八人團隊更高的營業額。',
+                        'en' => 'Head of Puyu International Design | Chairperson of the International Space Designers Association.
+A 20-year interior designer who has served more than 300 families, with a master\'s degree in interior design from Chung Yuan Christian University. Describing herself as hopeless with gadgets and unable to code, she used AI to turn her whole design workflow into tools, and now earns higher revenue on her own than her former eight-person team did.',
+                    ],
+                    'title' => [
+                        'zh_TW' => '不會寫程式的室內設計師，怎麼做出自己的工作系統',
+                        'en' => 'An Interior Designer Who Cannot Code: How to Build Your Own Work System',
+                    ],
+                    'outline' => [
+                        'zh_TW' => '- 01 為什麼設計師要自己做工具
+  - 現成軟體不懂系統櫃報價，也不懂工地流程
+- 02 一個案子的前中後
+  - 居家性格心理測驗、需求調查表、3D系統櫃平台、專案管理 ERP
+- 03 讓客戶找到你
+  - 官網 SEO/GEO/AEO、LINE官方帳號 LIFF、臉書自動貼文搭配GPT 生圖、社群數據分析
+- 04 把專業講成 AI 聽得懂的需求
+  - 一次只講一件事、給圖、給實際案例
+- 05 AI 的極限
+  - 資料正確性、報價邏輯、驗收方法，哪些一定要自己把關',
+                        'en' => '- 01 Why designers should build their own tools
+  - Off-the-shelf software understands neither built-in cabinet quotes nor construction site workflows
+- 02 Before, during and after a project
+  - A home personality quiz, a needs survey, a 3D cabinet platform and a project management ERP
+- 03 Helping clients find you
+  - Website SEO/GEO/AEO, a LINE official account with LIFF, automatic Facebook posts with GPT-generated images, and social media analytics
+- 04 Explaining your expertise so AI understands
+  - Talk about one thing at a time, give images, give real cases
+- 05 The limits of AI
+  - Data accuracy, quotation logic and acceptance methods: what you must always check yourself',
+                    ],
+                ]),
+                array_replace($talk(), [
+                    'speaker_name' => '楊政翰/藏鏡羊',
+                    'speaker_photo' => 'capybara_18do.jpg',
+                    'speaker_bio' => [
+                        'zh_TW' => '正從商業攝影轉型投入 AI 視覺產業，已用 AI 承接多個政府機關與工廠的行銷案。',
+                        'en' => 'Transitioning from commercial photography into the AI visual industry, and has already taken on marketing projects for several government agencies and factories with AI.',
+                    ],
+                    'title' => [
+                        'zh_TW' => '一位攝影師的AI 轉型實踐',
+                        'en' => 'A Photographer\'s Journey of AI Transformation',
+                    ],
+                    'outline' => [
+                        'zh_TW' => '- 01 轉型的起點
+  - 商業攝影、大圖印刷、網拍組圖需求大減，手機修圖與短影音取代傳統媒體
+- 02 公部門| 體育局
+  - 先用AI 分鏡把拍攝想法變成畫面，再做運動短片與人物字卡
+- 03 在地|農會
+  - 同一個主題，延伸成美食主視覺與情境短片
+- 04 安全議題| 消防安檢
+  - 人物講解搭配情境畫面，把抽象議題講到看得懂
+- 05 企業|日商與鋁門窗工廠
+  - 讓設備出現在服務情境裡，實拍照片變成社群行銷內容
+- 06 數字人出鏡
+  - 從口播稿到交付，生成成功不等於可以直接用
+- 07 下一步
+  - 從攝影轉型為行銷整合，協助傳統產業轉型',
+                        'en' => '- 01 Where the transition began
+  - Demand for commercial photography, large-format printing and online store image sets has dropped sharply, as phone retouching and short videos replace traditional media
+- 02 Public sector | Sports Administration
+  - Use AI storyboards to turn shooting ideas into visuals first, then make sports short films and athlete name cards
+- 03 Local | Farmers\' Association
+  - One theme extended into a food key visual and a scenario short film
+- 04 Safety | Fire safety inspection
+  - A presenter explanation combined with scenario visuals, making an abstract issue easy to understand
+- 05 Business | Japanese company and aluminum door and window factory
+  - Place the equipment in service scenarios, and turn real photos into social media marketing content
+- 06 Digital human on camera
+  - From voiceover script to delivery, a successful generation does not mean it is ready to use
+- 07 What is next
+  - Moving from photography to integrated marketing, helping traditional industries transform',
+                    ],
+                ]),
+            ],
+        ]),
     ]],
 ];

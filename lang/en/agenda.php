@@ -10,6 +10,7 @@ return [
     'intro' => 'One day, two tracks, eight sessions in total with four in each track.',
     'view_all' => 'View the full agenda',
     'track' => 'Track :name',
+    'talk' => 'Talk :number',
     'session' => 'Session :number',
     'speaker_photo_alt' => 'Photo of :name',
     'speaker_placeholder' => 'Speaker photo to be announced',

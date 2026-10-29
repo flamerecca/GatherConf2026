@@ -11,6 +11,7 @@ return [
     'view_all' => '查看完整議程',
     'track' => ':name 軌',
     'session' => '第 :number 場',
+    'talk' => '講題 :number',
     'speaker_photo_alt' => ':name 的照片',
     'speaker_placeholder' => '講者照片待公布',
     'speaker_tbd' => '講者待公布',

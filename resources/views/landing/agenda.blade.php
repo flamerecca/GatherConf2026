@@ -14,7 +14,7 @@
                 <ol class="mt-4 space-y-4">
                     @foreach ($track['sessions'] as $index => $session)
                         @php
-                            $title = $session['title'][$locale] ?? null;
+                            $talks = $session['talks'] ?? [$session];
                         @endphp
                         <li data-landing-session="{{ $session['id'] }}">
                             <p class="text-sm font-semibold tracking-widest text-copper uppercase">
@@ -22,11 +22,18 @@
                                 <span aria-hidden="true">·</span>
                                 <time>{{ $session['time'] }}</time>
                             </p>
-                            <p @class(['mt-1 font-semibold', 'text-ink/70' => ! $title])>{{ $title ?? __('agenda.title_tbd') }}</p>
-                            <div class="mt-2 flex items-center gap-3">
-                                <x-speaker-photo :photo="$session['speaker_photo']" :name="$session['speaker_name']" size="size-12" />
-                                <p class="text-sm text-ink/80">{{ $session['speaker_name'] ?? __('agenda.speaker_tbd') }}</p>
-                            </div>
+                            @foreach ($talks as $talk)
+                                @php
+                                    $title = $talk['title'][$locale] ?? null;
+                                @endphp
+                                <div data-talk @class(['mt-1', 'mt-3 border-t border-ink/15 pt-3' => ! $loop->first])>
+                                    <p @class(['font-semibold', 'text-ink/70' => ! $title])>{{ $title ?? __('agenda.title_tbd') }}</p>
+                                    <div class="mt-2 flex items-center gap-3">
+                                        <x-speaker-photo :photo="$talk['speaker_photo']" :name="$talk['speaker_name']" size="size-12" />
+                                        <p class="text-sm text-ink/80">{{ $talk['speaker_name'] ?? __('agenda.speaker_tbd') }}</p>
+                                    </div>
+                                </div>
+                            @endforeach
                         </li>
                     @endforeach
                 </ol>
