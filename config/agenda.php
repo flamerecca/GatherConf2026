@@ -86,7 +86,34 @@ return [
         $session('a4', '13:45 - 14:30'),
     ]],
     ['id' => 'b', 'sessions' => [
-        $session('b1', '10:00 - 10:45'),
+        array_replace($session('b1', '10:00 - 10:45'), [
+            'speaker_name' => 'Fynn Chen',
+            'speaker_photo' => 'Fynn.jpg',
+            'speaker_bio' => [
+                'zh_TW' => '美商全端工程師、LeadOwl 工程顧問，專注於系統設計及人本 AI 協作應用。PM 眼中的人肉 GPT 及神燈精靈，擅於用比喻的方式回答溝通，對技術的熱忱也樂於實現各種願望。',
+                'en' => 'A full-stack engineer at a US company and an engineering consultant at LeadOwl, focused on system design and human-centered AI collaboration. Seen by PMs as a human GPT and a genie, he loves answering and communicating through analogies, and his passion for technology makes him glad to grant all kinds of wishes.',
+            ],
+            'title' => [
+                'zh_TW' => '打造人與 AI Agent 協作的知識庫',
+                'en' => 'Building a Knowledge Base for Humans and AI Agents to Work Together',
+            ],
+            'outline' => [
+                'zh_TW' => '- 從聊天到協作：認識 LLM、Agent 與 Session，理解跨次工作需要保留哪些背景。
+- 管理短期記憶：掌握 Context 的限制，透過摘要、壓縮與拆分任務維持脈絡。
+- 建立長期記憶：將確認成果存入知識庫，再透過 RAG 找回相關資料。
+- 選擇儲存方式：比較不同方案，說明檔案如何支援人與 Agent 共同維護。
+- 組織知識庫：結合 Markdown、Git、Obsidian 與 LLM Wiki，整理來源、知識與規則。
+- 留下協作依據：用決策、證據、日誌、索引與守則，讓工作能被查證與接手。
+- 持續維護與應用：透過清楚寫作、圖表與 Skill，完成知識查找、核對及更新。',
+                'en' => '- From chat to collaboration: understand LLMs, agents and sessions, and what background must be kept across sessions.
+- Managing short-term memory: grasp the limits of context, and keep the thread through summaries, compression and splitting tasks.
+- Building long-term memory: store confirmed results in a knowledge base, then retrieve relevant material with RAG.
+- Choosing how to store it: compare the options, and explain how files let humans and agents maintain it together.
+- Organizing the knowledge base: combine Markdown, Git, Obsidian and an LLM Wiki to organize sources, knowledge and rules.
+- Leaving a basis for collaboration: use decisions, evidence, logs, indexes and guidelines so the work can be verified and handed over.
+- Keeping it maintained and in use: complete lookup, checking and updating of knowledge through clear writing, diagrams and Skills.',
+            ],
+        ]),
         array_replace($session('b2', '10:45 - 11:30'), [
             'speaker_name' => 'Maple Kuo',
             'speaker_photo' => 'Maple.jpeg',

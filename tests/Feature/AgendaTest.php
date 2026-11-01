@@ -22,7 +22,7 @@ class AgendaTest extends TestCase
         $this->assertCount(8, collect($tracks)->flatMap(fn (array $track) => $track['sessions'])->pluck('id')->unique());
     }
 
-    public function test_the_chinese_page_shows_eight_sessions_with_two_talk_placeholders(): void
+    public function test_the_chinese_page_shows_eight_sessions_with_one_talk_placeholder(): void
     {
         $response = $this->get('/agenda')->assertOk()
             ->assertSee('<h1', false)
@@ -31,19 +31,19 @@ class AgendaTest extends TestCase
             ->assertSee('第 4 場');
 
         $this->assertSame(8, substr_count($response->getContent(), 'data-session="'));
-        $this->assertSame(2, substr_count($response->getContent(), '議題待公布'));
-        $this->assertSame(2, substr_count($response->getContent(), '講者待公布'));
-        $this->assertSame(2, substr_count($response->getContent(), '議題大綱待公布'));
+        $this->assertSame(1, substr_count($response->getContent(), '議題待公布'));
+        $this->assertSame(1, substr_count($response->getContent(), '講者待公布'));
+        $this->assertSame(1, substr_count($response->getContent(), '議題大綱待公布'));
     }
 
-    public function test_the_english_page_shows_eight_sessions_with_two_talk_placeholders(): void
+    public function test_the_english_page_shows_eight_sessions_with_one_talk_placeholder(): void
     {
         $response = $this->get('/en/agenda')->assertOk()
             ->assertSee('Track A')
             ->assertSee('Track B')
             ->assertSee('Session 4');
 
-        $this->assertSame(2, substr_count($response->getContent(), 'Topic to be announced'));
+        $this->assertSame(1, substr_count($response->getContent(), 'Topic to be announced'));
     }
 
     public function test_filled_in_sessions_show_their_content_in_the_right_language(): void
@@ -186,12 +186,25 @@ class AgendaTest extends TestCase
     {
         $html = $this->get('/agenda')->assertOk()->getContent();
 
-        $this->assertSame(2, substr_count($html, 'data-outline-list'));
+        $this->assertSame(3, substr_count($html, 'data-outline-list'));
         $this->assertStringContainsString('<span class="font-semibold">01 為什麼設計師要自己做工具</span>', $html);
         $this->assertStringContainsString('<li>現成軟體不懂系統櫃報價，也不懂工地流程</li>', $html);
         $this->assertStringContainsString('<li>從攝影轉型為行銷整合，協助傳統產業轉型</li>', $html);
         $this->assertStringNotContainsString('- 01 ', $html);
 
         $this->get('/en/agenda')->assertSee('01 Why designers should build their own tools')->assertSee('The limits of AI');
+    }
+
+    public function test_fynn_chen_is_scheduled_for_track_b_first_slot(): void
+    {
+        $session = config('agenda.1.sessions.0');
+
+        $this->assertSame('b1', $session['id']);
+        $this->assertSame('10:00 - 10:45', $session['time']);
+        $this->assertSame('Fynn Chen', $session['speaker_name']);
+        $this->assertFileExists(resource_path('images/speakers/'.$session['speaker_photo']));
+
+        $this->get('/agenda')->assertSee('Fynn Chen')->assertSee('打造人與 AI Agent 協作的知識庫')->assertSee('從聊天到協作：認識 LLM、Agent 與 Session');
+        $this->get('/en/agenda')->assertSee('Building a Knowledge Base for Humans and AI Agents to Work Together');
     }
 }

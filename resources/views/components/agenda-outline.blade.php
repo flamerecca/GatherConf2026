@@ -31,7 +31,7 @@
         <ul data-outline-list class="list-disc space-y-2 pl-5">
             @foreach ($items as $item)
                 <li>
-                    <span class="font-semibold">{{ $item['text'] }}</span>
+                    <span @class(['font-semibold' => $item['children'] !== []])>{{ $item['text'] }}</span>
                     @if ($item['children'] !== [])
                         <ul class="mt-1 list-[circle] space-y-1 pl-5 text-ink/80">
                             @foreach ($item['children'] as $child)
