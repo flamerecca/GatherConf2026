@@ -1,6 +1,6 @@
 # GatherConf 官網 Design System
 
-本文件整理 GatherConf 官網目前實際使用的視覺語言，範圍包含 landing page、行為準則頁與合作社群頁，網址對照見第 9 節，並補上之後新增頁面時應遵守的規則。內容依據為 `resources/css/app.css`、`resources/views/`、`resources/images/`、`config/`、`lang/`、〈使命宣言〉、〈舉辦緣由〉與 `docs/screen-design-spec.md`。
+本文件整理 GatherConf 官網目前實際使用的視覺語言，範圍包含 landing page、議程頁、行為準則頁與合作社群頁，網址對照見第 9 節，並補上之後新增頁面時應遵守的規則。內容依據為 `resources/css/app.css`、`resources/views/`、`resources/images/`、`config/`、`lang/`、〈使命宣言〉、〈舉辦緣由〉與 `docs/screen-design-spec.md`。
 
 > 狀態：初稿，已套用主辦團隊的決定，色票以 Logo 為準、支援 light 與 dark、間距只用偶數步階。第 11 節列出尚待處理的項目。
 
@@ -31,6 +31,7 @@ GatherConf 想給人的感覺是「開放、包容、充滿活力的森林聚會
 | **吉祥物 Bunny**           | `resources/images/bunny/`                             | 扁平插畫風格的兔子，共 16 個造型。官網只在贊助方案區塊使用一個，不與水彩插畫同區塊並用。                                                                                         |
 | **NPC 插畫**               | `resources/images/npc/`                               | 遊戲化內容專用，不用於官網 landing page。                                                                                                                                        |
 | **合作社群 Logo**          | `resources/images/community-logo/`                    | 各合作社群提供的 Logo，每個社群一個以 slug 命名的資料夾，如 `taiwan-kotlin-user-group/`，內含 `logo.png` 與 `logo-200.webp`、`logo-400.webp`、`logo-500.webp`。用於首頁合作社群區塊與合作社群頁。                                                                                         |
+| **講者照片**               | `resources/images/speakers/`                          | 各場講者提供的照片，檔名為講者名字，如 `Maple.jpeg`，在 `config/agenda.php` 以 `speaker_photo` 引用。一律以圓角方形呈現，規則見 7.12。                                                |
 | **贊助商 Logo**            | `resources/images/sponsor-logo/`                      | 各贊助商提供的 Logo，檔名為公司或品牌的英文小寫連字號，如 `rabbit-gather.png`。用於首頁贊助商區塊。                                                                              |
 
 插畫的共通規則：
@@ -204,10 +205,11 @@ Token 定義在 `resources/css/app.css`。實際色值存放在 `:root` 的 `--c
 | 2 | 年會宗旨 | `deep` |
 | 3 | 為什麼要舉辦 | `parchment` |
 | 4 | 年會概述 | `parchment` |
-| 5 | 合作社群 | `parchment` |
-| 6 | 贊助方案 | `parchment-dark` |
-| 7 | 贊助商 | `parchment` |
-| 8 | 頁尾 | `deep` |
+| 5 | 議程 | `parchment` |
+| 6 | 合作社群 | `parchment` |
+| 7 | 贊助方案 | `parchment-dark` |
+| 8 | 贊助商 | `parchment` |
+| 9 | 頁尾 | `deep` |
 
 - **網格**：統計卡片 `grid-cols-2 md:grid-cols-4`，贊助方案 `md:grid-cols-3`，首頁合作社群 `sm:grid-cols-2 md:grid-cols-4`，合作社群頁 `sm:grid-cols-2 md:grid-cols-3`。窄螢幕一律單欄堆疊。贊助商依層級各自一排，用 `flex flex-wrap` 排列。
 - **圖片**：一律設定寬度為容器 100%，插畫保持原始比例，不以裁切掉主體的方式填滿。
@@ -345,6 +347,15 @@ TKUG 的內容半徑超過 0.5，也就是原圖的內容本來就會被圓形�
 
 深色底 `bg-deep`，置中，依序是圓形 Logo、活動名稱、日期與地點、連結列。連結列包含「立即報名」、「行為準則」與「合作社群」，一律使用 `text-gold underline`，空間不足時自動換行。
 
+### 7.12 講者照片與議程場次
+
+議程頁與首頁議程共用 `<x-speaker-photo :photo="..." :name="..." />`，議程頁預設 `size-20`，首頁議程使用 `size-12`。
+
+- 照片一律是圓角方形，`rounded-2xl` 加 `object-cover`，不使用圓形，這與 7.8 的 Logo 刻意區分。
+- 講者尚未公布時，顯示同樣形狀的虛線佔位框與人像圖示，並加上無障礙標籤。
+- 一個場次預設是一位講者、一個講題。雙講者的場次在 `config/agenda.php` 的場次內加入 `talks`，內容為兩筆講題，議程頁以「講題 1」「講題 2」分段，首頁議程在同一個場次下列出兩個講題。
+- 講題大綱使用 `<x-agenda-outline>`。大綱以 `- ` 開頭的行是第一層，縮排兩格再加 `- ` 的行是第二層，會顯示成條列，有第二層說明的項目標題加粗。沒有 `- ` 的大綱維持一般分段文字。
+
 ---
 
 ## 8. 圖示與裝飾
@@ -360,7 +371,7 @@ TKUG 的內容半徑超過 0.5，也就是原圖的內容本來就會被圓形�
 
 | 項目         | 規則                                                                                                                                                                                                                                          |
 |:-------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **路由**     | 中文在前、英文以 `/en` 開頭。首頁 `/` 與 `/en`，行為準則 `/code-of-conduct` 與 `/en/code-of-conduct`，合作社群 `/communities` 與 `/en/communities`，成為贊助夥伴 `/call-for-sponsor` 與 `/en/call-for-sponsor`。路由名稱為 `landing`、`conduct`、`communities`、`call-for-sponsor`，英文版加 `.en`。BBTI 導引頁保留 `/bbti`。 |
+| **路由**     | 中文在前、英文以 `/en` 開頭。首頁 `/` 與 `/en`，議程 `/agenda` 與 `/en/agenda`，行為準則 `/code-of-conduct` 與 `/en/code-of-conduct`，合作社群 `/communities` 與 `/en/communities`，成為贊助夥伴 `/call-for-sponsor` 與 `/en/call-for-sponsor`。路由名稱為 `landing`、`agenda`、`conduct`、`communities`、`call-for-sponsor`，英文版加 `.en`。BBTI 導引頁保留 `/bbti`。 |
 | **貨幣**     | 中文頁使用新台幣，格式 `NT$ 20,000`。英文頁使用歐元，格式 `€500`。                                                                                                                                                                            |
 | **專有名詞** | 公司與社群名稱依語言顯示，英文頁使用正式英文全名，如 Rabbit Gather Co., Ltd.。沒有英文名稱時，才沿用原文。                                                                                                                                    |
 | **文案位置** | 所有可見文字放在 `lang/zh_TW/` 與 `lang/en/`，Blade 以 `__('檔名.鍵')` 讀取。不要把文案寫死在 view。                                                                                                                                          |
@@ -464,20 +475,20 @@ TKUG 的內容半徑超過 0.5，也就是原圖的內容本來就會被圓形�
 | 6 | 贊助方案價格 | 中文頁 NT$ 20,000、10,000 與 5,000，英文頁 €500、250 與 125。席次限制不在官網顯示。 |
 | 7 | 贊助層級辨識 | 以邊框顏色區分金、銀、銅獎級，並保留文字標題。贊助方案卡片與贊助商卡片共用同一組 `tier-*` 色票，視覺統一。 |
 | 8 | 合作社群與贊助商 | 以 `config/` 管理清單，首頁顯示摘要，合作社群另有獨立頁面。 |
+| 9 | 議程 | 以 `config/agenda.php` 管理，雙軌共八場，首頁顯示摘要，完整內容在 `/agenda`。 |
+| 10 | BBTI 測驗 | 導引頁 `/bbti`、作答頁 `/quiz`、結果頁 `/results/{uuid}` 都已上線，頁面規則沿用本文件。 |
 | 9 | 圓形 Logo | 合作社群與贊助商的 Logo 一律裁成圓形，由 `x-circle-logo` 處理，並以 `logo_fit` 指定填滿方式，避免色差。 |
 
 ### 待辦
 
 | # | 項目 | 說明 | 建議 |
 | :---- | :---- | :---- | :---- |
-| 1 | **BBTI 導引頁尚未實作** | 路徑已定為 `/bbti`，文件已更新，但路由與 view 還沒有建立。 | 實作時沿用本文件的 token 與元件。 |
-| 2 | **BBTI 色票對齊** | `docs/screen-design-spec.md` 的色票仍是舊值，如 `#F5F1E8` 與 `#2F6B4F`。 | 改成本文件第 3 節的 token，並重新驗證四個維度識別色在新的底色上的對比。 |
-| 3 | **螢幕閱讀器實測** | 第 10.5 節要求以 VoiceOver 或 NVDA 讀過首頁與登入頁，尚未進行。 | 上線前完成一次，並記錄結果。 |
+| 1 | **BBTI 色票對齊** | `docs/screen-design-spec.md` 的色票仍是舊值，如 `#F5F1E8` 與 `#2F6B4F`。 | 改成本文件第 3 節的 token，並重新驗證四個維度識別色在新的底色上的對比。 |
+| 2 | **螢幕閱讀器實測** | 第 10.5 節要求以 VoiceOver 或 NVDA 讀過首頁與登入頁，尚未進行。 | 上線前完成一次，並記錄結果。 |
 | 3 | **插畫風格並存** | 官網主視覺是水彩，BBTI 吉祥物是扁平插畫。 | 同一頁面不混用，水彩用於情境，吉祥物用於角色與測驗。 |
 | 4 | **贊助商無聯絡方式** | 贊助方案區沒有行動按鈕。行為準則頁已有 `contact@mg.gatherconf.net`，但贊助洽詢尚未使用。 | 確認贊助洽詢是否使用同一個信箱，並加上次要按鈕。 |
 | 5 | **水彩插畫解析度** | 為 1024 px 寬，桌機會被放大。 | 重新生成 1600 px 以上的版本。 |
 | 6 | **dark 模式視覺檢查** | 對比已用數值驗證，但尚未實際在瀏覽器逐頁檢視。 | 在系統切換到深色模式後，檢查 Logo、吉祥物、水彩插畫與社群、贊助商卡片的呈現。 |
-| 7 | **單一項目的版面** | 合作社群與贊助商目前各只有一筆，網格看起來偏空。 | 資料增加後再評估，必要時改為置中或 Logo 列。 |
 
 ---
 
