@@ -2,18 +2,27 @@
 
 namespace App\Models;
 
+use Database\Factories\QuizAttemptFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 #[Fillable(['uuid', 'user_id', 'scores', 'max_scores', 'type_code', 'unique_bunny_path', 'unique_bunny_traits', 'completed_at'])]
 class QuizAttempt extends Model
 {
-    use SoftDeletes;
+    /** @use HasFactory<QuizAttemptFactory> */
+    use HasFactory, SoftDeletes;
 
     protected static function booted(): void
     {
+        static::deleting(function (QuizAttempt $attempt): void {
+            $attempt->discardUniqueBunny();
+        });
+
         static::saved(function (QuizAttempt $attempt): void {
             if ($attempt->user_id === null || $attempt->completed_at === null) {
                 return;
@@ -32,6 +41,34 @@ class QuizAttempt extends Model
                 CarrotLedger::siteDedupeKey('complete_quiz', $member),
             );
         });
+    }
+
+    /**
+     * Soft delete the results nobody claimed, finished before the given moment, together with their unique bunnies.
+     */
+    public static function clearGuests(Carbon $before): int
+    {
+        $cleared = 0;
+
+        static::query()
+            ->whereNull('user_id')
+            ->where('completed_at', '<', $before)
+            ->each(function (QuizAttempt $attempt) use (&$cleared): void {
+                $attempt->delete();
+                $cleared++;
+            });
+
+        return $cleared;
+    }
+
+    /**
+     * Remove the drawn bunny from its disk, leaving the type bunny as the only image of this result.
+     */
+    public function discardUniqueBunny(): void
+    {
+        if ($this->unique_bunny_path !== null) {
+            Storage::disk(config('filesystems.unique_bunny_disk'))->delete($this->unique_bunny_path);
+        }
     }
 
     /**

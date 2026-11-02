@@ -2,7 +2,7 @@
 
 本文件整理 BBTI（Bunny Builder Type Indicator）16 種類型的完整內容，資料來源為 `database/seeders/PersonalityTypeSeeder.php`（實際已 seed 進 `personality_types` 表的內容），作為文案／後台編輯／美術（兔子插畫）等後續工作的統一參考。每種類型除了摘要、說明、優勢與待成長，也包含結果頁顯示的「職涯發展建議」與「強化自己的方向」，內容對應資料表欄位 `career_advice` 與 `growth_directions`，後台「性格類型」可以直接編輯。
 
-四字代碼組字順序為 **NM → SV → HA → GD**（技術細節見 `docs/mbti-quiz-planning.md` 第 3、9 節），四個維度的正負極意義：
+四字代碼組字順序為 **NM → SV → HA → GD**（技術細節見 `docs/mbti-quiz-planning.md` 第 3、8 節），四個維度的正負極意義：
 
 | 位置 | 維度 | 正極 | 負極       |
 |---|---|---|------------|
@@ -328,4 +328,4 @@
 
 ## 與底圖素材的對應
 
-第 9 節（規劃書）提到的原始兔子底圖，檔名須對應此文件的代碼。16 種類型的底圖都已放入 `storage/app/private/bunny/`，其中 `NSHG` 與 `MVHD` 為 `.png`，其餘 14 張為 `.jpeg`。
+規劃書第 8 節提到的原始兔子底圖，檔名須對應此文件的代碼。16 種類型的底圖都已放入 `storage/app/private/bunny/`，其中 `NSHG` 與 `MVHD` 為 `.png`，其餘 14 張為 `.jpeg`。

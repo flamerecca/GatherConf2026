@@ -204,7 +204,7 @@ class AgendaTest extends TestCase
         $this->assertSame('Fynn Chen', $session['speaker_name']);
         $this->assertFileExists(resource_path('images/speakers/'.$session['speaker_photo']));
 
-        $this->get('/agenda')->assertSee('Fynn Chen')->assertSee('打造人與 AI Agent 協作的知識庫')->assertSee('從聊天到協作：認識 LLM、Agent 與 Session');
-        $this->get('/en/agenda')->assertSee('Building a Knowledge Base for Humans and AI Agents to Work Together');
+        $this->get('/agenda')->assertSee('Fynn Chen')->assertSee('Vibe Coding 的軟體工程基礎概論')->assertSee('從聊天到協作：認識 LLM、Agent 與 Session');
+        $this->get('/en/agenda')->assertSee('An Introduction to Software Engineering Fundamentals for Vibe Coding');
     }
 }

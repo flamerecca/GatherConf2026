@@ -94,8 +94,8 @@ return [
                 'en' => 'A full-stack engineer at a US company and an engineering consultant at LeadOwl, focused on system design and human-centered AI collaboration. Seen by PMs as a human GPT and a genie, he loves answering and communicating through analogies, and his passion for technology makes him glad to grant all kinds of wishes.',
             ],
             'title' => [
-                'zh_TW' => '打造人與 AI Agent 協作的知識庫',
-                'en' => 'Building a Knowledge Base for Humans and AI Agents to Work Together',
+                'zh_TW' => 'Vibe Coding 的軟體工程基礎概論',
+                'en' => 'An Introduction to Software Engineering Fundamentals for Vibe Coding',
             ],
             'outline' => [
                 'zh_TW' => '- 從聊天到協作：認識 LLM、Agent 與 Session，理解跨次工作需要保留哪些背景。
