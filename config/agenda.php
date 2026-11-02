@@ -192,8 +192,8 @@ A 20-year interior designer who has served more than 300 families, with a master
                     'speaker_name' => '楊政翰/藏鏡羊',
                     'speaker_photo' => 'capybara_18do.jpg',
                     'speaker_bio' => [
-                        'zh_TW' => '正從商業攝影轉型投入 AI 視覺產業，已用 AI 承接多個政府機關與工廠的行銷案。',
-                        'en' => 'Transitioning from commercial photography into the AI visual industry, and has already taken on marketing projects for several government agencies and factories with AI.',
+                        'zh_TW' => '正從商業攝影轉型投入 AI 視覺產業，已用 AI 承接多個政府機關與企業的行銷案。',
+                        'en' => 'Transitioning from commercial photography into the AI visual industry, and has already taken on marketing projects for several government agencies and businesses with AI.',
                     ],
                     'title' => [
                         'zh_TW' => '一位攝影師的AI 轉型實踐',
