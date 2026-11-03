@@ -83,7 +83,22 @@ return [
                 'en' => 'Vibe coding on nothing but "wishing by feel" often turns into an unfixable shanty by day four. In this 45-minute talk, I share the real pitfalls I hit building a side project with Google Antigravity, and how I combined the latest Silicon Valley thinking on AX (Agent Experience), Context Engineering and Agentic UX (human-agent collaboration experience) to build an AGENTS.md collaboration guide and automated guardrails step by step, so that the AI and I went from talking past each other and guessing blindly to aligning, building rapport, and becoming co-creators who protect the product UX together.',
             ],
         ]),
-        $session('a4', '13:45 - 14:30'),
+        array_replace($session('a4', '13:45 - 14:30'), [
+            'speaker_name' => 'Jimmy Huang',
+            'speaker_photo' => 'Jimmy.jpg',
+            'speaker_bio' => [
+                'zh_TW' => '擁有超過十年經驗的創意總監與品牌設計師，經歷橫跨國際代理商 HH Global、零售品牌 Bloomingdale’s 與 Newegg，也曾以共同創辦人暨創意總監的身份，從零打造新創品牌 EatMise。具平面設計學士背景，並修讀華盛頓大學人機互動與設計碩士（HCI + Design），2026 年 8 月畢業。2026 年初在 Figma 設計競賽獲獎，拿下北美洲冠軍。日常工作中大量使用 Cursor、Claude Code、v0 等 AI 工具，讓設計直接走到可運作的產品。目前定居台北，熟悉中英雙語及亞太市場。',
+                'en' => 'A creative director and brand designer with over a decade of experience across global agency HH Global and retail leaders like Bloomingdale’s and Newegg. Also co-founded and built the startup brand EatMise from the ground up as creative director. Holds a bachelor’s degree in Graphic Design and earned a Master’s in Human-Computer Interaction and Design (MHCID) from the University of Washington in August 2026. Named North America Champion at the Figma Design Competition in early 2026. Heavily integrates AI tools such as Cursor, Claude Code, and v0 into daily workflows to bridge the gap between design and functional products. Currently based in Taipei, fully bilingual in English and Chinese, with a deep understanding of the APAC market.',
+            ],
+            'title' => [
+                'zh_TW' => 'AI 時代的摩擦力與設計',
+                'en' => 'Friction & Design in the age of AI',
+            ],
+            'outline' => [
+                'zh_TW' => 'AI 很擅長加速設計迭代過程中的各種生產工作，但我認為在雙鑽石模型裡，有些流程與練習仍需要保留摩擦力，才能做出最好的以人為本的設計。',
+                'en' => 'While AI is great at accelerating production, among other things, in the iterative design process, I think it is still extremely important that some processes and exercises within the double diamond benefit from friction, to create the best possible human-centered design.',
+            ],
+        ]),
     ]],
     ['id' => 'b', 'sessions' => [
         array_replace($session('b1', '10:00 - 10:45'), [

@@ -22,7 +22,7 @@ class AgendaTest extends TestCase
         $this->assertCount(8, collect($tracks)->flatMap(fn (array $track) => $track['sessions'])->pluck('id')->unique());
     }
 
-    public function test_the_chinese_page_shows_eight_sessions_with_one_talk_placeholder(): void
+    public function test_the_chinese_page_shows_eight_sessions_without_talk_placeholders(): void
     {
         $response = $this->get('/agenda')->assertOk()
             ->assertSee('<h1', false)
@@ -31,19 +31,19 @@ class AgendaTest extends TestCase
             ->assertSee('第 4 場');
 
         $this->assertSame(8, substr_count($response->getContent(), 'data-session="'));
-        $this->assertSame(1, substr_count($response->getContent(), '議題待公布'));
-        $this->assertSame(1, substr_count($response->getContent(), '講者待公布'));
-        $this->assertSame(1, substr_count($response->getContent(), '議題大綱待公布'));
+        $this->assertSame(0, substr_count($response->getContent(), '議題待公布'));
+        $this->assertSame(0, substr_count($response->getContent(), '講者待公布'));
+        $this->assertSame(0, substr_count($response->getContent(), '議題大綱待公布'));
     }
 
-    public function test_the_english_page_shows_eight_sessions_with_one_talk_placeholder(): void
+    public function test_the_english_page_shows_eight_sessions_without_talk_placeholders(): void
     {
         $response = $this->get('/en/agenda')->assertOk()
             ->assertSee('Track A')
             ->assertSee('Track B')
             ->assertSee('Session 4');
 
-        $this->assertSame(1, substr_count($response->getContent(), 'Topic to be announced'));
+        $this->assertSame(0, substr_count($response->getContent(), 'Topic to be announced'));
     }
 
     public function test_filled_in_sessions_show_their_content_in_the_right_language(): void
@@ -206,5 +206,18 @@ class AgendaTest extends TestCase
 
         $this->get('/agenda')->assertSee('Fynn Chen')->assertSee('Vibe Coding 的軟體工程基礎概論')->assertSee('修改邊界與驗證：釐清需求與不變條件')->assertSee('交付、部署與維運');
         $this->get('/en/agenda')->assertSee('An Introduction to Software Engineering Fundamentals for Vibe Coding')->assertSee('Change boundaries and verification');
+    }
+
+    public function test_jimmy_huang_is_scheduled_for_track_a_last_slot(): void
+    {
+        $session = config('agenda.0.sessions.3');
+
+        $this->assertSame('a4', $session['id']);
+        $this->assertSame('13:45 - 14:30', $session['time']);
+        $this->assertSame('Jimmy Huang', $session['speaker_name']);
+        $this->assertFileExists(resource_path('images/speakers/'.$session['speaker_photo']));
+
+        $this->get('/agenda')->assertSee('Jimmy Huang')->assertSee('AI 時代的摩擦力與設計');
+        $this->get('/en/agenda')->assertSee('Friction &amp; Design in the age of AI', false);
     }
 }
