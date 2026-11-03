@@ -98,20 +98,12 @@ return [
                 'en' => 'An Introduction to Software Engineering Fundamentals for Vibe Coding',
             ],
             'outline' => [
-                'zh_TW' => '- 從聊天到協作：認識 LLM、Agent 與 Session，理解跨次工作需要保留哪些背景。
-- 管理短期記憶：掌握 Context 的限制，透過摘要、壓縮與拆分任務維持脈絡。
-- 建立長期記憶：將確認成果存入知識庫，再透過 RAG 找回相關資料。
-- 選擇儲存方式：比較不同方案，說明檔案如何支援人與 Agent 共同維護。
-- 組織知識庫：結合 Markdown、Git、Obsidian 與 LLM Wiki，整理來源、知識與規則。
-- 留下協作依據：用決策、證據、日誌、索引與守則，讓工作能被查證與接手。
-- 持續維護與應用：透過清楚寫作、圖表與 Skill，完成知識查找、核對及更新。',
-                'en' => '- From chat to collaboration: understand LLMs, agents and sessions, and what background must be kept across sessions.
-- Managing short-term memory: grasp the limits of context, and keep the thread through summaries, compression and splitting tasks.
-- Building long-term memory: store confirmed results in a knowledge base, then retrieve relevant material with RAG.
-- Choosing how to store it: compare the options, and explain how files let humans and agents maintain it together.
-- Organizing the knowledge base: combine Markdown, Git, Obsidian and an LLM Wiki to organize sources, knowledge and rules.
-- Leaving a basis for collaboration: use decisions, evidence, logs, indexes and guidelines so the work can be verified and handed over.
-- Keeping it maintained and in use: complete lookup, checking and updating of knowledge through clear writing, diagrams and Skills.',
+                'zh_TW' => '- 修改邊界與驗證：釐清需求與不變條件，認識 Harness，說明有效的 Unit Test、Coverage 與失敗情境。
+- 可維護性與交接：透過 EDD、ADR、AGENTS.md、Skill 與交接紀錄，保存設計及工作依據。
+- 交付、部署與維運：釐清環境責任，串接 CI/CD、資安檢查、設定管理、資料回復與運行觀測。',
+                'en' => '- Change boundaries and verification: clarify requirements and invariants, get to know the harness, and explain effective unit tests, coverage and failure scenarios.
+- Maintainability and handover: preserve the design and the basis of the work through EDD, ADRs, AGENTS.md, Skills and handover records.
+- Delivery, deployment and operations: clarify environment responsibilities, and connect CI/CD, security checks, configuration management, data recovery and runtime observability.',
             ],
         ]),
         array_replace($session('b2', '10:45 - 11:30'), [
