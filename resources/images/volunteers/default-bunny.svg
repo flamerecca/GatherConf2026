@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Volunteer bunny">
+  <rect width="400" height="400" fill="#dcebd2"/>
+  <circle cx="200" cy="420" r="230" fill="#8fbf7a"/>
+  <path d="M0 330 Q120 290 200 320 T400 300 V400 H0Z" fill="#6aa55a"/>
+  <g>
+    <ellipse cx="150" cy="105" rx="34" ry="86" fill="#f7f3ea" transform="rotate(-8 150 105)"/>
+    <ellipse cx="150" cy="108" rx="18" ry="62" fill="#f2b5bd" transform="rotate(-8 150 108)"/>
+    <ellipse cx="250" cy="105" rx="34" ry="86" fill="#f7f3ea" transform="rotate(8 250 105)"/>
+    <ellipse cx="250" cy="108" rx="18" ry="62" fill="#f2b5bd" transform="rotate(8 250 108)"/>
+    <ellipse cx="200" cy="255" rx="105" ry="95" fill="#f7f3ea"/>
+    <ellipse cx="148" cy="278" rx="20" ry="13" fill="#f6c3c0" opacity=".8"/>
+    <ellipse cx="252" cy="278" rx="20" ry="13" fill="#f6c3c0" opacity=".8"/>
+    <circle cx="160" cy="240" r="11" fill="#2f3a2c"/>
+    <circle cx="240" cy="240" r="11" fill="#2f3a2c"/>
+    <circle cx="164" cy="236" r="3.5" fill="#fff"/>
+    <circle cx="244" cy="236" r="3.5" fill="#fff"/>
+    <path d="M188 266 Q200 258 212 266 Q206 276 200 276 Q194 276 188 266Z" fill="#e58f9a"/>
+    <path d="M200 276 V288 M200 288 Q188 298 178 290 M200 288 Q212 298 222 290" fill="none" stroke="#2f3a2c" stroke-width="4" stroke-linecap="round"/>
+  </g>
+  <g transform="translate(300 330) rotate(-12)">
+    <path d="M0 0 C-22 -4 -26 -34 0 -62 C26 -34 22 -4 0 0Z" fill="#f08a3c"/>
+    <path d="M0 -62 C-10 -80 -4 -90 0 -92 C4 -90 10 -80 0 -62Z" fill="#4c8a3c"/>
+  </g>
+</svg>

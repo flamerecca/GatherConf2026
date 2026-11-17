@@ -29,6 +29,8 @@ class AccessibilityTest extends TestCase
             'agenda en' => ['/en/agenda', 'Skip to main content'],
             'conduct zh' => ['/code-of-conduct', '跳到主要內容'],
             'communities en' => ['/en/communities', 'Skip to main content'],
+            'volunteers zh' => ['/volunteers', '跳到主要內容'],
+            'volunteers en' => ['/en/volunteers', 'Skip to main content'],
             'call for sponsor zh' => ['/call-for-sponsor', '跳到主要內容'],
             'member login zh' => ['/login', '跳到主要內容'],
             'member login en' => ['/en/login', 'Skip to main content'],

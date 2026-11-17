@@ -62,6 +62,18 @@ Route::get('/en/agenda', function () {
     return view('agenda');
 })->name('agenda.en');
 
+Route::get('/volunteers', function () {
+    app()->setLocale('zh_TW');
+
+    return view('volunteers');
+})->name('volunteers');
+
+Route::get('/en/volunteers', function () {
+    app()->setLocale('en');
+
+    return view('volunteers');
+})->name('volunteers.en');
+
 Route::get('/communities', function () {
     app()->setLocale('zh_TW');
 
@@ -175,7 +187,7 @@ Route::get('/llms.txt', function () {
         ->map(fn (array $s) => '- ['.$s['name']['en'].']('.$s['url'].'), '.$s['tier'])
         ->implode("\n");
 
-    $url = collect(['landing', 'landing.en', 'agenda', 'conduct', 'communities', 'call-for-sponsor', 'bbti'])
+    $url = collect(['landing', 'landing.en', 'agenda', 'conduct', 'communities', 'volunteers', 'call-for-sponsor', 'bbti'])
         ->mapWithKeys(fn (string $name) => [$name => route($name)]);
 
     $body = <<<MD
@@ -189,6 +201,7 @@ Route::get('/llms.txt', function () {
 - [Agenda]({$url['agenda']}): two tracks, eight sessions
 - [Code of conduct]({$url['conduct']}): behaviour expected of everyone at the event
 - [Communities]({$url['communities']}): partner communities
+- [Volunteers]({$url['volunteers']}): thanks to the volunteers who run the event
 - [Call for sponsors]({$url['call-for-sponsor']}): sponsorship tiers and how to join
 - [BBTI quiz]({$url['bbti']}): a playful 12-question maker personality quiz with 16 bunny types
 
@@ -235,7 +248,7 @@ TXT;
 })->name('humans');
 
 Route::get('/sitemap.xml', function () {
-    $urlset = view('sitemap', ['pages' => ['landing', 'conduct', 'agenda', 'bbti', 'communities', 'call-for-sponsor']])->render();
+    $urlset = view('sitemap', ['pages' => ['landing', 'conduct', 'agenda', 'bbti', 'communities', 'volunteers', 'call-for-sponsor']])->render();
 
     return response('<?xml version="1.0" encoding="UTF-8"?>'."\n".$urlset)
         ->header('Content-Type', 'application/xml');

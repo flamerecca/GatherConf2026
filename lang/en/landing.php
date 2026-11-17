@@ -15,6 +15,7 @@ return [
     'member_center_carrots' => 'Member center · 🥕 :count',
     'agenda_link' => 'Agenda',
     'communities_link' => 'Community Partners',
+    'volunteers_link' => 'Volunteers',
     'mascot_alt' => 'GatherConf mascot Bunny',
     'gathering_alt' => 'Watercolor illustration of many people at a conference in a forest, some listening to a talk and some discussing around a table',
     'bbti_cta' => 'Find your maker bunny',

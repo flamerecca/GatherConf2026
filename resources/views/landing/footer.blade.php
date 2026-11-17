@@ -9,6 +9,7 @@
         <a href="{{ app()->getLocale() === 'en' ? route('conduct.en') : route('conduct') }}" class="inline-flex min-h-6 items-center text-gold underline">{{ __('landing.conduct_link') }}</a>
         <a href="{{ app()->getLocale() === 'en' ? route('agenda.en') : route('agenda') }}" class="inline-flex min-h-6 items-center text-gold underline">{{ __('landing.agenda_link') }}</a>
         <a href="{{ app()->getLocale() === 'en' ? route('communities.en') : route('communities') }}" class="inline-flex min-h-6 items-center text-gold underline">{{ __('landing.communities_link') }}</a>
+        <a href="{{ app()->getLocale() === 'en' ? route('volunteers.en') : route('volunteers') }}" class="inline-flex min-h-6 items-center text-gold underline">{{ __('landing.volunteers_link') }}</a>
         <a href="{{ app()->getLocale() === 'en' ? route('call-for-sponsor.en') : route('call-for-sponsor') }}" class="inline-flex min-h-6 items-center text-gold underline">{{ __('landing.sponsor_link') }}</a>
         <a href="{{ app()->getLocale() === 'en' ? route('member.login.en') : route('member.login') }}" class="inline-flex min-h-6 items-center text-gold underline">{{ __('landing.member_login_link') }}</a>
     </div>
