@@ -15,7 +15,7 @@ class CallForSponsorTest extends TestCase
 
     public function test_chinese_page_shows_tiers_event_details_and_apply_info(): void
     {
-        $this->get('/call-for-sponsor')
+        $this->get('/2026/call-for-sponsor')
             ->assertOk()
             ->assertSee('邀請你成為共聚年會的贊助夥伴')
             ->assertSee('NT$ 20,000')
@@ -30,7 +30,7 @@ class CallForSponsorTest extends TestCase
 
     public function test_english_page_shows_english_copy(): void
     {
-        $this->get('/en/call-for-sponsor')
+        $this->get('/2026/en/call-for-sponsor')
             ->assertOk()
             ->assertSee('Become a GatherConf sponsor')
             ->assertSee('Gold Tier')
@@ -40,7 +40,7 @@ class CallForSponsorTest extends TestCase
 
     public function test_comparison_table_lists_every_benefit_once_with_tier_columns(): void
     {
-        $page = $this->get('/call-for-sponsor')->assertOk();
+        $page = $this->get('/2026/call-for-sponsor')->assertOk();
 
         $html = $page->getContent();
         $this->assertSame(1, substr_count($html, '<th scope="row" class="p-4 font-medium">宣傳文案內 Logo 曝光</th>'));
@@ -50,7 +50,7 @@ class CallForSponsorTest extends TestCase
 
     public function test_only_the_gold_tier_includes_the_lightning_talk(): void
     {
-        $html = $this->get('/call-for-sponsor')->getContent();
+        $html = $this->get('/2026/call-for-sponsor')->getContent();
 
         $row = $this->rowFor($html, '閃電講 5 分鐘宣傳');
 
@@ -67,14 +67,14 @@ class CallForSponsorTest extends TestCase
 
     public function test_landing_page_and_footer_link_to_the_page(): void
     {
-        $this->get('/')->assertSee(route('call-for-sponsor'), false);
-        $this->get('/en')->assertSee(route('call-for-sponsor.en'), false);
-        $this->get('/communities')->assertSee(route('call-for-sponsor'), false);
+        $this->get('/2026')->assertSee(route('call-for-sponsor'), false);
+        $this->get('/2026/en')->assertSee(route('call-for-sponsor.en'), false);
+        $this->get('/2026/communities')->assertSee(route('call-for-sponsor'), false);
     }
 
     public function test_page_has_canonical_and_alternate_links(): void
     {
-        $this->get('/call-for-sponsor')
+        $this->get('/2026/call-for-sponsor')
             ->assertSee('<link rel="canonical" href="'.route('call-for-sponsor').'">', false)
             ->assertSee('hreflang="en" href="'.route('call-for-sponsor.en').'"', false);
     }

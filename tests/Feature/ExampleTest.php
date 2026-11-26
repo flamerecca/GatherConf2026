@@ -15,7 +15,7 @@ class ExampleTest extends TestCase
 
     public function test_chinese_landing_page_shows_event_details(): void
     {
-        $this->get('/')
+        $this->get('/2026')
             ->assertOk()
             ->assertSee('共聚年會')
             ->assertSee('2026-11-21 09:00-17:00')
@@ -31,7 +31,7 @@ class ExampleTest extends TestCase
 
     public function test_english_landing_page_shows_event_details(): void
     {
-        $this->get('/en')
+        $this->get('/2026/en')
             ->assertOk()
             ->assertSee('Our mission is to create an open, inclusive, and dynamic platform')
             ->assertSee('Why GatherConf')
@@ -48,26 +48,26 @@ class ExampleTest extends TestCase
 
     public function test_the_landing_hero_links_to_the_bbti_quiz_in_both_languages(): void
     {
-        $this->get('/')->assertSee('data-hero-bbti', false)->assertSee(route('bbti'), false)->assertSee('測測你是哪種創客兔');
-        $this->get('/en')->assertSee(route('bbti.en'), false)->assertSee('Find your maker bunny');
+        $this->get('/2026')->assertSee('data-hero-bbti', false)->assertSee(route('bbti'), false)->assertSee('測測你是哪種創客兔');
+        $this->get('/2026/en')->assertSee(route('bbti.en'), false)->assertSee('Find your maker bunny');
     }
 
     public function test_language_switch_links_to_the_other_locale(): void
     {
-        $this->get('/')->assertSee(route('landing.en'), false);
-        $this->get('/en')->assertSee(route('landing'), false);
+        $this->get('/2026')->assertSee(route('landing.en'), false);
+        $this->get('/2026/en')->assertSee(route('landing'), false);
     }
 
     public function test_code_of_conduct_pages_are_available_in_both_languages(): void
     {
-        $this->get('/code-of-conduct')
+        $this->get('/2026/code-of-conduct')
             ->assertOk()
             ->assertSee('行為準則')
             ->assertSee('禁止的行為')
             ->assertSee('mailto:contact@mg.gatherconf.net', false)
             ->assertSee(route('conduct.en'), false);
 
-        $this->get('/en/code-of-conduct')
+        $this->get('/2026/en/code-of-conduct')
             ->assertOk()
             ->assertSee('Prohibited Behavior')
             ->assertSee('mailto:contact@mg.gatherconf.net', false)
@@ -77,17 +77,17 @@ class ExampleTest extends TestCase
 
     public function test_landing_footer_links_to_the_code_of_conduct(): void
     {
-        $this->get('/')
+        $this->get('/2026')
             ->assertSee(route('conduct'), false)
             ->assertSee('data-theme-toggle', false)
             ->assertSeeInOrder(['<nav', route('conduct'), '</nav>', '<footer'], false);
-        $this->get('/code-of-conduct')->assertSee('data-theme-toggle', false);
-        $this->get('/en')->assertSee(route('conduct.en'), false);
+        $this->get('/2026/code-of-conduct')->assertSee('data-theme-toggle', false);
+        $this->get('/2026/en')->assertSee(route('conduct.en'), false);
     }
 
     public function test_communities_pages_list_partner_logos_in_both_languages(): void
     {
-        $this->get('/communities')
+        $this->get('/2026/communities')
             ->assertOk()
             ->assertSee('合作社群')
             ->assertSee('Taiwan Kotlin User Group')
@@ -113,7 +113,7 @@ class ExampleTest extends TestCase
             ->assertSee('https://www.facebook.com/groups/wordpresstw', false)
             ->assertSee(route('communities.en'), false);
 
-        $this->get('/en/communities')
+        $this->get('/2026/en/communities')
             ->assertOk()
             ->assertSee('Community Partners')
             ->assertSee('Taiwan Kotlin User Group')
@@ -131,18 +131,18 @@ class ExampleTest extends TestCase
 
     public function test_claude_taiwan_is_listed_as_a_community_partner(): void
     {
-        $this->get('/communities')
+        $this->get('/2026/communities')
             ->assertSee('Claude Taiwan')
             ->assertSee('https://www.facebook.com/share/g/1DmSxiabtn/', false);
 
-        $this->get('/en/communities')
+        $this->get('/2026/en/communities')
             ->assertSee('Claude Taiwan')
             ->assertSee('A community for Claude users in Taiwan');
     }
 
     public function test_landing_images_are_served_as_responsive_avif_and_webp_with_a_png_fallback(): void
     {
-        $html = $this->get('/')->assertOk()->getContent();
+        $html = $this->get('/2026')->assertOk()->getContent();
 
         foreach (['illustrations/community-gathering-watercolor' => [1024, 572], 'illustrations/community-silos-watercolor' => [1024, 434]] as $name => [$width, $height]) {
             foreach ([360, 480, 576, 672, 768, 864, 960, 1024] as $variant) {
@@ -176,13 +176,13 @@ class ExampleTest extends TestCase
             }
         }
 
-        $html = $this->get('/communities')->assertOk()->getContent();
+        $html = $this->get('/2026/communities')->assertOk()->getContent();
 
         $this->assertSame(count(config('communities')), preg_match_all('/200w,\s+400w,\s+500w"/', $html));
         $this->assertStringContainsString('sizes="160px"', $html);
         $this->assertStringContainsString('width="160" height="160"', $html);
 
-        $this->assertStringContainsString('sizes="192px"', $this->get('/')->getContent());
+        $this->assertStringContainsString('sizes="192px"', $this->get('/2026')->getContent());
     }
 
     public function test_the_site_logo_is_served_as_responsive_webp(): void
@@ -191,16 +191,16 @@ class ExampleTest extends TestCase
             $this->assertFileExists(resource_path("images/brand/GatherConf-Logo-{$width}.webp"));
         }
 
-        $this->assertSame(2, substr_count($this->get('/')->getContent(), '128w, '));
-        $this->assertSame(2, substr_count($this->get('/agenda')->getContent(), '128w, '));
-        $this->assertSame(2, substr_count($this->get('/')->getContent(), 'fetchpriority="high"'));
-        $this->assertSame(1, preg_match('/<img[^>]*width="687"[^>]*>/s', $this->get('/')->getContent(), $heroLogo));
+        $this->assertSame(2, substr_count($this->get('/2026')->getContent(), '128w, '));
+        $this->assertSame(2, substr_count($this->get('/2026/agenda')->getContent(), '128w, '));
+        $this->assertSame(2, substr_count($this->get('/2026')->getContent(), 'fetchpriority="high"'));
+        $this->assertSame(1, preg_match('/<img[^>]*width="687"[^>]*>/s', $this->get('/2026')->getContent(), $heroLogo));
         $this->assertStringContainsString('fetchpriority="high"', $heroLogo[0]);
     }
 
     public function test_the_gathering_illustration_is_preloaded_with_high_priority_only_on_wide_screens(): void
     {
-        $html = $this->get('/')->assertOk()->getContent();
+        $html = $this->get('/2026')->assertOk()->getContent();
 
         preg_match('/<img[^>]*width="1024" height="572"[^>]*>/s', $html, $gathering);
         preg_match('/<img[^>]*width="1024" height="434"[^>]*>/s', $html, $silos);
@@ -220,7 +220,7 @@ class ExampleTest extends TestCase
             $this->assertFileExists(resource_path("images/bunny/NVHG-{$width}.webp"));
         }
 
-        $html = $this->get('/')->assertOk()->getContent();
+        $html = $this->get('/2026')->assertOk()->getContent();
 
         $this->assertSame(1, preg_match('/<img[^>]*alt="GatherConf 吉祥物 Bunny"[^>]*>/s', $html, $mascot));
         $this->assertStringContainsString('loading="lazy"', $mascot[0]);
@@ -230,18 +230,18 @@ class ExampleTest extends TestCase
 
     public function test_landing_footer_links_to_the_communities_page(): void
     {
-        $this->get('/')->assertSee(route('communities'), false);
-        $this->get('/en')->assertSee(route('communities.en'), false);
+        $this->get('/2026')->assertSee(route('communities'), false);
+        $this->get('/2026/en')->assertSee(route('communities.en'), false);
     }
 
     public function test_landing_page_shows_the_community_partners_section(): void
     {
-        $this->get('/')
+        $this->get('/2026')
             ->assertSee('合作社群')
             ->assertSee('Taiwan Kotlin User Group')
             ->assertSeeInOrder(['年會概述', '合作社群', '贊助方案']);
 
-        $this->get('/en')
+        $this->get('/2026/en')
             ->assertSee('Community Partners')
             ->assertSee('Taiwan Kotlin User Group')
             ->assertSeeInOrder(['Conference Overview', 'Community Partners', 'Sponsorship']);
@@ -249,7 +249,7 @@ class ExampleTest extends TestCase
 
     public function test_sponsorship_tiers_and_sponsors_share_the_same_tier_border_colors(): void
     {
-        $this->get('/')
+        $this->get('/2026')
             ->assertSee('border-4 border-tier-gold', false)
             ->assertSee('border-4 border-tier-silver', false)
             ->assertSee('border-4 border-tier-bronze', false);
@@ -257,12 +257,12 @@ class ExampleTest extends TestCase
 
     public function test_landing_page_lists_current_sponsors_after_the_sponsorship_tiers(): void
     {
-        $this->get('/')
+        $this->get('/2026')
             ->assertSeeInOrder(['贊助方案', '感謝贊助商', '金獎級', '兔給得資訊有限公司'])
             ->assertSee('size-48 rounded-full', false)
             ->assertSee('https://www.rabbit-gather.com/', false);
 
-        $this->get('/en')
+        $this->get('/2026/en')
             ->assertSeeInOrder(['Sponsorship', 'Our Sponsors', 'Gold Tier', 'Rabbit Gather Co., Ltd.'])
             ->assertDontSee('兔給得資訊有限公司')
             ->assertSee('https://www.rabbit-gather.com/', false);
@@ -270,22 +270,22 @@ class ExampleTest extends TestCase
 
     public function test_jetbrains_is_listed_as_a_bronze_sponsor(): void
     {
-        $this->get('/')
+        $this->get('/2026')
             ->assertSeeInOrder(['感謝贊助商', '金獎級', '兔給得資訊有限公司', '銅獎級', 'JetBrains'])
             ->assertSee('size-32 rounded-full', false)
             ->assertSee('https://www.jetbrains.com/', false);
 
-        $this->get('/en')
+        $this->get('/2026/en')
             ->assertSeeInOrder(['Our Sponsors', 'Gold Tier', 'Rabbit Gather Co., Ltd.', 'Bronze Tier', 'JetBrains']);
     }
 
     public function test_leadowl_is_listed_as_a_gold_sponsor(): void
     {
-        $this->get('/')
+        $this->get('/2026')
             ->assertSeeInOrder(['金獎級', '領角鴞資訊整合有限公司', '兔給得資訊有限公司', '銅獎級', 'JetBrains'])
             ->assertSee('https://odoo.leadowl.tw/', false);
 
-        $this->get('/en')
+        $this->get('/2026/en')
             ->assertSeeInOrder(['Gold Tier', 'Leadowl Information Integration Co., Ltd.', 'Rabbit Gather Co., Ltd.', 'Bronze Tier', 'JetBrains'])
             ->assertDontSee('領角鴞資訊整合有限公司');
     }
@@ -294,7 +294,7 @@ class ExampleTest extends TestCase
     {
         config(['sponsors' => []]);
 
-        $this->get('/')->assertDontSee('感謝贊助商');
+        $this->get('/2026')->assertDontSee('感謝贊助商');
     }
 
     public function test_every_page_declares_canonical_alternates_and_social_metadata(): void
@@ -319,7 +319,7 @@ class ExampleTest extends TestCase
 
     public function test_landing_page_embeds_event_structured_data(): void
     {
-        $response = $this->get('/')->assertOk()->assertSee('application/ld+json', false);
+        $response = $this->get('/2026')->assertOk()->assertSee('application/ld+json', false);
 
         preg_match('/<script type="application\/ld\+json">(.*?)<\/script>/s', $response->getContent(), $matches);
         $graph = json_decode($matches[1], true)['@graph'];
@@ -330,7 +330,7 @@ class ExampleTest extends TestCase
         $this->assertSame('台大綜合教學館 綜201-203', $event['location']['name']);
         $this->assertSame('https://luma.com/wfjisb47', $event['offers']['url']);
 
-        $this->get('/communities')->assertDontSee('application/ld+json', false);
+        $this->get('/2026/communities')->assertDontSee('application/ld+json', false);
     }
 
     public function test_llms_and_humans_files_are_served_as_plain_text(): void

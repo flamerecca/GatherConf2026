@@ -19,35 +19,35 @@ class MemberEntryPointsTest extends TestCase
 
     public function test_landing_footer_links_to_member_login_in_both_languages(): void
     {
-        $this->get('/')->assertSee(route('member.login'), false)->assertSee('會員登入');
-        $this->get('/en')->assertSee(route('member.login.en'), false)->assertSee('Member login');
+        $this->get('/2026')->assertSee(route('member.login'), false)->assertSee('會員登入');
+        $this->get('/2026/en')->assertSee(route('member.login.en'), false)->assertSee('Member login');
     }
 
     public function test_landing_header_shows_member_center_when_logged_in(): void
     {
         $this->actingAs(Member::factory()->create(['carrots' => 7]), 'member');
 
-        $this->get('/')->assertSee('會員頁面 · 🥕 7')->assertSee('href="'.route('member.center').'"', false);
-        $this->get('/en')->assertSee('Member center · 🥕 7')->assertSee('href="'.route('member.center.en').'"', false);
+        $this->get('/2026')->assertSee('會員頁面 · 🥕 7')->assertSee('href="'.route('member.center').'"', false);
+        $this->get('/2026/en')->assertSee('Member center · 🥕 7')->assertSee('href="'.route('member.center.en').'"', false);
     }
 
     public function test_landing_header_button_turns_red_when_the_balance_is_negative(): void
     {
         $this->actingAs(Member::factory()->create(['carrots' => -2]), 'member');
 
-        $this->get('/')->assertSee('會員頁面 · 🥕 -2')->assertSee('bg-red-700', false);
+        $this->get('/2026')->assertSee('會員頁面 · 🥕 -2')->assertSee('bg-red-700', false);
     }
 
     public function test_landing_header_button_is_not_red_when_the_balance_is_not_negative(): void
     {
         $this->actingAs(Member::factory()->create(['carrots' => 0]), 'member');
 
-        $this->get('/')->assertSee('會員頁面 · 🥕 0')->assertDontSee('bg-red-700', false);
+        $this->get('/2026')->assertSee('會員頁面 · 🥕 0')->assertDontSee('bg-red-700', false);
     }
 
     public function test_landing_header_shows_member_login_when_guest(): void
     {
-        $this->get('/')->assertDontSee('會員頁面');
+        $this->get('/2026')->assertDontSee('會員頁面');
     }
 
     public function test_robots_txt_blocks_member_pages(): void

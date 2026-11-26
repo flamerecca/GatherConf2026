@@ -29,70 +29,82 @@ Route::get('/assets/{file}', AssetController::class)
 Route::get('/', function () {
     app()->setLocale('zh_TW');
 
+    return view('home');
+})->name('home');
+
+Route::get('/en', function () {
+    app()->setLocale('en');
+
+    return view('home');
+})->name('home.en');
+
+Route::get('/2026', function () {
+    app()->setLocale('zh_TW');
+
     return view('landing');
 })->name('landing');
 
-Route::get('/en', function () {
+Route::get('/2026/en', function () {
     app()->setLocale('en');
 
     return view('landing');
 })->name('landing.en');
 
-Route::get('/code-of-conduct', function () {
+Route::get('/2026/code-of-conduct', function () {
     app()->setLocale('zh_TW');
 
     return view('code-of-conduct');
 })->name('conduct');
 
-Route::get('/en/code-of-conduct', function () {
+Route::get('/2026/en/code-of-conduct', function () {
     app()->setLocale('en');
 
     return view('code-of-conduct');
 })->name('conduct.en');
 
-Route::get('/agenda', function () {
+Route::get('/2026/agenda', function () {
     app()->setLocale('zh_TW');
 
     return view('agenda');
 })->name('agenda');
 
-Route::get('/en/agenda', function () {
+Route::get('/2026/en/agenda', function () {
     app()->setLocale('en');
 
     return view('agenda');
 })->name('agenda.en');
 
-Route::get('/volunteers', function () {
+Route::get('/2026/volunteers', function () {
     app()->setLocale('zh_TW');
 
     return view('volunteers');
 })->name('volunteers');
 
-Route::get('/en/volunteers', function () {
+Route::get('/2026/en/volunteers', function () {
     app()->setLocale('en');
 
     return view('volunteers');
 })->name('volunteers.en');
 
-Route::get('/communities', function () {
+Route::get('/2026/communities', function () {
     app()->setLocale('zh_TW');
 
     return view('communities');
 })->name('communities');
 
-Route::get('/en/communities', function () {
+Route::get('/2026/en/communities', function () {
     app()->setLocale('en');
 
     return view('communities');
 })->name('communities.en');
 
-Route::get('/call-for-sponsor', function () {
+Route::get('/2026/call-for-sponsor', function () {
     app()->setLocale('zh_TW');
 
     return view('call-for-sponsor');
 })->name('call-for-sponsor');
 
-Route::get('/en/call-for-sponsor', function () {
+Route::get('/2026/en/call-for-sponsor', function () {
     app()->setLocale('en');
 
     return view('call-for-sponsor');
@@ -187,17 +199,18 @@ Route::get('/llms.txt', function () {
         ->map(fn (array $s) => '- ['.$s['name']['en'].']('.$s['url'].'), '.$s['tier'])
         ->implode("\n");
 
-    $url = collect(['landing', 'landing.en', 'agenda', 'conduct', 'communities', 'volunteers', 'call-for-sponsor', 'bbti'])
+    $url = collect(['home', 'home.en', 'landing', 'landing.en', 'agenda', 'conduct', 'communities', 'volunteers', 'call-for-sponsor', 'bbti'])
         ->mapWithKeys(fn (string $name) => [$name => route($name)]);
 
     $body = <<<MD
 # GatherConf 2026
 
-> GatherConf 2026 is a one-day conference that brings Taiwan's tech communities into the same room. Date: 2026-11-21. Venue: National Taiwan University, General Teaching Building, rooms 201-203. About 120 attendees, two tracks with eight sessions, plus open space. Pages are available in Traditional Chinese and English, English URLs start with /en.
+> GatherConf is a one-day conference that brings Taiwan's tech communities into the same room. The 2026 edition took place on 2026-11-21 and has ended, the next edition is being planned. Venue: National Taiwan University, General Teaching Building, rooms 201-203. The 2026 edition had about 120 attendees, two tracks with eight sessions, plus open space. Pages are available in Traditional Chinese and English, English URLs start with /en.
 
 ## Pages
 
-- [Home]({$url['landing']}): overview, schedule, partner communities and sponsors
+- [Home]({$url['home']}): the event has ended, a fixed page looking forward to the next one
+- [GatherConf 2026]({$url['landing']}): archive of the 2026 event with overview, schedule, partner communities and sponsors
 - [Agenda]({$url['agenda']}): two tracks, eight sessions
 - [Code of conduct]({$url['conduct']}): behaviour expected of everyone at the event
 - [Communities]({$url['communities']}): partner communities
@@ -215,8 +228,8 @@ Route::get('/llms.txt', function () {
 
 ## Optional
 
-- [Traditional Chinese home]({$url['landing']}): the default language
-- [English home]({$url['landing.en']}): English version
+- [Traditional Chinese home]({$url['home']}): the default language
+- [English home]({$url['home.en']}): English version
 MD;
 
     return response($body."\n")->header('Content-Type', 'text/plain; charset=UTF-8');
@@ -248,7 +261,7 @@ TXT;
 })->name('humans');
 
 Route::get('/sitemap.xml', function () {
-    $urlset = view('sitemap', ['pages' => ['landing', 'conduct', 'agenda', 'bbti', 'communities', 'volunteers', 'call-for-sponsor']])->render();
+    $urlset = view('sitemap', ['pages' => ['home', 'landing', 'conduct', 'agenda', 'bbti', 'communities', 'volunteers', 'call-for-sponsor']])->render();
 
     return response('<?xml version="1.0" encoding="UTF-8"?>'."\n".$urlset)
         ->header('Content-Type', 'application/xml');

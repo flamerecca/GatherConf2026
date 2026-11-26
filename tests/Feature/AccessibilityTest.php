@@ -23,15 +23,17 @@ class AccessibilityTest extends TestCase
     public static function publicPages(): array
     {
         return [
-            'landing zh' => ['/', '跳到主要內容'],
-            'landing en' => ['/en', 'Skip to main content'],
-            'agenda zh' => ['/agenda', '跳到主要內容'],
-            'agenda en' => ['/en/agenda', 'Skip to main content'],
-            'conduct zh' => ['/code-of-conduct', '跳到主要內容'],
-            'communities en' => ['/en/communities', 'Skip to main content'],
-            'volunteers zh' => ['/volunteers', '跳到主要內容'],
-            'volunteers en' => ['/en/volunteers', 'Skip to main content'],
-            'call for sponsor zh' => ['/call-for-sponsor', '跳到主要內容'],
+            'home zh' => ['/', '跳到主要內容'],
+            'home en' => ['/en', 'Skip to main content'],
+            'landing zh' => ['/2026', '跳到主要內容'],
+            'landing en' => ['/2026/en', 'Skip to main content'],
+            'agenda zh' => ['/2026/agenda', '跳到主要內容'],
+            'agenda en' => ['/2026/en/agenda', 'Skip to main content'],
+            'conduct zh' => ['/2026/code-of-conduct', '跳到主要內容'],
+            'communities en' => ['/2026/en/communities', 'Skip to main content'],
+            'volunteers zh' => ['/2026/volunteers', '跳到主要內容'],
+            'volunteers en' => ['/2026/en/volunteers', 'Skip to main content'],
+            'call for sponsor zh' => ['/2026/call-for-sponsor', '跳到主要內容'],
             'member login zh' => ['/login', '跳到主要內容'],
             'member login en' => ['/en/login', 'Skip to main content'],
         ];

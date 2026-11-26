@@ -48,6 +48,6 @@ class LoginController extends MemberController
         $request->session()->regenerate();
         $request->session()->regenerateToken();
 
-        return redirect(route(app()->getLocale() === 'en' ? 'landing.en' : 'landing'));
+        return redirect(route(app()->getLocale() === 'en' ? 'home.en' : 'home'));
     }
 }
