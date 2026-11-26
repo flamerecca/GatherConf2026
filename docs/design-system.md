@@ -1,6 +1,6 @@
 # GatherConf 官網 Design System
 
-本文件整理 GatherConf 官網目前實際使用的視覺語言，範圍包含 landing page、議程頁、行為準則頁與合作社群頁，網址對照見第 9 節，並補上之後新增頁面時應遵守的規則。內容依據為 `resources/css/app.css`、`resources/views/`、`resources/images/`、`config/`、`lang/`、〈使命宣言〉、〈舉辦緣由〉與 `docs/screen-design-spec.md`。BBTI 測驗頁面特有的規格見 `docs/screen-design-spec.md`，色票與間距以本文件為準。
+本文件整理 GatherConf 官網目前實際使用的視覺語言，範圍包含 landing page、議程頁、行為準則頁與合作社群頁，網址對照見第 9 節，並補上之後新增頁面時應遵守的規則。2026 年會結束後，年會頁面搬到 `/2026` 底下，`/` 改為期待下次活動的固定頁面。本文件的「首頁」除非特別說明，指的都是 2026 年會首頁 `/2026`，路由名稱 `landing`。內容依據為 `resources/css/app.css`、`resources/views/`、`resources/images/`、`config/`、`lang/`、〈使命宣言〉、〈舉辦緣由〉與 `docs/screen-design-spec.md`。BBTI 測驗頁面特有的規格見 `docs/screen-design-spec.md`，色票與間距以本文件為準。
 
 > 狀態：初稿，已套用主辦團隊的決定，色票以 Logo 為準、支援 light 與 dark、間距只用偶數步階。第 11 節列出尚待處理的項目。
 
@@ -371,7 +371,7 @@ TKUG 的內容半徑超過 0.5，也就是原圖的內容本來就會被圓形�
 
 | 項目         | 規則                                                                                                                                                                                                                                          |
 |:-------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **路由**     | 中文在前、英文以 `/en` 開頭。首頁 `/` 與 `/en`，議程 `/agenda` 與 `/en/agenda`，行為準則 `/code-of-conduct` 與 `/en/code-of-conduct`，合作社群 `/communities` 與 `/en/communities`，成為贊助夥伴 `/call-for-sponsor` 與 `/en/call-for-sponsor`。路由名稱為 `landing`、`agenda`、`conduct`、`communities`、`call-for-sponsor`，英文版加 `.en`。BBTI 導引頁保留 `/bbti`。 |
+| **路由**     | 中文在前、英文以 `/en` 開頭。官網首頁 `/` 與 `/en`，路由名稱 `home`。2026 年會頁面都在 `/2026` 底下，英文版在 `/2026/en` 底下：年會首頁 `/2026`，議程 `/2026/agenda`，行為準則 `/2026/code-of-conduct`，合作社群 `/2026/communities`，感謝志工 `/2026/volunteers`，成為贊助夥伴 `/2026/call-for-sponsor`。路由名稱為 `landing`、`agenda`、`conduct`、`communities`、`volunteers`、`call-for-sponsor`，英文版加 `.en`。舊網址如 `/agenda` 不轉址。BBTI 導引頁保留 `/bbti`。 |
 | **貨幣**     | 中文頁使用新台幣，格式 `NT$ 20,000`。英文頁使用歐元，格式 `€500`。                                                                                                                                                                            |
 | **專有名詞** | 公司與社群名稱依語言顯示，英文頁使用正式英文全名，如 Rabbit Gather Co., Ltd.。沒有英文名稱時，才沿用原文。                                                                                                                                    |
 | **文案位置** | 所有可見文字放在 `lang/zh_TW/` 與 `lang/en/`，Blade 以 `__('檔名.鍵')` 讀取。不要把文案寫死在 view。                                                                                                                                          |
@@ -467,7 +467,7 @@ TKUG 的內容半徑超過 0.5，也就是原圖的內容本來就會被圓形�
 
 | # | 項目 | 決定 |
 | :---- | :---- | :---- |
-| 1 | `/` 路由 | `/` 維持為官網 landing page，BBTI 測驗導引頁使用 `/bbti`。 |
+| 1 | `/` 路由 | 年會結束後，`/` 是期待下次活動的固定頁面，2026 年會頁面搬到 `/2026`，BBTI 測驗導引頁使用 `/bbti`。 |
 | 2 | 色票 | 以取自 Logo 的官網色票為準，BBTI 之後沿用。 |
 | 3 | 深色模式 | 官網支援 light 與 dark，預設跟隨系統設定，並提供手動切換按鈕。 |
 | 4 | 8px 網格 | 官網只使用偶數步階，現有程式碼已調整。 |
@@ -475,7 +475,7 @@ TKUG 的內容半徑超過 0.5，也就是原圖的內容本來就會被圓形�
 | 6 | 贊助方案價格 | 中文頁 NT$ 20,000、10,000 與 5,000，英文頁 €500、250 與 125。席次限制不在官網顯示。 |
 | 7 | 贊助層級辨識 | 以邊框顏色區分金、銀、銅獎級，並保留文字標題。贊助方案卡片與贊助商卡片共用同一組 `tier-*` 色票，視覺統一。 |
 | 8 | 合作社群與贊助商 | 以 `config/` 管理清單，首頁顯示摘要，合作社群另有獨立頁面。 |
-| 9 | 議程 | 以 `config/agenda.php` 管理，雙軌共八場，首頁顯示摘要，完整內容在 `/agenda`。 |
+| 9 | 議程 | 以 `config/agenda.php` 管理，雙軌共八場，首頁顯示摘要，完整內容在 `/2026/agenda`。 |
 | 10 | BBTI 測驗 | 導引頁 `/bbti`、作答頁 `/quiz`、結果頁 `/results/{uuid}` 都已上線，頁面規則沿用本文件。 |
 | 9 | 圓形 Logo | 合作社群與贊助商的 Logo 一律裁成圓形，由 `x-circle-logo` 處理，並以 `logo_fit` 指定填滿方式，避免色差。 |
 
@@ -511,7 +511,7 @@ TKUG 的內容半徑超過 0.5，也就是原圖的內容本來就會被圓形�
 
 | 要做的事 | 怎麼做 |
 | :---- | :---- |
-| **修改文案** | 編輯 `lang/zh_TW/` 與 `lang/en/` 內對應的檔案。首頁在 `landing.php`，行為準則在 `conduct.php`，合作社群在 `communities.php`，贊助商區塊在 `sponsors.php`，成為贊助夥伴頁在 `cfs.php`，其方案金額與權益讀取 `landing.php` 的 `tiers`。 |
+| **修改文案** | 編輯 `lang/zh_TW/` 與 `lang/en/` 內對應的檔案。期待下次活動的首頁在 `home.php`，2026 年會首頁在 `landing.php`，行為準則在 `conduct.php`，合作社群在 `communities.php`，贊助商區塊在 `sponsors.php`，成為贊助夥伴頁在 `cfs.php`，其方案金額與權益讀取 `landing.php` 的 `tiers`。 |
 | **修改贊助方案價格** | 編輯兩個 `landing.php` 的 `tiers` 內的 `amount`。同時調整測試中的斷言。 |
 | **新增合作社群** | 在 `resources/images/community-logo/` 建一個以 slug 命名的資料夾，放進 `logo.png` 與三個縮圖 `logo-200.webp`、`logo-400.webp`、`logo-500.webp`。在 `config/communities.php` 加一筆，需有 `slug`、`name` 與 `description`，兩者都要有 `zh_TW` 與 `en`，以及 `logo`，值為 `slug/logo.png`，還有 `logo_fit`、可選的 `logo_padding` 與 `url`。首頁與合作社群頁會自動更新。 |
 | **新增或更新講者** | 把照片放進 `resources/images/speakers/`，在 `config/agenda.php` 對應場次填入 `speaker_name`、`speaker_photo`、`speaker_bio`、`title` 與 `outline`，後三者需有 `zh_TW` 與 `en`。講者照片一律以圓角方形呈現，議程頁與首頁議程共用 `speaker-photo` 元件，尚未公布的場次會顯示同樣形狀的佔位圖示。 |
@@ -542,7 +542,7 @@ TKUG 的內容半徑超過 0.5，也就是原圖的內容本來就會被圓形�
 | **網站圖示** | `favicon.ico` 內含 16、32、48 px，另有 PNG 版本與 `apple-touch-icon.png`，皆由官方 Logo 產生。Apple 圖示為不透明，放在米白底上。 |
 | **Web App Manifest** | `public/site.webmanifest`，提供名稱、圖示與主題色。顯示模式為 `browser`，不是可安裝的 App。 |
 | **主題色** | `theme-color` 依 light 與 dark 各設定一組，分別為 `#f4efe1` 與 `#121c15`。 |
-| **結構化資料** | 只在首頁輸出 JSON-LD，包含 `Organization` 與 `Event`。`Event` 有時間、地點、主辦單位、語言與報名連結。時間固定為 2026-11-21 的 09:00 至 17:00，時區 +08:00。 |
+| **結構化資料** | 只在 2026 年會首頁 `/2026` 輸出 JSON-LD，包含 `Organization` 與 `Event`。`Event` 有時間、地點、主辦單位、語言與報名連結。時間固定為 2026-11-21 的 09:00 至 17:00，時區 +08:00。 |
 | **robots.txt** | 由路由動態產生，禁止 `/admin`，並指向 sitemap。 |
 | **sitemap.xml** | 由路由動態產生，列出所有頁面的中英文網址，並帶有 `hreflang` 互相參照。 |
 
@@ -551,7 +551,7 @@ TKUG 的內容半徑超過 0.5，也就是原圖的內容本來就會被圓形�
 - 網址以 `APP_URL` 為準。正式環境的網域是 `https://gatherconf.net`，`.env` 必須設定 `APP_URL=https://gatherconf.net`，否則 canonical、hreflang、Open Graph、JSON-LD 與 sitemap 都會輸出錯誤的位址。本機開發維持 `http://localhost:8000`。
 - 設定 `APP_URL` 時使用 `https`、不加結尾斜線、不加 `www`，與 canonical 保持一致。若網域同時有 `www` 版本或 `http` 版本，需要在伺服器層導向 `https://gatherconf.net`，避免搜尋引擎視為重複內容。
 - 正式環境部署後，檢查 `https://gatherconf.net/robots.txt` 與 `https://gatherconf.net/sitemap.xml`，確認內容中的網址都是 `https://gatherconf.net` 開頭。
-- 正式環境的頁面網址對照：`https://gatherconf.net/`、`/en`、`/code-of-conduct`、`/en/code-of-conduct`、`/communities`、`/en/communities`、`/call-for-sponsor` 與 `/en/call-for-sponsor`。
+- 正式環境的頁面網址對照：`https://gatherconf.net/`、`/en`、`/2026`、`/2026/en`、`/2026/agenda`、`/2026/code-of-conduct`、`/2026/communities`、`/2026/volunteers` 與 `/2026/call-for-sponsor`，英文版在 `/2026/en/...`。
 - 活動時間、地點或報名連結異動時，除了畫面文字，也要同步更新 `landing/structured-data.blade.php`，否則搜尋結果的活動資訊會過時。
 - 活動地址以台大官方地址為準，需要時請再確認。
 - 目前沒有為非正式環境加上 `noindex`。若有公開的測試站，建議另外處理，避免被搜尋引擎收錄。
